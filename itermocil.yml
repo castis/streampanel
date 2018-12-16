@@ -1,0 +1,16 @@
+windows:
+  - name: stream-panel
+    root: ~/Code/stream-panel
+    layout: main-vertical
+    panes:
+      - name: workspace
+        commands:
+          - git st
+      - name: serve
+        commands:
+          - nvm use
+          - npx serve public -s
+      - name: webpack
+        commands:
+          - nvm use
+          - npm run dev

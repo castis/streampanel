@@ -1,0 +1,20 @@
+{
+  "presets": [
+    [
+      "@babel/env",
+      {
+        "modules": false,
+        "targets": {
+          "browsers": ["last 2 versions", "safari >= 8"]
+        },
+        "useBuiltIns": "usage"
+      }
+    ],
+    "@babel/react"
+  ],
+  "plugins": [
+    ["@babel/plugin-proposal-decorators", { "legacy": true }],
+    ["@babel/plugin-proposal-class-properties", { "loose": true }],
+    ["@babel/plugin-proposal-function-bind"]
+  ]
+}
