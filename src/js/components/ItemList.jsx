@@ -1,11 +1,7 @@
 import React from 'react'
-
-
 import classnames from 'classnames'
-
-import { autorun, observable, action, computed, reaction } from 'mobx'
+import { observable } from 'mobx'
 import { observer } from 'mobx-react'
-
 import { persist } from 'mobx-persist'
 
 import { hydrate } from '../util/storage'
@@ -75,6 +71,7 @@ export class ItemList extends React.Component {
 export class ItemListSettings extends React.Component {
     constructor(props) {
         super(props)
+        this.handleReset = ::this.handleReset
     }
 
     handleReset() {
@@ -85,7 +82,7 @@ export class ItemListSettings extends React.Component {
         return <fieldset className="icons">
             <legend>icons</legend>
             <div className="commands">
-                <button onClick={ ::this.handleReset }>reset</button>
+                <button onClick={ this.handleReset }>reset</button>
             </div>
         </fieldset>
     }

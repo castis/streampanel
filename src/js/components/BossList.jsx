@@ -1,11 +1,7 @@
 import React from 'react'
-
-
 import classnames from 'classnames'
-
-import { autorun, observable, action, computed, reaction } from 'mobx'
+import { observable } from 'mobx'
 import { observer } from 'mobx-react'
-
 import { persist } from 'mobx-persist'
 
 import { hydrate } from '../util/storage'
@@ -26,7 +22,6 @@ class BossState {
     @persist('list') @observable items = initialItems
 }
 const state = new BossState()
-
 hydrate('bosses', state)
 
 
@@ -46,8 +41,14 @@ class ItemView extends React.Component {
     }
 }
 
+
 @observer
 export class BossList extends React.Component {
+    constructor(props) {
+        super(props)
+        this.handleClick = ::this.handleClick
+    }
+
     handleClick(boss) {
         state.items.forEach(i => {
             if (i.name === boss) {
@@ -61,7 +62,7 @@ export class BossList extends React.Component {
             return <ItemView
                 item={ item }
                 key={ index }
-                onClick={ ::this.handleClick }
+                onClick={ this.handleClick }
             />
         })
         return <div className="bosses">
@@ -74,6 +75,7 @@ export class BossList extends React.Component {
 export class BossListSettings extends React.Component {
     constructor(props) {
         super(props)
+        this.handleReset = ::this.handleReset
     }
 
     handleReset() {
@@ -84,7 +86,7 @@ export class BossListSettings extends React.Component {
         return <fieldset className="icons">
             <legend>bosses</legend>
             <div className="commands">
-                <button onClick={ ::this.handleReset }>reset</button>
+                <button onClick={ this.handleReset }>reset</button>
             </div>
         </fieldset>
     }

@@ -1,6 +1,6 @@
 import React from 'react'
 import classnames from 'classnames'
-import { autorun, observable, action, computed, reaction } from 'mobx'
+import { observable } from 'mobx'
 import { observer } from 'mobx-react'
 import { persist } from 'mobx-persist'
 import ColorPicker from 'rc-color-picker'

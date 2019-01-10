@@ -2,9 +2,8 @@ import React from 'react'
 import classnames from 'classnames'
 import ColorPicker from 'rc-color-picker'
 import {v4} from 'node-uuid'
-import moment, { diff } from 'moment'
 import format from 'format-number-with-string'
-import { autorun, observable, action, computed, reaction, runInAction } from 'mobx'
+import { observable, action, computed } from 'mobx'
 import { persist } from 'mobx-persist'
 import { observer } from 'mobx-react'
 
@@ -54,8 +53,9 @@ class Timer {
 
 class TimerState {
     @observable timer = new Timer()
-    @observable isRunning = false
-    @observable startTime = 0
+    @persist @observable isRunning = false
+    @persist @observable startTime = 0
+    @persist @observable stopTime = 0
     @persist @observable updateSpeed = 60
     @persist @observable spaceBarToggle = true
 
@@ -84,15 +84,16 @@ class TimerState {
         if (!this.isRunning) {
             return
         }
-        this.timer.milliseconds = moment().diff(this.startTime)
-
+        this.timer.milliseconds = (new Date()).getTime() - this.startTime
         setTimeout(this.update, this.updateSpeed)
     }
 
     @action start() {
-        if (this.isRunning) return
+        if (this.isRunning) {
+            return
+        }
         this.isRunning = true
-        this.startTime = moment()
+        this.startTime = (new Date()).getTime()
         this.update()
     }
 
@@ -116,7 +117,11 @@ class TimerState {
 }
 
 const state = new TimerState()
-hydrate('timer', state)
+hydrate('timer', state).then(() => {
+    state.update()
+    // console.log(state.isRunning);
+    // console.log(state.startTime);
+})
 
 
 @observer
@@ -173,6 +178,14 @@ const spaceBar = new SpaceBar()
 @observer
 export class StopwatchSettings extends React.Component {
 
+    constructor(props) {
+        super(props)
+        this.handleBackground = ::this.handleBackground
+        this.handleFontColor = ::this.handleFontColor
+        this.handleUpdateSpeed = ::this.handleUpdateSpeed
+        this.handleSpaceBarToggle = ::this.handleSpaceBarToggle
+    }
+
     handleBackground(background) {
         state.background = background
     }
@@ -216,14 +229,14 @@ export class StopwatchSettings extends React.Component {
                     <ColorPicker
                         color={ state.background.color }
                         alpha={ state.background.alpha }
-                        onChange={ ::this.handleBackground }
+                        onChange={ this.handleBackground }
                     />
                 </div>
                 <div className="input">
                     <label>font color</label>
                     <ColorPicker
                         color={ state.font.color }
-                        onChange={ ::this.handleFontColor }
+                        onChange={ this.handleFontColor }
                         enableAlpha={ false }
                     />
                 </div>
@@ -235,7 +248,7 @@ export class StopwatchSettings extends React.Component {
                         min="8"
                         max="256"
                         value={ state.updateSpeed }
-                        onChange={ ::this.handleUpdateSpeed }
+                        onChange={ this.handleUpdateSpeed }
                     />
                 </div>
                 <div className="input">
@@ -243,7 +256,7 @@ export class StopwatchSettings extends React.Component {
                     <input
                         type="checkbox"
                         checked={ state.spaceBarToggle }
-                        onChange={ ::this.handleSpaceBarToggle }
+                        onChange={ this.handleSpaceBarToggle }
                     />
                 </div>
             </div>
