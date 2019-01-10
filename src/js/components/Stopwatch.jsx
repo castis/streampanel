@@ -119,8 +119,6 @@ class TimerState {
 const state = new TimerState()
 hydrate('timer', state).then(() => {
     state.update()
-    // console.log(state.isRunning);
-    // console.log(state.startTime);
 })
 
 
