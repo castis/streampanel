@@ -48,7 +48,12 @@ fieldset {
     }
 }
 
-body .launcher {
+#mount {
+    width: 100%;
+    height: 100%;
+}
+
+.launcher {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -78,14 +83,10 @@ body .launcher {
 }
 
 $max-width: 610px;
-body .app {
+.app {
     width: 100%;
-
-    .container {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-    }
+    display: flex;
+    flex-direction: row;
 
     .display {
         text-align: center;

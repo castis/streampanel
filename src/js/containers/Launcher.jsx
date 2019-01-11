@@ -1,12 +1,10 @@
 import React from 'react'
 
 import { flatten } from '../util/functions'
-import Container from '../util/container'
 import { localforage } from '../util/storage'
 
 
-export default class Launcher extends Container {
-    className = 'launcher'
+export default class Launcher extends React.Component {
     state = {
         width: 630,
         height: 630,
@@ -27,6 +25,8 @@ export default class Launcher extends Container {
     }
 
     render() {
-        return <button type="button" onClick={ ::this.handleClick }>Launch</button>
+        return <div class="launcher">
+            <button type="button" onClick={ ::this.handleClick }>Launch</button>
+        </div>
     }
 }

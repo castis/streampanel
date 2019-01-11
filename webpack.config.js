@@ -64,7 +64,25 @@ module.exports = {
                 parallel: true,
                 sourceMap: true, // Must be set to true if using source-maps in production
                 terserOptions: {
-                    // https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions
+                    // // https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions
+                    // // ecma: undefined,
+                    // // warnings: false,
+                    // // parse: {},
+                    // // compress: {},
+                    // mangle: true, // Note `mangle.properties` is `false` by default.
+                    // // module: false,
+                    // // output: null,
+                    // // toplevel: false,
+                    // // nameCache: null,
+                    // // ie8: false,
+                    // // keep_classnames: undefined,
+                    // // keep_fnames: false,
+                    // // safari10: false,
+                    // extractComments: {
+                    //     condition: /^\**!|@preserve|@license|@cc_on/i,
+                    //     filename: 'extracted-comments.js',
+                    //     banner: (file) => `License information can be found in ${file}`,
+                    // },
                 }
             }),
             new OptimizeCSSAssetsPlugin()

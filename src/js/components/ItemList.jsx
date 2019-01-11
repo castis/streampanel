@@ -41,7 +41,6 @@ class ItemState {
     @persist('list') @observable items = initialItems
 }
 const state = new ItemState()
-
 hydrate('items', state)
 
 

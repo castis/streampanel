@@ -8,7 +8,6 @@ import ColorPicker from 'rc-color-picker'
 import { ItemList, ItemListSettings } from '../components/ItemList'
 import { BossList, BossListSettings } from '../components/BossList'
 import { Stopwatch, StopwatchSettings } from '../components/Stopwatch'
-import Container from '../util/container'
 import { hexToRgb } from '../util/functions'
 
 import { localforage, hydrate } from '../util/storage'
@@ -58,9 +57,7 @@ class GeneralSettings extends React.Component {
 
 
 @observer
-export default class App extends Container {
-    className = 'app'
-
+export default class App extends React.Component {
     handleResize() {
         const body = document.body
         localforage.setItem('window', {
@@ -70,13 +67,11 @@ export default class App extends Container {
     }
 
     componentDidMount() {
-        document.querySelector('#mount').classList.add('app')
         window.addEventListener('resize', this.handleResize)
         this.handleResize()
     }
 
     componentWillUnmount() {
-        document.querySelector('#mount').classList.remove('app')
         window.removeEventListener('resize', this.handleResize)
     }
 
@@ -84,7 +79,7 @@ export default class App extends Container {
         const { r, g, b } = hexToRgb(state.background.color)
         const a = state.background.alpha / 100
 
-        return <div className="container">
+        return <div className="app">
             <div className="display" style={{
                 backgroundColor: `rgba(${r}, ${g}, ${b}, ${a})`,
             }}>
