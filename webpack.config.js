@@ -3,6 +3,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const path = require('path');
 const webpack = require('webpack');
+const autoprefixer = require('autoprefixer');
 
 
 module.exports = {
@@ -26,7 +27,10 @@ module.exports = {
             use: [
                 MiniCssExtractPlugin.loader,
                 'css-loader',
-                'sass-loader'
+                'sass-loader',
+                // { loader: 'postcss-loader', options: {
+                //     plugins: [autoprefixer]
+                // }}
             ]
         }]
     },
@@ -41,10 +45,7 @@ module.exports = {
 
     plugins: [
         new MiniCssExtractPlugin({
-            // options similar to the same options in webpackoptions.output
-            // both options are optional
             filename: 'public/css/index.css',
-            // chunkFilename: '[id].css',
         })
     ],
 
@@ -58,32 +59,10 @@ module.exports = {
 
     optimization: {
         minimizer: [
-            // we specify a custom UglifyJsPlugin here to get source maps in production
             new TerserPlugin({
                 cache: true,
                 parallel: true,
-                sourceMap: true, // Must be set to true if using source-maps in production
-                terserOptions: {
-                    // // https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions
-                    // // ecma: undefined,
-                    // // warnings: false,
-                    // // parse: {},
-                    // // compress: {},
-                    // mangle: true, // Note `mangle.properties` is `false` by default.
-                    // // module: false,
-                    // // output: null,
-                    // // toplevel: false,
-                    // // nameCache: null,
-                    // // ie8: false,
-                    // // keep_classnames: undefined,
-                    // // keep_fnames: false,
-                    // // safari10: false,
-                    // extractComments: {
-                    //     condition: /^\**!|@preserve|@license|@cc_on/i,
-                    //     filename: 'extracted-comments.js',
-                    //     banner: (file) => `License information can be found in ${file}`,
-                    // },
-                }
+                sourceMap: true,
             }),
             new OptimizeCSSAssetsPlugin()
         ]

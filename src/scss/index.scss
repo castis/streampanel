@@ -232,24 +232,12 @@ $max-width: 610px;
         }
 
         .controller {
-            width: 220px;
+            width: 230px;
             margin: auto auto 20px;
-            max-height: 0;
-            overflow: hidden;
-
             @include transition(all 0.3s ease-in-out);
 
             &.active {
                 max-height: 110px;
-            }
-
-            .button {
-                background: black;
-                color: white;
-
-                &.active {
-                    // background: lightgreen;
-                }
             }
 
             .shoulder {
@@ -260,15 +248,20 @@ $max-width: 610px;
                 margin-bottom: 0px;
                 padding: 0 15px;
 
-                .LS, .RS {
+                .l1, .r1 {
                     width: 45px;
-                    height: 3px;
+                    height: 4px;
                     border-radius: 3px 3px 0 0;
-                    background-color: #999;
+                    // border: solid 1px #999;
+                    border-style: solid;
+                    border-color: #999;
+                    border-width: 1px 1px 0 1px;
+                    // background-color: #999;
 
                     &.active {
-                        height: 1px;
-                        margin-top: 3px;
+                        background: #999;
+                        // height: 1px;
+                        // margin-top: 3px;
                     }
                 }
             }
@@ -276,10 +269,10 @@ $max-width: 610px;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                background: #DDD;
-                border-radius: 5px;
-                border: solid 5px #EEE;
-                box-shadow: 0 0 4px rgba(100, 100, 100, 0.2);
+                padding: 0 5px;
+                // background: #DDD;
+                // border: solid 5px #EEE;
+                // box-shadow: 0 0 4px rgba(100, 100, 100, 0.2);
 
                 padding: 0 13px;
 
@@ -288,47 +281,55 @@ $max-width: 610px;
                     width: 45px;
                     position: relative;
 
-                    .U, .D, .L, .R, .M {
+                    .up,
+                    .down,
+                    .left,
+                    .right,
+                    .mode {
                         height: 15px;
                         width: 15px;
                         position: absolute;
-                        box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+                        border-color: #000000;
+                        border-style: solid;
 
                         &.active {
-                            background: grey;
-                            transform: translateY(1px);
-                            box-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
+                            background: #000000;
                         }
                     }
 
                     $r: 2px;
-                    .U {
+                    $b: 1px;
+                    .up {
                         left: 0;
                         right: 0;
                         margin: 0 auto;
                         border-radius: $r $r 0 0;
+                        border-width: $b $b 0 $b;
                     }
-                    .D {
+                    .down {
                         bottom: 0;
                         left: 0;
                         right: 0;
                         margin: 0 auto;
                         border-radius: 0 0 $r $r;
+                        border-width: 0 $b $b $b;
                     }
-                    .L {
+                    .left {
                         top: 0;
                         bottom: 0;
                         margin: auto 0;
                         border-radius: $r 0 0 $r;
+                        border-width: $b 0 $b $b;
                     }
-                    .R {
+                    .right {
                         right: 0;
                         top: 0;
                         bottom: 0;
                         margin: auto 0;
                         border-radius: 0 $r $r 0;
+                        border-width: $b $b $b 0;
                     }
-                    .M {
+                    .mode {
                         top: 14px;
                         left: 14px;
                         width: 17px;
@@ -339,21 +340,18 @@ $max-width: 610px;
                     width: 60px;
                     display: flex;
                     justify-content: space-between;
-                    background: #EEE;
-                    padding: 50px 10px 20px;
+                    // background: #EEEEEE;
+                    padding: 55px 10px 25px;
 
                     .select, .start {
                         height: 6px;
                         width: 18px;
-                        transform: rotate(-35deg);
                         border-radius: 3px;
-                        box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
-                        background: #333;
+                        border: solid 1px #000000;
+                        transform: rotate(-35deg);
 
                         &.active {
-                            background: #666;
-                            transform: rotate(-35deg) translateY(1px);
-                            box-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
+                            background: #000000;
                         }
                     }
 
@@ -361,64 +359,124 @@ $max-width: 610px;
                     .start {}
                 }
                 .action {
-                    height: 55px;
-                    width: 55px;
+                    height: 50px;
+                    width: 60px;
                     position: relative;
 
-                    .X, .A, .B, .Y {
+                    .x, .a, .b, .y {
                         height: 16px;
                         width: 16px;
                         position: absolute;
                         border-radius: 50%;
-                        box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-
-                        &.active {
-                            @include transform(translateY(1px));
-                            box-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
-                        }
                     }
 
-                    @mixin round-button($baseColor, $hoverColor) {
-                        background: lighten($baseColor, 10%);
+                    @mixin round-button() {
+                        border-width: 1px;
+                        border-style: solid;
                         border-radius: 100%;
-                        box-shadow: 0 -1px 0 0.3px darken($baseColor, 10%) inset, 0 5px 5px rgba(darken($baseColor, 50%), 0.1);
                         cursor: pointer;
                         display: inline-block;
                         height: 18px;
                         width: 18px;
+                    }
 
+                    .x { // top
+                        left: 0;
+                        right: 0;
+                        margin: 0 auto;
+                        @include round-button();
+
+                        // blue
+                        // border-color: #1750ae;
+                        // &.active {
+                        //     background: #1750ae;
+                        // }
+
+                        // lavender
+                        // border-color: #9893c5;
+                        // &.active {
+                        //     background: #9893c5;
+                        // }
+
+                        border-color: #860046;
                         &.active {
-                            background: lighten($hoverColor, 20%);
-                            box-shadow: 0 -0.3px 0 0.2px lighten($hoverColor, 10%) inset, 0 5px 5px rgba(darken($baseColor, 50%), 0.1);
+                            background: #860046;
                         }
                     }
+                    .y { // left
+                        top: 0;
+                        bottom: 0;
+                        margin: auto 0;
+                        left: 0;
+                        @include round-button();
 
-                    .X { // blue top
-                        left: 0;
-                        right: 0;
-                        margin: 0 auto;
-                        @include round-button(#1750ae, #1750ae);
+                        // green
+                        // border-color: #00985b;
+                        // &.active {
+                        //     background: #00985b;
+                        // }
+
+                        // lavender
+                        // border-color: #9893c5;
+                        // &.active {
+                        //     background: #9893c5;
+                        // }
+
+                        // ruby
+                        border-color: #860046;
+                        &.active {
+                            background: #860046;
+                        }
                     }
-                    .Y { // green left
+                    .a { // right
+                        right: 0;
                         top: 0;
                         bottom: 0;
                         margin: auto 0;
-                        left: 0;
-                        @include round-button(#00985b, #00785b);
+                        @include round-button();
+
+                        // red
+                        // border-color: #c00a02;
+                        // &.active {
+                        //     background: #c00a02;
+                        // }
+
+                        // purple
+                        // border-color: #47217a;
+                        // &.active {
+                        //     background: #47217a;
+                        // }
+
+                        // ruby
+                        border-color: #860046;
+                        &.active {
+                            background: #860046;
+                        }
                     }
-                    .A { // red right
-                        right: 0;
-                        top: 0;
-                        bottom: 0;
-                        margin: auto 0;
-                        @include round-button(#c00a02, #d01a12);
-                    }
-                    .B { // yellow bottom
+                    .b { // bottom
                         bottom: 0;
                         left: 0;
                         right: 0;
                         margin: 0 auto;
-                        @include round-button(#e9a109, #d99109);
+                        @include round-button();
+
+                        // yellow
+                        // border-color: #e9a109;
+                        // &.active {
+                        //     background: #e9a109;
+                        // }
+
+                        // purple
+                        // border-color: #47217a;
+                        // &.active {
+                        //     background: #47217a;
+                        // }
+
+                        // ruby
+                        border-color: #860046;
+                        &.active {
+                            background: #860046;
+                        }
                     }
                 }
             }
@@ -455,6 +513,7 @@ $max-width: 610px;
 
             .inputs {
                 width: 100%;
+                padding-top: 5px;
 
                 .input {
                     display: flex;
@@ -462,10 +521,11 @@ $max-width: 610px;
                     justify-content: space-between;
                     align-items: center;
                     padding: 5px 10px;
-                    width: 100%;
+                    height: 20px;
+                    margin-bottom: 1px;
 
                     &:last-child {
-                        // background: orange;
+                        margin-bottom: 0;
                     }
 
                     label {
@@ -473,6 +533,7 @@ $max-width: 610px;
                         color: #444;
                         line-height: 13px;
                         margin-right: 10px;
+                        white-space: nowrap;
                     }
 
                     input, select {
@@ -480,11 +541,9 @@ $max-width: 610px;
                         border-width: 1px;
                         border-color: rgba(100, 100, 100, 0.2);
                         border-radius: 1px;
-                        // padding: 3px 5px;
                         margin: 0;
                         width: auto;
-                        // min-width: 50px;
-                        max-width: 100px;
+                        width: 100%;
 
                         &[type=range] {
                             border: 0;
@@ -521,8 +580,6 @@ $max-width: 610px;
                     width: 100%;
 
                     @include transition(all 0.1s ease-in-out);
-
-
 
                     &:hover {
                         box-shadow: 0 0 2px rgba(80, 80, 80, 0.3);

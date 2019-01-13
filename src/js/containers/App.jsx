@@ -8,6 +8,7 @@ import ColorPicker from 'rc-color-picker'
 import { ItemList, ItemListSettings } from '../components/ItemList'
 import { BossList, BossListSettings } from '../components/BossList'
 import { Stopwatch, StopwatchSettings } from '../components/Stopwatch'
+import { Controller, ControllerSettings } from '../components/Controller'
 import { hexToRgb } from '../util/functions'
 
 import { localforage, hydrate } from '../util/storage'
@@ -39,14 +40,14 @@ class GeneralSettings extends React.Component {
         return <fieldset className="general">
             <legend>general</legend>
             <div className="inputs">
-            <div className="input">
-                <label>background color</label>
-                <ColorPicker
-                    color={ state.background.color }
-                    alpha={ state.background.alpha }
-                    onChange={ ::this.handleBackgroundColor }
-                />
-            </div>
+                <div className="input">
+                    <label>background color</label>
+                    <ColorPicker
+                        color={ state.background.color }
+                        alpha={ state.background.alpha }
+                        onChange={ ::this.handleBackgroundColor }
+                    />
+                </div>
             </div>
             <div className="commands">
                 <button onClick={ ::this.handleReset }>reset state</button>
@@ -86,12 +87,14 @@ export default class App extends React.Component {
                 <ItemList />
                 <BossList />
                 <Stopwatch />
+                <Controller />
             </div>
             <div className="settings">
                 <GeneralSettings />
                 <ItemListSettings />
                 <BossListSettings />
                 <StopwatchSettings />
+                <ControllerSettings />
             </div>
         </div>
     }
