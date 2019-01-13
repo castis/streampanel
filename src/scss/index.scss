@@ -501,6 +501,7 @@ $max-width: 610px;
     }
 
     .settings {
+        width: 200px;
         font-family: Helvetica;
         margin: 0 0 0 15px;
         padding: 15px 0;
@@ -618,7 +619,6 @@ $max-width: 610px;
             }
 
             .commands {
-                // padding: 2px 5px 0;
                 display: flex;
                 flex-direction: column;
                 border-top: solid 1px #DDD;
@@ -628,36 +628,27 @@ $max-width: 610px;
                     flex: 1;
                     background: #EEE;
                     border: 0;
-                    // border: solid 1px #DDD;
                     padding: 6px 8px;
-                    // border-radius: 3px;
                     font-size: 9px;
-                    // margin: 0 0 10px 0;
-                    // box-shadow: 0 0 5px rgba(100, 100, 100, 0.1);
                     cursor: pointer;
                     color: #888;
                     width: 100%;
+                    border-style: solid;
+                    border-width: 0 1px 0 0;
+                    border-color: #DDD;
 
                     @include transition(all 0.1s ease-in-out);
 
                     &:hover {
-                        // box-shadow: 0 0 2px rgba(80, 80, 80, 0.3);
-                        border-color: #aaa;
                         background: #DDD;
                     }
 
-                    &:first-child {
-                        // border-top-left-radius: 2px;
-                        border-bottom-left-radius: 2px;
-                    }
                     &:last-child {
-                        // border-top-right-radius: 2px;
-                        border-bottom-right-radius: 2px;
+                        border-width: 0;
                     }
 
                     &:active {
-                        // box-shadow: 0 0 2px rgba(100, 100, 100, 0.1);
-                        transform: translateX(1px) translateY(1px);
+                        transform: translateX(1px);
                     }
                 }
 
