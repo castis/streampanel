@@ -240,6 +240,95 @@ $max-width: 610px;
                 max-height: 110px;
             }
 
+            &.american {
+                    .x { // top
+                        // lavender
+                        border-color: #9893c5;
+                        &.active {
+                            background: #9893c5;
+                        }
+                    }
+                    .y { // left
+                        // lavender
+                        border-color: #9893c5;
+                        &.active {
+                            background: #9893c5;
+                        }
+                    }
+                    .a { // right
+                        // purple
+                        border-color: #47217a;
+                        &.active {
+                            background: #47217a;
+                        }
+                    }
+                    .b { // bottom
+                        // purple
+                        border-color: #47217a;
+                        &.active {
+                            background: #47217a;
+                        }
+                    }
+            }
+
+            &.superfamicom {
+                    .x { // top
+                        // blue
+                        border-color: #1750ae;
+                        &.active {
+                            background: #1750ae;
+                        }
+                    }
+                    .y { // left
+                        // green
+                        border-color: #00985b;
+                        &.active {
+                            background: #00985b;
+                        }
+                    }
+                    .a { // right
+                        // red
+                        border-color: #c00a02;
+                        &.active {
+                            background: #c00a02;
+                        }
+                    }
+                    .b { // bottom
+                        // yellow
+                        border-color: #e9a109;
+                        &.active {
+                            background: #e9a109;
+                        }
+                    }
+            }
+
+            &.famicom {
+                    .x { // top
+                        border-color: #860046;
+                        &.active {
+                            background: #860046;
+                        }
+                    }
+                    .y { // left
+                        border-color: #860046;
+                        &.active {
+                            background: #860046;
+                        }
+                    }
+                    .a { // right
+                        border-color: #860046;
+                        &.active {
+                            background: #860046;
+                        }
+                    }
+                    .b { // bottom
+                        border-color: #860046;
+                        &.active {
+                            background: #860046;
+                        }
+                    }
+            }
+
             .shoulder {
                 display: flex;
                 justify-content: space-between;
@@ -340,7 +429,6 @@ $max-width: 610px;
                     width: 60px;
                     display: flex;
                     justify-content: space-between;
-                    // background: #EEEEEE;
                     padding: 55px 10px 25px;
 
                     .select, .start {
@@ -385,23 +473,6 @@ $max-width: 610px;
                         right: 0;
                         margin: 0 auto;
                         @include round-button();
-
-                        // blue
-                        // border-color: #1750ae;
-                        // &.active {
-                        //     background: #1750ae;
-                        // }
-
-                        // lavender
-                        // border-color: #9893c5;
-                        // &.active {
-                        //     background: #9893c5;
-                        // }
-
-                        border-color: #860046;
-                        &.active {
-                            background: #860046;
-                        }
                     }
                     .y { // left
                         top: 0;
@@ -409,24 +480,6 @@ $max-width: 610px;
                         margin: auto 0;
                         left: 0;
                         @include round-button();
-
-                        // green
-                        // border-color: #00985b;
-                        // &.active {
-                        //     background: #00985b;
-                        // }
-
-                        // lavender
-                        // border-color: #9893c5;
-                        // &.active {
-                        //     background: #9893c5;
-                        // }
-
-                        // ruby
-                        border-color: #860046;
-                        &.active {
-                            background: #860046;
-                        }
                     }
                     .a { // right
                         right: 0;
@@ -434,24 +487,6 @@ $max-width: 610px;
                         bottom: 0;
                         margin: auto 0;
                         @include round-button();
-
-                        // red
-                        // border-color: #c00a02;
-                        // &.active {
-                        //     background: #c00a02;
-                        // }
-
-                        // purple
-                        // border-color: #47217a;
-                        // &.active {
-                        //     background: #47217a;
-                        // }
-
-                        // ruby
-                        border-color: #860046;
-                        &.active {
-                            background: #860046;
-                        }
                     }
                     .b { // bottom
                         bottom: 0;
@@ -459,24 +494,6 @@ $max-width: 610px;
                         right: 0;
                         margin: 0 auto;
                         @include round-button();
-
-                        // yellow
-                        // border-color: #e9a109;
-                        // &.active {
-                        //     background: #e9a109;
-                        // }
-
-                        // purple
-                        // border-color: #47217a;
-                        // &.active {
-                        //     background: #47217a;
-                        // }
-
-                        // ruby
-                        border-color: #860046;
-                        &.active {
-                            background: #860046;
-                        }
                     }
                 }
             }

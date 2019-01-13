@@ -10,6 +10,7 @@ const { min, max } = Math
 
 class ControllerState {
     @observable gamepads = []
+    @observable style = 'superfamicom'
     @observable active = ''
     @observable shouldUpdate = false
     @observable buttons = []
@@ -133,7 +134,7 @@ export class Controller extends React.Component {
             button[map[i]] = b.pressed ? 'active' : ''
         })
 
-        return <div className="controller">
+        return <div className={`controller ${state.style}`}>
             <div className="shoulder">
                 <div className={`l1 ${button.l1}`}></div>
                 <div className={`r1 ${button.r1}`}></div>
@@ -212,6 +213,10 @@ export class ControllerSettings extends React.Component {
         state.updateSpeed = max(1, min(value, 256))
     }
 
+    handleStyleChange(event) {
+        state.style = event.target.value
+    }
+
     render() {
         const options = state.gamepads.map(c => {
             return <option key={ c.index } value={ c.index }>
@@ -219,6 +224,8 @@ export class ControllerSettings extends React.Component {
             </option>
         })
         options.unshift(<option key="" value="">none</option>)
+
+
 
         return <fieldset className="controller">
             <legend>controller</legend>
@@ -230,6 +237,17 @@ export class ControllerSettings extends React.Component {
                         onChange={ ::this.handleControllerChange }
                     >
                         { options }
+                    </select>
+                </div>
+                <div className="input">
+                    <label>style</label>
+                    <select
+                        value={ state.style }
+                        onChange={ ::this.handleStyleChange }
+                    >
+                        <option value="superfamicom">super famicom</option>
+                        <option value="american">american</option>
+                        <option value="famicom">famicom</option>
                     </select>
                 </div>
                 <div className="input">
