@@ -9,12 +9,12 @@ const { min, max } = Math
 
 
 class ControllerState {
+    @persist @observable style = 'american'
+    @persist @observable updateSpeed = 50
     @observable gamepads = []
-    @observable style = 'superfamicom'
     @observable active = ''
     @observable shouldUpdate = false
     @observable buttons = []
-    @persist @observable updateSpeed = 50
 
     constructor() {
         this.update = ::this.update
@@ -35,7 +35,7 @@ class ControllerState {
 
     activate(index) {
         // if a controller is active
-        if (this.active) {
+        if (this.active !== '') {
             // if the active one is the one we just called for
             if (this.active == index) {
                 // dont do anything
@@ -55,6 +55,7 @@ class ControllerState {
     deactivate() {
         this.shouldUpdate = false
         this.active = ''
+        this.buttons = []
     }
 }
 const state = new ControllerState()
@@ -225,8 +226,6 @@ export class ControllerSettings extends React.Component {
         })
         options.unshift(<option key="" value="">none</option>)
 
-
-
         return <fieldset className="controller">
             <legend>controller</legend>
             <div className="inputs">
@@ -245,9 +244,9 @@ export class ControllerSettings extends React.Component {
                         value={ state.style }
                         onChange={ ::this.handleStyleChange }
                     >
-                        <option value="superfamicom">super famicom</option>
                         <option value="american">american</option>
                         <option value="famicom">famicom</option>
+                        <option value="superfamicom">super famicom</option>
                     </select>
                 </div>
                 <div className="input">

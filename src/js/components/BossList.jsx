@@ -85,6 +85,7 @@ export class BossListSettings extends React.Component {
     render() {
         return <fieldset className="icons">
             <legend>bosses</legend>
+            <div className="inputs"></div>
             <div className="commands">
                 <button onClick={ this.handleReset }>reset</button>
             </div>

@@ -80,6 +80,7 @@ export class ItemListSettings extends React.Component {
     render() {
         return <fieldset className="icons">
             <legend>icons</legend>
+            <div className="inputs"></div>
             <div className="commands">
                 <button onClick={ this.handleReset }>reset</button>
             </div>
