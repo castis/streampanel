@@ -628,7 +628,7 @@ $max-width: 610px;
                     flex: 1;
                     background: #EEE;
                     border: 0;
-                    padding: 6px 8px;
+                    padding: 6px 8px 6px;
                     font-size: 9px;
                     cursor: pointer;
                     color: #888;
@@ -641,6 +641,7 @@ $max-width: 610px;
 
                     &:hover {
                         background: #DDD;
+                        color: #444;
                     }
 
                     &:last-child {
@@ -648,7 +649,7 @@ $max-width: 610px;
                     }
 
                     &:active {
-                        transform: translateX(1px);
+                        padding: 7px 8px 5px;
                     }
                 }
 
