@@ -240,6 +240,10 @@ $max-width: 610px;
                 max-height: 110px;
             }
 
+            .btn {
+                @include transition(all 0.3s ease-in-out);
+            }
+
             &.famicom {
                 .x { // top
                     border-color: #860046;

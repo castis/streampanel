@@ -137,26 +137,26 @@ export class Controller extends React.Component {
 
         return <div className={`controller ${state.style}`}>
             <div className="shoulder">
-                <div className={`l1 ${button.l1}`}></div>
-                <div className={`r1 ${button.r1}`}></div>
+                <div className={`btn l1 ${button.l1}`}></div>
+                <div className={`btn r1 ${button.r1}`}></div>
             </div>
             <div className="body">
                 <div className="dpad">
-                    <div className={`up ${button.up}`}></div>
-                    <div className={`down ${button.down}`}></div>
-                    <div className={`left ${button.left}`}></div>
-                    <div className={`right ${button.right}`}></div>
-                    <div className={`mode ${button.mode}`}></div>
+                    <div className={`btn up ${button.up}`}></div>
+                    <div className={`btn down ${button.down}`}></div>
+                    <div className={`btn left ${button.left}`}></div>
+                    <div className={`btn right ${button.right}`}></div>
+                    <div className={`btn mode ${button.mode}`}></div>
                 </div>
                 <div className="meta">
-                    <div className={`select ${button.select}`}></div>
-                    <div className={`start ${button.start}`}></div>
+                    <div className={`btn select ${button.select}`}></div>
+                    <div className={`btn start ${button.start}`}></div>
                 </div>
                 <div className="action">
-                    <div className={`x ${button.x}`}></div>
-                    <div className={`y ${button.y}`}></div>
-                    <div className={`a ${button.a}`}></div>
-                    <div className={`b ${button.b}`}></div>
+                    <div className={`btn x ${button.x}`}></div>
+                    <div className={`btn y ${button.y}`}></div>
+                    <div className={`btn a ${button.a}`}></div>
+                    <div className={`btn b ${button.b}`}></div>
                 </div>
             </div>
         </div>
