@@ -105,10 +105,9 @@ export default class App extends React.Component {
         const rgba2 = `rgba(${bg2.r}, ${bg2.g}, ${bg2.b}, ${a2})`
 
         return <div className="app">
-            <div className="background" style={{
+            <div className="display" style={{
                 backgroundImage: `linear-gradient(${rgba1}, ${rgba2})`,
-            }} />
-            <div className="display">
+            }}>
                 <SuperMetroid />
                 <Stopwatch />
                 <Gamepad />

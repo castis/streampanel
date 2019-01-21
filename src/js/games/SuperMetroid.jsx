@@ -9,50 +9,51 @@ import { BossList } from '../components/BossList'
 import { localforage, hydrate } from '../util/storage'
 
 
-const initialItems = [
-    // 'missile',
-    // 'super',
-    // 'pbomb',
-    // 'grappling',
-    // 'xray',
-
-    'charge',
-    'ice',
-    'wave',
-    'spazer',
-    'plasma',
-
-    'varia',
-    'gravity',
-
-    'morph',
-    'bomb',
-    'springball',
-    'screw',
-
-    'hijump',
-    'space',
-    'speed',
-].map((item, idx) => ({
-    name: item,
-    completed: false,
-}))
-
-
-const initialBosses = [
-    'kraid',
-    'phantoon',
-    'draygon',
-    'ridley',
-].map((item, idx) => ({
-    name: item,
-    completed: false,
-}))
-
-
 class State {
-    @persist('list') @observable items = initialItems
-    @persist('list') @observable bosses = initialBosses
+    @persist('list') @observable items = [
+        // 'missile',
+        // 'super',
+        // 'pbomb',
+        // 'grappling',
+        // 'xray',
+
+        'charge',
+        'ice',
+        'wave',
+        'spazer',
+        'plasma',
+
+        'varia',
+        'gravity',
+
+        'morph',
+        'bomb',
+        'springball',
+        'screw',
+
+        'hijump',
+        'space',
+        'speed',
+    ]
+
+    @persist('list') @observable bosses = [
+        'kraid',
+        'phantoon',
+        'draygon',
+        'ridley',
+    ]
+
+    constructor() {
+        this.items = this.items.map(item => ({
+            name: item,
+            completed: false,
+        }))
+
+        this.bosses = this.bosses.map(item => ({
+            name: item,
+            completed: false,
+        }))
+    }
 }
 const state = new State()
 hydrate('supermetroid', state)
@@ -82,7 +83,7 @@ export class SuperMetroidSettings extends React.Component {
             <div className="inputs">
             </div>
             <div className="commands">
-                <button onClick={ ::this.reset }>reset</button>
+                <button onClick={ this.reset }>reset</button>
             </div>
         </fieldset>
     }

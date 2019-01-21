@@ -85,37 +85,24 @@ fieldset {
 $max-width: 610px;
 .app {
     width: 100%;
+    height: 100%;
+    padding-bottom: 10px;
     display: flex;
     flex-direction: row;
 
-    .background {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 620px;
-        width: 400px;
-        z-index: 0;
-
-        overflow: hidden;
-
-        // filter: blur(5px);
-
-        video {
-            position: absolute;
-            top: 0;
-            opacity: 0.5;
-            left: 0;
-            max-height: 620px;
-            // max-width: 620px;
-        }
-    }
+    // video {
+    //     position: absolute;
+    //     top: 0;
+    //     opacity: 0.5;
+    //     left: 0;
+    //     max-height: 620px;
+    // }
 
     .display {
         text-align: center;
         width: 400px;
-        height: 620px;
-        z-index: 1;
-        background: transparent;
+        max-height: 620px;
+        height: 100%;
 
         display: flex;
         flex-direction: column;
@@ -260,6 +247,7 @@ $max-width: 610px;
 
         .gamepad {
             width: 230px;
+            padding-top: 20px;
             margin: auto auto 20px;
             @include transition(all 0.3s ease-in-out);
 
