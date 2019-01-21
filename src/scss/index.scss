@@ -88,13 +88,38 @@ $max-width: 610px;
     display: flex;
     flex-direction: row;
 
+    .background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 620px;
+        width: 400px;
+        z-index: 0;
+
+        overflow: hidden;
+
+        // filter: blur(5px);
+
+        video {
+            position: absolute;
+            top: 0;
+            opacity: 0.5;
+            left: 0;
+            max-height: 620px;
+            // max-width: 620px;
+        }
+    }
+
     .display {
         text-align: center;
         width: 400px;
         height: 620px;
+        z-index: 1;
+        background: transparent;
 
         display: flex;
         flex-direction: column;
+        overflow: hidden;
 
         @include transition(background-color 0.3s ease-in-out);
 
@@ -124,9 +149,10 @@ $max-width: 610px;
                     max-height: 32px;
                     max-width: 32px;
 
-                    @include transition(filter 0.15s ease-in-out);
+                    @include transition(all 0.15s ease-in-out);
 
-                    filter: contrast(0.1) grayscale(1);
+                    filter: contrast(0.4) grayscale(1);
+                    opacity: 0.3;
 
                     image-rendering: optimizeSpeed;
                     image-rendering: -moz-crisp-edges;
@@ -140,6 +166,7 @@ $max-width: 610px;
                 &.active {
                     img {
                         filter: none;
+                        opacity: 1;
                     }
                 }
             }
@@ -207,7 +234,7 @@ $max-width: 610px;
 
         .timer {
             font-family: "Share Tech Mono", monospace;
-            font-size: 28px;
+            font-size: 38px;
             font-weight: 500;
             letter-spacing: -0.2rem;
 
@@ -218,12 +245,12 @@ $max-width: 610px;
             @include transition(all 0.3s ease-in-out);
 
             span, small {
-                margin: 0 -3px;
+                margin: 0 -0.2rem;
             }
 
             small {
-                font-size: 18px;
-                margin: 0 0 0 -2px;
+                font-size: 0.45em;
+                margin: 0 0 0 -0.1rem;
                 display: inline-block;
                 width: 20px;
                 text-align: left;
@@ -231,7 +258,7 @@ $max-width: 610px;
             }
         }
 
-        .controller {
+        .gamepad {
             width: 230px;
             margin: auto auto 20px;
             @include transition(all 0.3s ease-in-out);
@@ -241,7 +268,18 @@ $max-width: 610px;
             }
 
             .btn {
-                @include transition(all 0.3s ease-in-out);
+                @include transition(border-color 0.3s ease-in-out);
+
+                &.configure {
+                    border-color: #000 !important;
+                    background-color: #FFD700;
+                    animation: flashing 0.4s infinite;
+                    @keyframes flashing {
+                        0%   { opacity: 0; }
+                        50%  { opacity: 1; }
+                        100% { opacity: 0; }
+                    }
+                }
             }
 
             &.famicom {

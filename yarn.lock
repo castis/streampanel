@@ -3275,6 +3275,11 @@ hmac-drbg@^1.0.0:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.1"
 
+hoist-non-react-statics@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-1.2.0.tgz#aa448cf0986d55cc40773b17174b7dd066cb7cfb"
+  integrity sha1-qkSM8JhtVcxAdzsXF0t90GbLfPs=
+
 hoist-non-react-statics@^2.5.0:
   version "2.5.5"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.5.tgz#c5903cf409c0dfd908f388e619d86b9c1174cb47"
@@ -4232,12 +4237,35 @@ mixin-object@^2.0.1:
   dependencies:
     minimist "0.0.8"
 
+mobx-connect@^0.3.9:
+  version "0.3.9"
+  resolved "https://registry.yarnpkg.com/mobx-connect/-/mobx-connect-0.3.9.tgz#cc0be1fbd651c065b467c8ff08231bb0fd783286"
+  integrity sha1-zAvh+9ZRwGW0Z8j/CCMbsP14MoY=
+  dependencies:
+    mobx "2.x"
+    mobx-inferno "^0.1.x"
+    mobx-react "^3.5.x"
+
+mobx-inferno@^0.1.x:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/mobx-inferno/-/mobx-inferno-0.1.3.tgz#be46a9165ab8e7b7450b1a88358fdca8e77c2791"
+  integrity sha1-vkapFlq457dFCxqINY/cqOd8J5E=
+  dependencies:
+    mobx "2.x"
+
 mobx-persist@^0.4.1:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/mobx-persist/-/mobx-persist-0.4.1.tgz#fe5790eda04e0ee0b91c512d1347104e09363f9a"
   integrity sha512-cPxVuZTY5neesxOV/Z25SF4+/NbC6wfHOe9HT5XoSEkAALNxNE41yDK48peJQ3iK14m0G2ywQRklCXeV3wftnQ==
   dependencies:
     serializr "^1.1.11"
+
+mobx-react@^3.5.x:
+  version "3.5.9"
+  resolved "https://registry.yarnpkg.com/mobx-react/-/mobx-react-3.5.9.tgz#b710299539d58d7af1189b5e86bc0be4198a43c1"
+  integrity sha1-txAplTnVjXrxGJtehrwL5BmKQ8E=
+  dependencies:
+    hoist-non-react-statics "^1.2.0"
 
 mobx-react@^5.4.3:
   version "5.4.3"
@@ -4246,6 +4274,11 @@ mobx-react@^5.4.3:
   dependencies:
     hoist-non-react-statics "^3.0.0"
     react-lifecycles-compat "^3.0.2"
+
+mobx@2.x:
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/mobx/-/mobx-2.7.0.tgz#cf3d82d18c0ca7f458d8f2a240817b3dc7e54a01"
+  integrity sha1-zz2C0YwMp/RY2PKiQIF7PcflSgE=
 
 mobx@^5.8.0:
   version "5.8.0"

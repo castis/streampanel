@@ -15,7 +15,7 @@ export default class Launcher extends React.Component {
         resizable: 0,
     }
 
-    handleClick(event) {
+    click(event) {
         localforage.getItem('window').then(w => {
             open('app', '', flatten({
                 ...this.state,
@@ -26,7 +26,7 @@ export default class Launcher extends React.Component {
 
     render() {
         return <div class="launcher">
-            <button type="button" onClick={ ::this.handleClick }>Launch</button>
+            <button type="button" onClick={ ::this.click }>Launch</button>
         </div>
     }
 }

@@ -7,27 +7,8 @@ import { persist } from 'mobx-persist'
 import { hydrate } from '../util/storage'
 
 
-const initialItems = [
-    'kraid',
-    'phantoon',
-    'draygon',
-    'ridley',
-].map((item, idx) => ({
-    name: item,
-    completed: false,
-}))
-
-
-class BossState {
-    @persist('list') @observable items = initialItems
-}
-const state = new BossState()
-hydrate('bosses', state)
-
-
-
 @observer
-class ItemView extends React.Component {
+class BossView extends React.Component {
     render() {
         const item = this.props.item
         const classes = classnames(item.name, {
@@ -50,7 +31,7 @@ export class BossList extends React.Component {
     }
 
     handleClick(boss) {
-        state.items.forEach(i => {
+        this.props.bosses.forEach(i => {
             if (i.name === boss) {
                 i.completed = !i.completed
             }
@@ -58,37 +39,15 @@ export class BossList extends React.Component {
     }
 
     render() {
-        const items = state.items.map((item, index) => {
-            return <ItemView
-                item={ item }
+        const bosses = this.props.bosses.map((boss, index) => {
+            return <BossView
+                item={ boss }
                 key={ index }
                 onClick={ this.handleClick }
             />
         })
         return <div className="bosses">
-            { items }
+            { bosses }
         </div>
-    }
-}
-
-
-export class BossListSettings extends React.Component {
-    constructor(props) {
-        super(props)
-        this.handleReset = ::this.handleReset
-    }
-
-    handleReset() {
-        state.items.map(i => i.completed = false)
-    }
-
-    render() {
-        return <fieldset className="icons">
-            <legend>bosses</legend>
-            <div className="inputs"></div>
-            <div className="commands">
-                <button onClick={ this.handleReset }>reset</button>
-            </div>
-        </fieldset>
     }
 }
