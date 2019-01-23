@@ -48,8 +48,8 @@ class TimerState {
     @persist @observable updateSpeed = 60
     @persist @observable useSpaceBar = true
     @persist('object') @observable background = {
-        color: "#000000",
-        alpha: 100,
+        color: "#350b0b",
+        alpha: 50,
     }
     @persist('object') @observable font = {
         color: "#FFFFFF",

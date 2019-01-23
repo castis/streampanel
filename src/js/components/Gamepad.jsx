@@ -7,7 +7,9 @@ import { hydrate } from '../util/storage'
 
 
 class ControllerState {
-    @persist @observable style = 'american'
+    @persist @observable color = 'white'
+    @persist @observable style = 'inherit'
+    @persist @observable opacity = 0.4
     @persist @observable updateSpeed = 50
     @observable gamepads = []
     @observable activeIndex = -1
@@ -130,7 +132,9 @@ hydrate('controller', state)
 @observer
 export class Gamepad extends React.Component {
     render() {
-        return <div className={`gamepad ${state.style}`}>
+        return <div className={`gamepad ${state.color} ${state.style}`} style={{
+                opacity: `${state.opacity}`,
+            }}>
             <div className="shoulder">
                 <div className={`btn l1 ${state.button.l1}`}></div>
                 <div className={`btn r1 ${state.button.r1}`}></div>
@@ -213,8 +217,18 @@ export class GamepadSettings extends React.Component {
         state.updateSpeed = Math.max(1, Math.min(value, 256))
     }
 
+    updateOpacity(event) {
+        const value = event.target.value
+        console.log(value)
+        state.opacity = value
+    }
+
     updateStyle(event) {
         state.style = event.target.value
+    }
+
+    updateColor(event) {
+        state.color = event.target.value
     }
 
     configure() {
@@ -246,15 +260,37 @@ export class GamepadSettings extends React.Component {
                     </select>
                 </div>
                 <div className="input">
+                    <label>outline</label>
+                    <select
+                        value={ state.color }
+                        onChange={ ::this.updateColor }
+                    >
+                        <option value="white">white</option>
+                        <option value="black">black</option>
+                    </select>
+                </div>
+                <div className="input">
                     <label>style</label>
                     <select
                         value={ state.style }
                         onChange={ ::this.updateStyle }
                     >
+                        <option value="inherit">inherit</option>
                         <option value="american">american</option>
                         <option value="famicom">famicom</option>
                         <option value="superfamicom">super famicom</option>
                     </select>
+                </div>
+                <div className="input">
+                    <label>opacity</label>
+                    <input
+                        type="range"
+                        min="0"
+                        max="1"
+                        step="0.01"
+                        value={ state.opacity }
+                        onChange={ this.updateOpacity }
+                    />
                 </div>
                 <div className="input">
                     <label>update speed</label>
