@@ -82,7 +82,7 @@ class ControllerState {
     configure(button, index) {
         if (this.buttons.length > index) {
             if (this.configurable == index) {
-                this.button[this.buttons[index]] = 'configure'
+                this.button[this.buttons[index]] = 'configure active'
             } else {
                 this.button[this.buttons[index]] = ''
             }
@@ -213,14 +213,11 @@ export class GamepadSettings extends React.Component {
     }
 
     updateSpeed(event) {
-        const value = parseInt(event.target.value || 1)
-        state.updateSpeed = Math.max(1, Math.min(value, 256))
+        state.updateSpeed = event.target.value
     }
 
     updateOpacity(event) {
-        const value = event.target.value
-        console.log(value)
-        state.opacity = value
+        state.opacity = event.target.value
     }
 
     updateStyle(event) {
@@ -234,7 +231,7 @@ export class GamepadSettings extends React.Component {
     configure() {
         if (state.configurable > -1) {
             state.stopConfiguration()
-        } else {
+        } else if (state.active) {
             state.configurable = 0
         }
     }
@@ -297,8 +294,9 @@ export class GamepadSettings extends React.Component {
                     <input
                         type="range"
                         className="reverse"
-                        min="8"
+                        min="4"
                         max="256"
+                        step="1"
                         value={ state.updateSpeed }
                         onChange={ this.updateSpeed }
                     />

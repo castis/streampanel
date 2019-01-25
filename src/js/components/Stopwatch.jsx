@@ -48,12 +48,12 @@ class TimerState {
     @persist @observable updateSpeed = 60
     @persist @observable useSpaceBar = true
     @persist('object') @observable background = {
-        color: "#350b0b",
-        alpha: 50,
+        color: "#000000",
+        alpha: 40,
     }
     @persist('object') @observable font = {
         color: "#FFFFFF",
-        alpha: 100,
+        alpha: 75,
     }
 
     constructor() {
@@ -121,7 +121,9 @@ export class Stopwatch extends React.Component {
             color: state.font.color,
         }
         return <div className="timer" style={style}>
-            { state.display }
+            <div style={{
+                opacity: (state.font.alpha / 100)
+            }}>{ state.display }</div>
         </div>
     }
 }
@@ -222,8 +224,8 @@ export class StopwatchSettings extends React.Component {
                     <label>font color</label>
                     <ColorPicker
                         color={ state.font.color }
+                        alpha={ state.font.alpha }
                         onChange={ this.changeFontColor }
-                        enableAlpha={ false }
                     />
                 </div>
                 <div className="input">

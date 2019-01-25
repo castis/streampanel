@@ -29,7 +29,9 @@ class State {
         alpha: 40,
     }
     @persist @observable updateSpeed = 20
-    @persist @observable Z = 0.01
+    @persist @observable starfieldZ = 0.05
+    @persist @observable starfieldX = 200
+    @persist @observable starfieldY = 320
 }
 const state = new State()
 hydrate('general', state)
@@ -123,153 +125,115 @@ class GeneralSettings extends React.Component {
 
 
 class Starfield {
+    display = document.querySelector('.display')
+    element = document.getElementById("c")
+    stars = []
+
     constructor() {
-        // remove frame margin and scrollbars when maxing out size of canvas
-        document.body.style.margin = "0px";
-        document.body.style.overflow = "hidden";
-
         // get dimensions of window and resize the canvas to fit
-        var width = window.innerWidth,
-            height = window.innerHeight,
-            canvas = document.getElementById("c"),
-            mousex = width/2, mousey = height/2;
-        canvas.width = width;
-        canvas.height = height;
+        this.width = this.display.offsetWidth
+        this.height = this.display.offsetHeight
 
-        // get 2d graphics context and set global alpha
-        var G=canvas.getContext("2d");
-        G.globalAlpha=0.25;
+        this.element.width = this.width
+        this.element.height = this.height
 
-        // setup aliases
-        var Rnd = Math.random,
-            Sin = Math.sin,
-            Floor = Math.floor;
+        this.canvas = this.element.getContext("2d")
+        // canvas.globalAlpha=0.25;
+        this.canvas.globalAlpha = 0.5
 
-        // constants and storage for objects that represent star positions
-        var warpZ = 12,
-            units = 2000,
-            stars = [],
-            cycle = 0
-
-        state.Z = 0.1 + (1/25 * 2);
+        this.defaultZ = 11
 
         let lock = false
-        document.addEventListener('mousemove', function(e) {
+        this.display.addEventListener('mousemove', function(e) {
             if (lock == true) {
-                mousex = e.clientX;
-                mousey = e.clientY;
+                state.starfieldX = e.clientX
+                state.starfieldY = e.clientY
             }
-        }, false);
+        }, false)
 
         document.addEventListener('keydown', function(e) {
             if (e.keyCode == 16) {
                 lock = true
             }
-        }, false);
+        }, false)
 
         document.addEventListener('keyup', function(e) {
             if (e.keyCode == 16) {
                 lock = false
             }
-        }, false);
-
-
-        // addCanvasEventListener("mousemove", );
+        }, false)
 
         function wheel (e) {
             if (lock == false) {
                 return
             }
-           var delta = 0;
-           if (e.detail)
-           {
-              delta = -e.detail / 3;
-           }
-           else
-           {
-              delta = e.wheelDelta / 120;
-           }
-           var doff = (delta/25);
-           if (delta > 0 && state.Z+doff <= 0.5 || delta < 0 && state.Z+doff >= 0.01)
-           {
-              state.Z += (delta/25);
-              // console.log(delta +" " +state.Z);
-           }
+            const change = state.starfieldZ - e.deltaY / 800
+            state.starfieldZ = Math.min(Math.max(0, change), 2)
         }
-        document.addEventListener("DOMMouseScroll", wheel);
-        document.addEventListener("mousewheel", wheel);
+        document.addEventListener("wheel", wheel)
 
-        // function to reset a star object
-        function resetstar(a)
-        {
-           a.x = (Rnd() * width - (width * 0.5)) * warpZ;
-           a.y = (Rnd() * height - (height * 0.5)) * warpZ;
-           a.z = warpZ;
-           a.px = 0;
-           a.py = 0;
+        this.addStars = ::this.addStars
+        this.update = ::this.update
+        this.reset = ::this.reset
+        // console.log()
+        this.addStars(state.starfieldZ * 1000)
+        this.update()
+    }
+
+    // if you add the stars all at once they group in noticeable waves
+    addStars(count) {
+        for (let i=0, n; i<count; i++) {
+            n = {}
+            this.reset(n)
+            this.stars.push(n)
+        }
+        if (this.stars.length < 1000) {
+            setTimeout(this.addStars, 77, count)
+        }
+    }
+
+    reset(star) {
+        star.x = (Math.random() * this.width - (this.width * 0.5)) * this.defaultZ
+        star.y = (Math.random() * this.height - (this.height * 0.5)) * this.defaultZ
+        star.z = this.defaultZ
+        star.px = 0
+        star.py = 0
+        star.originX = state.starfieldX
+        star.originY = state.starfieldY
+        // star.color = Math.random() * 360
+        star.color = 360
+    }
+
+    update() {
+        this.canvas.clearRect(0, 0, this.width, this.height)
+
+        for (let i=0; i<this.stars.length; i++) {
+            const star = this.stars[i],
+                x = star.x / star.z,
+                y = star.y / star.z
+
+            if (star.px !== 0) {
+                this.canvas.strokeStyle = `hsl(${star.color}, 100%, 100%)`;
+                // this.canvas.strokeStyle = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                // this.canvas.strokeStyle = "rgba(255,255,255,1)";
+                this.canvas.lineWidth = (1.0 / star.z + 1) * 2 // size
+                this.canvas.beginPath()
+                this.canvas.moveTo(x + star.originX, y + star.originY)
+                this.canvas.lineTo(star.px + star.originX, star.py + star.originY)
+                this.canvas.stroke()
+            }
+
+            star.px = x
+            star.py = y
+            star.z -= state.starfieldZ
+
+            // when star is out of the view field
+            if (star.z < state.starfieldZ || star.px > this.width || star.py > this.height) {
+                this.reset(star)
+            }
         }
 
-        // initial star setup
-        for (var i=0, n; i<units; i++)
-        {
-           n = {};
-           resetstar(n);
-           stars.push(n);
-        }
-
-        // star rendering anim function
-        var rf = function()
-        {
-           // clear background
-           // G.fillStyle = "#000";
-           // G.fillRect(0, 0, width, height);
-           G.clearRect(0, 0, width, height);
-
-           // mouse position to head towards
-           var cx = (mousex - width / 2) + (width / 2),
-               cy = (mousey - height / 2) + (height / 2);
-
-           // update all stars
-           var sat = Floor(state.Z * 500);       // Z range 0.01 -> 0.5
-           if (sat > 100) sat = 100;
-           for (var i=0; i<units; i++)
-           {
-              var n = stars[i],            // the star
-                  xx = n.x / n.z,          // star position
-                  yy = n.y / n.z,
-                  e = (1.0 / n.z + 1) * 2;   // size i.e. z
-
-              if (n.px !== 0)
-              {
-                 // hsl colour from a sine wave
-                 // G.strokeStyle = "hsl(" + ((cycle * i) % 360) + "," + sat + "%,80%)";
-                 G.strokeStyle = "rgba(255,255,255,1)";
-                 G.lineWidth = e;
-                 G.beginPath();
-                 G.moveTo(xx + cx, yy + cy);
-                 G.lineTo(n.px + cx, n.py + cy);
-                 G.stroke();
-              }
-
-              // update star position values with new settings
-              n.px = xx;
-              n.py = yy;
-              n.z -= state.Z;
-
-              // reset when star is out of the view field
-              if (n.z < state.Z || n.px > width || n.py > height)
-              {
-                 // reset star
-                 resetstar(n);
-              }
-           }
-
-           // colour cycle sinewave rotation
-           cycle += 0.01;
-
-           setTimeout(rf, state.updateSpeed);
-        };
-        rf();
+        setTimeout(this.update, state.updateSpeed)
     }
 }
 
@@ -292,7 +256,6 @@ export default class App extends React.Component {
     componentDidMount() {
         window.addEventListener('resize', this.resize)
         this.resize()
-
         const starfield = new Starfield()
     }
 
