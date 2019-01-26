@@ -34,8 +34,8 @@ class Timer {
         return <div className="segments">
             <span>{ hours }</span>:
             <span>{ format(minutes % 60, '00') }</span>:
-            <span>{ format(seconds % 60, '00') }</span>.
-            <small>{ format(milliseconds % 100, '00') }</small>
+            <span>{ format(seconds % 60, '00') }</span>
+            <small>.{ format(milliseconds % 100, '00') }</small>
         </div>
     }
 }
@@ -49,11 +49,11 @@ class TimerState {
     @persist @observable useSpaceBar = true
     @persist('object') @observable background = {
         color: "#000000",
-        alpha: 40,
+        alpha: 50,
     }
     @persist('object') @observable font = {
         color: "#FFFFFF",
-        alpha: 75,
+        alpha: 93,
     }
 
     constructor() {

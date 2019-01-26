@@ -9,6 +9,9 @@ import { ItemList, ItemListSettings } from '../components/ItemList'
 import { BossList, BossListSettings } from '../components/BossList'
 import { Stopwatch, StopwatchSettings } from '../components/Stopwatch'
 import { Gamepad, GamepadSettings } from '../components/Gamepad'
+
+import { Starfield, StarfieldSettings } from '../backgrounds/Starfield'
+
 import { hexToRgb } from '../util/functions'
 
 import { localforage, hydrate } from '../util/storage'
@@ -21,11 +24,11 @@ class State {
     // double tap
     @observable abortLock = false
     @persist('object') @observable bg1 = {
-        color: "#0960c2",
-        alpha: 30,
+        color: "#000000",
+        alpha: 10,
     }
     @persist('object') @observable bg2 = {
-        color: "#da7c3e",
+        color: "#be8911",
         alpha: 40,
     }
     @persist @observable updateSpeed = 20
@@ -86,9 +89,6 @@ class GeneralSettings extends React.Component {
             <legend>general</legend>
             <div className="inputs">
                 <div className="input">
-                    <label>hold shift to change and scroll stars</label>
-                </div>
-                <div className="input">
                     <label>background color 1</label>
                     <ColorPicker
                         color={ state.bg1.color }
@@ -104,17 +104,6 @@ class GeneralSettings extends React.Component {
                         onChange={ ::this.changeBg2 }
                     />
                 </div>
-                <div className="input">
-                    <label>update speed</label>
-                    <input
-                        type="range"
-                        className="reverse"
-                        min="1"
-                        max="100"
-                        value={ state.updateSpeed }
-                        onChange={ this.changeSpeed }
-                    />
-                </div>
             </div>
             <div className="commands">
                 { buttons }
@@ -124,122 +113,9 @@ class GeneralSettings extends React.Component {
 }
 
 
-class Starfield {
-    display = document.querySelector('.display')
-    element = document.getElementById("c")
-    stars = []
-
-    constructor() {
-        // get dimensions of window and resize the canvas to fit
-        this.width = this.display.offsetWidth
-        this.height = this.display.offsetHeight
-
-        this.element.width = this.width
-        this.element.height = this.height
-
-        this.canvas = this.element.getContext("2d")
-        // canvas.globalAlpha=0.25;
-        this.canvas.globalAlpha = 0.5
-
-        this.defaultZ = 11
-
-        let lock = false
-        this.display.addEventListener('mousemove', function(e) {
-            if (lock == true) {
-                state.starfieldX = e.clientX
-                state.starfieldY = e.clientY
-            }
-        }, false)
-
-        document.addEventListener('keydown', function(e) {
-            if (e.keyCode == 16) {
-                lock = true
-            }
-        }, false)
-
-        document.addEventListener('keyup', function(e) {
-            if (e.keyCode == 16) {
-                lock = false
-            }
-        }, false)
-
-        function wheel (e) {
-            if (lock == false) {
-                return
-            }
-            const change = state.starfieldZ - e.deltaY / 800
-            state.starfieldZ = Math.min(Math.max(0, change), 2)
-        }
-        document.addEventListener("wheel", wheel)
-
-        this.addStars = ::this.addStars
-        this.update = ::this.update
-        this.reset = ::this.reset
-        // console.log()
-        this.addStars(state.starfieldZ * 1000)
-        this.update()
-    }
-
-    // if you add the stars all at once they group in noticeable waves
-    addStars(count) {
-        for (let i=0, n; i<count; i++) {
-            n = {}
-            this.reset(n)
-            this.stars.push(n)
-        }
-        if (this.stars.length < 1000) {
-            setTimeout(this.addStars, 77, count)
-        }
-    }
-
-    reset(star) {
-        star.x = (Math.random() * this.width - (this.width * 0.5)) * this.defaultZ
-        star.y = (Math.random() * this.height - (this.height * 0.5)) * this.defaultZ
-        star.z = this.defaultZ
-        star.px = 0
-        star.py = 0
-        star.originX = state.starfieldX
-        star.originY = state.starfieldY
-        // star.color = Math.random() * 360
-        star.color = 360
-    }
-
-    update() {
-        this.canvas.clearRect(0, 0, this.width, this.height)
-
-        for (let i=0; i<this.stars.length; i++) {
-            const star = this.stars[i],
-                x = star.x / star.z,
-                y = star.y / star.z
-
-            if (star.px !== 0) {
-                this.canvas.strokeStyle = `hsl(${star.color}, 100%, 100%)`;
-                // this.canvas.strokeStyle = `hsl(${Math.random() * 360}, 100%, 50%)`;
-                // this.canvas.strokeStyle = "rgba(255,255,255,1)";
-                this.canvas.lineWidth = (1.0 / star.z + 1) * 2 // size
-                this.canvas.beginPath()
-                this.canvas.moveTo(x + star.originX, y + star.originY)
-                this.canvas.lineTo(star.px + star.originX, star.py + star.originY)
-                this.canvas.stroke()
-            }
-
-            star.px = x
-            star.py = y
-            star.z -= state.starfieldZ
-
-            // when star is out of the view field
-            if (star.z < state.starfieldZ || star.px > this.width || star.py > this.height) {
-                this.reset(star)
-            }
-        }
-
-        setTimeout(this.update, state.updateSpeed)
-    }
-}
-
-
 @observer
 export default class App extends React.Component {
+
     constructor(props) {
         super(props)
         this.resize = ::this.resize
@@ -256,7 +132,6 @@ export default class App extends React.Component {
     componentDidMount() {
         window.addEventListener('resize', this.resize)
         this.resize()
-        const starfield = new Starfield()
     }
 
     componentWillUnmount() {
@@ -274,7 +149,7 @@ export default class App extends React.Component {
 
         return <div className="app">
             <div className="background static" />
-            <canvas id="c" className="background" />
+            <Starfield />
             <div className="background" style={{
                 backgroundImage: `linear-gradient(${rgba1}, ${rgba2})`,
             }} />
@@ -285,6 +160,7 @@ export default class App extends React.Component {
             </div>
             <div className="settings">
                 <GeneralSettings />
+                <StarfieldSettings />
                 <SuperMetroidSettings />
                 <StopwatchSettings />
                 <GamepadSettings />
