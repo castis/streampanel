@@ -24,7 +24,7 @@ class State {
     @persist @observable starfieldY = 320
 }
 const state = new State()
-hydrate('general', state)
+hydrate('starfield', state)
 
 
 export class Starfield extends React.Component {
@@ -49,6 +49,9 @@ export class Starfield extends React.Component {
         this.element = this.refs.canvas
         this.width = this.element.clientWidth
         this.height = this.element.clientHeight
+
+        this.halfWidth = this.width / 2
+        this.halfHeight = this.height / 2
 
         this.element.width = this.width
         this.element.height = this.height
@@ -93,7 +96,7 @@ export class Starfield extends React.Component {
             return
         }
         const change = state.starfieldZ - event.deltaY / 800
-        state.starfieldZ = Math.min(Math.max(0, change), 2)
+        state.starfieldZ = Math.min(Math.max(0, change), 0.8)
     }
 
     // if you add the stars all at once they start in noticeable waves
@@ -156,7 +159,12 @@ export class Starfield extends React.Component {
             star.z -= state.starfieldZ
 
             // star is out of bounds
-            if (star.z < state.starfieldZ || star.px > this.width || star.py > this.height) {
+            if (star.z < state.starfieldZ
+                // || star.px < 0
+                || Math.abs(star.px) > this.halfWidth
+                // || star.py < 0
+                || Math.abs(star.py) > this.halfHeight
+            ) {
                 this.reset(star)
             }
         }
@@ -194,28 +202,6 @@ export class StarfieldSettings extends React.Component {
         this.changeColor = ::this.changeColor
     }
 
-    // changeBg1(bg1) {
-    //     state.bg1 = bg1
-    // }
-
-    // changeBg2(bg2) {
-    //     state.bg2 = bg2
-    // }
-
-    // reset() {
-    //     if (state.abortLock) {
-    //         this.abortReset()
-    //         localforage.clear()
-    //         window.location.reload(false)
-    //     } else {
-    //         state.abortLock = true
-    //     }
-    // }
-
-    // abortReset() {
-    //     state.abortLock = false
-    // }
-
     changeColor(color) {
         state.color = color
     }
@@ -230,18 +216,9 @@ export class StarfieldSettings extends React.Component {
 
     changeWarp(event) {
         state.starfieldZ = event.target.value
-        // state.warp = parseInt(event.target.value)
     }
 
     render() {
-        // let buttons = [
-        //     <button key="1" onClick={ this.reset }>{ state.abortLock ? 'confirm' : 'hard reset' }</button>
-        // ]
-
-        // if (state.abortLock) {
-        //     buttons.push(<button key="2" onClick={ this.abortReset }>cancel</button>)
-        // }
-
         return <fieldset className="starfield">
             <legend>starfield</legend>
             <div className="inputs">

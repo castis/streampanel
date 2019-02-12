@@ -76,7 +76,7 @@ class TimerState {
         setTimeout(this.update, this.updateSpeed)
     }
 
-    @action start() {
+    @action start(event) {
         if (this.isRunning) {
             return
         }
@@ -85,7 +85,7 @@ class TimerState {
         this.update()
     }
 
-    @action stop() {
+    @action stop(event) {
         this.timer.saveTime()
         this.isRunning = false
     }
@@ -209,6 +209,9 @@ export class StopwatchSettings extends React.Component {
     }
 
     render() {
+        const classes = classnames({
+            success: state.isRunning,
+        })
         return <fieldset className="timer">
             <legend>timer</legend>
             <div className="inputs">
@@ -249,8 +252,7 @@ export class StopwatchSettings extends React.Component {
                 </div>
             </div>
             <div className="commands">
-                <button onClick={ state.start }>start</button>
-                <button onClick={ state.stop }>stop</button>
+                <button className={ classes } onClick={ state.isRunning ? state.stop : state.start }>{ state.isRunning ? 'stop' : 'start' }</button>
                 <button onClick={ state.reset }>reset</button>
             </div>
         </fieldset>

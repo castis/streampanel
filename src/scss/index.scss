@@ -36,10 +36,6 @@ table {
     border-spacing: 0;
 }
 
-::selection {
-    background: rgba(#FFF, 0);
-}
-
 fieldset {
     border: solid 1px grey;
     padding: 5px 10px 10px;
@@ -47,6 +43,24 @@ fieldset {
 
     }
 }
+
+
+svg {
+    display: block;
+    width: 400px;
+    height: 200px;
+    padding: 0;
+    margin: 0;
+}
+
+path {
+    stroke-linecap: butt;
+    stroke: rgba(255, 255, 255, 1);
+    stroke-width: 1px;
+    opacity: 0.5;
+}
+
+
 
 #mount {
     width: 100%;
@@ -107,18 +121,27 @@ $max-width: 610px;
             // background-color: orange;
         }
 
+        &.audio {
+            display: flex;
+
+            svg {
+                margin-top: auto;
+            }
+        }
+
         z-index: 1;
 
         max-width: 400px;
         width: 100%;
-        max-height: 620px;
+        max-height: 650px;
         height: 100%;
     }
 
     .display {
+        opacity: 1;
         text-align: center;
         width: 400px;
-        max-height: 620px;
+        max-height: 650px;
         height: 100%;
         z-index: 2;
 
@@ -126,7 +149,15 @@ $max-width: 610px;
         flex-direction: column;
         overflow: hidden;
 
-        @include transition(background-color 0.3s ease-in-out);
+        *::selection {
+            background: rgba(#FFF, 0);
+        }
+
+        @include transition(all 0.3s ease-in-out);
+
+        &.standby * {
+            opacity: 0;
+        }
 
         .items {
             max-width: 260px;
@@ -311,33 +342,6 @@ $max-width: 610px;
                     }
                 }
             }
-
-            // &.black {
-            //     .x { // top
-            //         border-color: #000;
-            //         &.active {
-            //             background: #000;
-            //         }
-            //     }
-            //     .y { // left
-            //         border-color: #000;
-            //         &.active {
-            //             background: #000;
-            //         }
-            //     }
-            //     .a { // right
-            //         border-color: #000;
-            //         &.active {
-            //             background: #000;
-            //         }
-            //     }
-            //     .b { // bottom
-            //         border-color: #000;
-            //         &.active {
-            //             background: #000;
-            //         }
-            //     }
-            // }
 
             &.famicom {
                 .x { // top
@@ -553,15 +557,9 @@ $max-width: 610px;
                     width: 60px;
                     position: relative;
 
-                    .x, .a, .b, .y {
-                        height: 16px;
-                        width: 16px;
-                        position: absolute;
-                        border-radius: 50%;
-                    }
-
-                    @mixin round-button() {
+                    .x, .y, .a, .b {
                         border-width: 1px;
+                        position: absolute;
                         border-style: solid;
                         border-radius: 100%;
                         cursor: pointer;
@@ -570,32 +568,43 @@ $max-width: 610px;
                         width: 18px;
                     }
 
+                    // @mixin round-button() {
+                    //     border-width: 1px;
+                    //     position: absolute;
+                    //     border-style: solid;
+                    //     border-radius: 100%;
+                    //     cursor: pointer;
+                    //     display: inline-block;
+                    //     height: 18px;
+                    //     width: 18px;
+                    // }
+
                     .x { // top
                         left: 0;
                         right: 0;
                         margin: 0 auto;
-                        @include round-button();
+                        // @include round-button();
                     }
                     .y { // left
                         top: 0;
                         bottom: 0;
                         margin: auto 0;
                         left: 0;
-                        @include round-button();
+                        // @include round-button();
                     }
                     .a { // right
                         right: 0;
                         top: 0;
                         bottom: 0;
                         margin: auto 0;
-                        @include round-button();
+                        // @include round-button();
                     }
                     .b { // bottom
                         bottom: 0;
                         left: 0;
                         right: 0;
                         margin: 0 auto;
-                        @include round-button();
+                        // @include round-button();
                     }
                 }
             }
@@ -744,6 +753,24 @@ $max-width: 610px;
                     &:hover {
                         background: #DDD;
                         color: #444;
+                    }
+
+                    &.success {
+                        background: #33CCAA;
+                        color: #FFFFFF;
+                        &:hover {
+                            background: #55DDBB;
+                            color: #FFFFFF;
+                        }
+                    }
+
+                    &.error {
+                        background: #FF7777;
+                        color: #FFFFFF;
+                        &:hover {
+                            background: #FF99999;
+                            color: #FFFFFF;
+                        }
                     }
 
                     &:last-child {

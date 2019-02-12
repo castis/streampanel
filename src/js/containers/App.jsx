@@ -11,6 +11,7 @@ import { Stopwatch, StopwatchSettings } from '../components/Stopwatch'
 import { Gamepad, GamepadSettings } from '../components/Gamepad'
 
 import { Starfield, StarfieldSettings } from '../backgrounds/Starfield'
+import { Visualizer, VisualizerSettings } from '../backgrounds/Visualizer'
 
 import { hexToRgb } from '../util/functions'
 
@@ -23,6 +24,7 @@ import { SuperMetroid, SuperMetroidSettings } from '../games/SuperMetroid'
 class State {
     // double tap
     @observable abortLock = false
+    @persist @observable standby = false
     @persist('object') @observable bg1 = {
         color: "#000000",
         alpha: 10,
@@ -76,6 +78,10 @@ class GeneralSettings extends React.Component {
         state.updateSpeed = Math.max(1, Math.min(value, 100))
     }
 
+    changeStandby(event) {
+        state.standby = event.target.checked
+    }
+
     render() {
         let buttons = [
             <button key="1" onClick={ this.reset }>{ state.abortLock ? 'confirm' : 'hard reset' }</button>
@@ -102,6 +108,14 @@ class GeneralSettings extends React.Component {
                         color={ state.bg2.color }
                         alpha={ state.bg2.alpha }
                         onChange={ ::this.changeBg2 }
+                    />
+                </div>
+                <div className="input">
+                    <label>standby</label>
+                    <input
+                        type="checkbox"
+                        checked={ state.standby }
+                        onChange={ this.changeStandby }
                     />
                 </div>
             </div>
@@ -132,6 +146,7 @@ export default class App extends React.Component {
     componentDidMount() {
         window.addEventListener('resize', this.resize)
         this.resize()
+        // const v = new Visualizer()
     }
 
     componentWillUnmount() {
@@ -147,13 +162,19 @@ export default class App extends React.Component {
         const a2 = state.bg2.alpha / 100
         const rgba2 = `rgba(${bg2.r}, ${bg2.g}, ${bg2.b}, ${a2})`
 
+        const displayStyle = classnames({
+            display: true,
+            standby: state.standby,
+        })
+
         return <div className="app">
             <div className="background static" />
             <Starfield />
             <div className="background" style={{
                 backgroundImage: `linear-gradient(${rgba1}, ${rgba2})`,
             }} />
-            <div className="display">
+            <Visualizer />
+            <div className={ displayStyle }>
                 <SuperMetroid />
                 <Stopwatch />
                 <Gamepad />
@@ -161,6 +182,7 @@ export default class App extends React.Component {
             <div className="settings">
                 <GeneralSettings />
                 <StarfieldSettings />
+                <VisualizerSettings />
                 <SuperMetroidSettings />
                 <StopwatchSettings />
                 <GamepadSettings />
