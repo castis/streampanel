@@ -1,5 +1,5 @@
 # streaming sidepanel
 
-	npm run dev
+    itermocil --here
 
 https://sp.tinybluerobot.com/

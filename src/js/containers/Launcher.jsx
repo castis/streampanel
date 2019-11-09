@@ -25,7 +25,7 @@ export default class Launcher extends React.Component {
     }
 
     render() {
-        return <div class="launcher">
+        return <div className="launcher">
             <button type="button" onClick={ ::this.click }>Launch</button>
         </div>
     }

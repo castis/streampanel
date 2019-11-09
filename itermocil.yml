@@ -1,6 +1,6 @@
 windows:
-  - name: stream-panel
-    root: ~/Code/stream-panel
+  - name: streaming-panel
+    root: ~/Code/streaming-panel
     layout: main-vertical
     panes:
       - name: workspace
