@@ -1,12 +1,11 @@
 import React from 'react'
 import classnames from 'classnames'
-import ColorPicker from 'rc-color-picker'
 import format from 'format-number-with-string'
 import { observable, action, computed } from 'mobx'
 import { persist } from 'mobx-persist'
 import { observer } from 'mobx-react'
 
-import { hexToRgb } from '../util/functions'
+import ColorPicker from '../util/ColorPicker'
 import { hydrate } from '../util/storage'
 const { min, max } = Math
 
@@ -48,12 +47,16 @@ class TimerState {
     @persist @observable updateSpeed = 60
     @persist @observable useSpaceBar = true
     @persist('object') @observable background = {
-        color: "#000000",
-        alpha: 50,
+        r: 0,
+        g: 0,
+        b: 0,
+        a: .5,
     }
     @persist('object') @observable font = {
-        color: "#FFFFFF",
-        alpha: 93,
+        r: 255,
+        g: 255,
+        b: 255,
+        a: .93,
     }
 
     constructor() {
@@ -113,16 +116,16 @@ hydrate('timer', state).then(() => {
 @observer
 export class Stopwatch extends React.Component {
     render() {
-        const { r, g, b } = hexToRgb(state.background.color)
-        const a = state.background.alpha / 100
+        const bg = state.background
+        const fg = state.font
 
         const style = {
-            backgroundColor: `rgba(${r}, ${g}, ${b}, ${a})`,
-            color: state.font.color,
+            backgroundColor: `rgba(${bg.r}, ${bg.g}, ${bg.b}, ${bg.a})`,
+            color: `#${fg.r.toString(16)}${fg.g.toString(16)}${fg.b.toString(16)}`,
         }
         return <div className="timer" style={style}>
             <div style={{
-                opacity: (state.font.alpha / 100)
+                opacity: fg.a
             }}>{ state.display }</div>
         </div>
     }
@@ -187,11 +190,11 @@ export class StopwatchSettings extends React.Component {
     }
 
     changeBackground(background) {
-        state.background = background
+        state.background = background.rgb
     }
 
     changeFontColor(font) {
-        state.font = font
+        state.font = font.rgb
     }
 
     changeSpeed(event) {
@@ -218,16 +221,14 @@ export class StopwatchSettings extends React.Component {
                 <div className="input">
                     <label>background</label>
                     <ColorPicker
-                        color={ state.background.color }
-                        alpha={ state.background.alpha }
+                        color={ state.background }
                         onChange={ this.changeBackground }
                     />
                 </div>
                 <div className="input">
                     <label>font color</label>
                     <ColorPicker
-                        color={ state.font.color }
-                        alpha={ state.font.alpha }
+                        color={ state.font }
                         onChange={ this.changeFontColor }
                     />
                 </div>

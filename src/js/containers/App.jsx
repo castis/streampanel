@@ -3,7 +3,6 @@ import classnames from 'classnames'
 import { observable } from 'mobx'
 import { observer } from 'mobx-react'
 import { persist } from 'mobx-persist'
-import ColorPicker from 'rc-color-picker'
 
 import { ItemList, ItemListSettings } from '../components/ItemList'
 import { BossList, BossListSettings } from '../components/BossList'
@@ -13,7 +12,7 @@ import { Gamepad, GamepadSettings } from '../components/Gamepad'
 import { Starfield, StarfieldSettings } from '../backgrounds/Starfield'
 import { Visualizer, VisualizerSettings } from '../backgrounds/Visualizer'
 
-import { hexToRgb } from '../util/functions'
+import ColorPicker from '../util/ColorPicker'
 
 import { localforage, hydrate } from '../util/storage'
 
@@ -26,12 +25,16 @@ class State {
     @observable abortLock = false
     @persist @observable standby = false
     @persist('object') @observable bg1 = {
-        color: "#000000",
-        alpha: 10,
+        r: 20,
+        g: 20,
+        b: 20,
+        a: .2,
     }
     @persist('object') @observable bg2 = {
-        color: "#be8911",
-        alpha: 40,
+        r: 190,
+        g: 120,
+        b: 20,
+        a: .5,
     }
     @persist @observable updateSpeed = 20
     @persist @observable starfieldZ = 0.05
@@ -52,11 +55,11 @@ class GeneralSettings extends React.Component {
     }
 
     changeBg1(bg1) {
-        state.bg1 = bg1
+        state.bg1 = bg1.rgb
     }
 
     changeBg2(bg2) {
-        state.bg2 = bg2
+        state.bg2 = bg2.rgb
     }
 
     reset() {
@@ -97,16 +100,14 @@ class GeneralSettings extends React.Component {
                 <div className="input">
                     <label>background color 1</label>
                     <ColorPicker
-                        color={ state.bg1.color }
-                        alpha={ state.bg1.alpha }
+                        color={ state.bg1 }
                         onChange={ ::this.changeBg1 }
                     />
                 </div>
                 <div className="input">
                     <label>background color 2</label>
                     <ColorPicker
-                        color={ state.bg2.color }
-                        alpha={ state.bg2.alpha }
+                        color={ state.bg2 }
                         onChange={ ::this.changeBg2 }
                     />
                 </div>
@@ -154,13 +155,11 @@ export default class App extends React.Component {
     }
 
     render() {
-        const bg1 = hexToRgb(state.bg1.color)
-        const a1 = state.bg1.alpha / 100
-        const rgba1 = `rgba(${bg1.r}, ${bg1.g}, ${bg1.b}, ${a1})`
+        const bg1 = state.bg1
+        const rgba1 = `rgba(${bg1.r}, ${bg1.g}, ${bg1.b}, ${bg1.a})`
 
-        const bg2 = hexToRgb(state.bg2.color)
-        const a2 = state.bg2.alpha / 100
-        const rgba2 = `rgba(${bg2.r}, ${bg2.g}, ${bg2.b}, ${a2})`
+        const bg2 = state.bg2
+        const rgba2 = `rgba(${bg2.r}, ${bg2.g}, ${bg2.b}, ${bg2.a})`
 
         const displayStyle = classnames({
             display: true,
@@ -168,16 +167,18 @@ export default class App extends React.Component {
         })
 
         return <div className="app">
-            <div className="background static" />
-            <Starfield />
-            <div className="background" style={{
-                backgroundImage: `linear-gradient(${rgba1}, ${rgba2})`,
-            }} />
-            <Visualizer />
-            <div className={ displayStyle }>
-                <SuperMetroid />
-                <Stopwatch />
-                <Gamepad />
+            <div className="main">
+                <div className="background static" />
+                <Starfield />
+                <div className="background" style={{
+                    backgroundImage: `linear-gradient(${rgba1}, ${rgba2})`,
+                }} />
+                <Visualizer />
+                <div className={ displayStyle }>
+                    <SuperMetroid />
+                    <Stopwatch />
+                    <Gamepad />
+                </div>
             </div>
             <div className="settings">
                 <GeneralSettings />

@@ -3,18 +3,18 @@ import classnames from 'classnames'
 import { observable, action, computed } from 'mobx'
 import { observer } from 'mobx-react'
 import { persist } from 'mobx-persist'
-import ColorPicker from 'rc-color-picker'
 
-import { hexToRgb } from '../util/functions'
-
+import ColorPicker from '../util/ColorPicker'
 import { localforage, hydrate } from '../util/storage'
 
 
 class State {
     @persist @observable updateSpeed = 16
     @persist('object') @observable color = {
-        color: "#FFFFFF",
-        alpha: 37,
+        r: 255,
+        g: 255,
+        b: 255,
+        a: .37,
     }
     @observable started = false
     @observable permission = false
@@ -161,7 +161,7 @@ export class VisualizerSettings extends React.Component {
     }
 
     changeColor(color) {
-        state.color = color
+        state.color = color.rgb
     }
 
     toggleRunning() {

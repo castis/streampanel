@@ -3,9 +3,8 @@ import classnames from 'classnames'
 import { observable } from 'mobx'
 import { observer } from 'mobx-react'
 import { persist } from 'mobx-persist'
-import ColorPicker from 'rc-color-picker'
 
-import { hexToRgb } from '../util/functions'
+import ColorPicker from '../util/ColorPicker'
 
 import { localforage, hydrate } from '../util/storage'
 
@@ -13,8 +12,10 @@ import { localforage, hydrate } from '../util/storage'
 class State {
     @persist @observable updateSpeed = 16
     @persist('object') @observable color = {
-        color: "#FFFFFF",
-        alpha: 37,
+        r: 255,
+        g: 255,
+        b: 255,
+        a: .37,
     }
     @persist @observable maxStars = 250
     @persist @observable warp = 1
@@ -118,9 +119,8 @@ export class Starfield extends React.Component {
     }
 
     reset(star) {
-        const bg1 = hexToRgb(state.color.color)
-        const a1 = state.color.alpha / 100
-        star.color = `rgba(${bg1.r}, ${bg1.g}, ${bg1.b}, ${a1})`
+        const bg1 = state.color
+        star.color = `rgba(${bg1.r}, ${bg1.g}, ${bg1.b}, ${bg1.a})`
 
         star.x = (Math.random() * this.width - (this.width * 0.5)) * this.defaultZ
         star.y = (Math.random() * this.height - (this.height * 0.5)) * this.defaultZ
@@ -203,7 +203,7 @@ export class StarfieldSettings extends React.Component {
     }
 
     changeColor(color) {
-        state.color = color
+        state.color = color.rgb
     }
 
     changeSpeed(event) {
@@ -228,8 +228,7 @@ export class StarfieldSettings extends React.Component {
                 <div className="input">
                     <label>color</label>
                     <ColorPicker
-                        color={ state.color.color }
-                        alpha={ state.color.alpha }
+                        color={ state.color }
                         onChange={ ::this.changeColor }
                     />
                 </div>
