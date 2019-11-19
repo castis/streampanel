@@ -98,535 +98,541 @@ path {
 
 $max-width: 610px;
 .app {
-    width: 100%;
-    height: calc(100% - 20px);
     display: flex;
-    margin-bottom: 20px;
     flex-direction: row;
-    position: relative;
 
-    canvas {
-        // opacity: 0;
-        // display: none;
-    }
+    // canvas {
+    //     // opacity: 0;
+    //     // display: none;
+    // }
 
     .main {
         width: 400px;
         height: 650px;
 
-
-    .background {
-        position: absolute;
-        top: 0;
+        position: fixed;
         left: 0;
+        top: 0;
 
-        &.static {
-            background-image: url('/img/bg/3.jpg');
-            background-size: cover;
-            // background-color: orange;
-        }
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
 
-        &.audio {
-            display: flex;
-
-            svg {
-                margin-top: auto;
+            &.static {
+                background-image: url('/img/bg/3.jpg');
+                background-size: cover;
+                // background-color: orange;
             }
-        }
 
-        z-index: 1;
-
-        width: 400px;
-        // width: 100%;
-        height: 650px;
-        // height: 100%;
-    }
-
-    .display {
-        opacity: 1;
-        text-align: center;
-        width: 400px;
-        max-height: 650px;
-        height: 100%;
-        z-index: 2;
-
-        position: absolute;
-        top: 0;
-        left: 0;
-
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-
-        *::selection {
-            background: rgba(#FFF, 0);
-        }
-
-        @include transition(all 0.3s ease-in-out);
-
-        &.standby * {
-            opacity: 0;
-        }
-
-        .items {
-            max-width: 260px;
-            padding: 35px 10px 50px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            flex-wrap: wrap;
-
-            .item {
-                width: 38px;
-                height: 38px;
+            &.audio {
                 display: flex;
-                align-items: center;
+
+                svg {
+                    margin-top: auto;
+                }
+            }
+
+            z-index: 1;
+
+            width: 400px;
+            // width: 100%;
+            height: 650px;
+            // height: 100%;
+        }
+
+        .display {
+            opacity: 1;
+            text-align: center;
+            width: 400px;
+            max-height: 650px;
+            height: 100%;
+            z-index: 2;
+
+            position: absolute;
+            top: 0;
+            left: 0;
+
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+
+            *::selection {
+                background: rgba(#FFF, 0);
+            }
+
+            @include transition(all 0.3s ease-in-out);
+
+            &.standby * {
+                opacity: 0;
+            }
+
+            .items {
+                max-width: 260px;
+                padding: 35px 10px 50px;
+                margin: 0 auto;
+                display: flex;
+                flex-direction: row;
                 justify-content: center;
-                margin: 3px;
-                cursor: pointer;
+                flex-wrap: wrap;
 
-                &:last-child {
-                    margin-right: 0;
-                }
+                .item {
+                    width: 38px;
+                    height: 38px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin: 3px;
+                    cursor: pointer;
 
-                img {
-                    max-height: 32px;
-                    max-width: 32px;
+                    &:last-child {
+                        margin-right: 0;
+                    }
 
-                    @include transition(all 0.15s ease-in-out);
-
-                    filter: contrast(0.4) grayscale(1);
-                    opacity: 0.3;
-
-                    image-rendering: optimizeSpeed;
-                    image-rendering: -moz-crisp-edges;
-                    image-rendering: -o-crisp-edges;
-                    image-rendering: -webkit-optimize-contrast;
-                    image-rendering: pixelated;
-                    image-rendering: optimize-contrast;
-                    -ms-interpolation-mode: nearest-neighbor;
-                }
-
-                &.active {
                     img {
-                        filter: none;
+                        max-height: 32px;
+                        max-width: 32px;
+
+                        @include transition(all 0.15s ease-in-out);
+
+                        filter: contrast(0.4) grayscale(1);
+                        opacity: 0.3;
+
+                        image-rendering: optimizeSpeed;
+                        image-rendering: -moz-crisp-edges;
+                        image-rendering: -o-crisp-edges;
+                        image-rendering: -webkit-optimize-contrast;
+                        image-rendering: pixelated;
+                        image-rendering: optimize-contrast;
+                        -ms-interpolation-mode: nearest-neighbor;
+                    }
+
+                    &.active {
+                        img {
+                            filter: none;
+                            opacity: 1;
+                        }
+                    }
+                }
+            }
+
+            .bosses {
+                margin: 0 auto;
+                width: 126px;
+                height: 145px;
+                margin-top: 8px;
+                position: relative;
+                background-image: url('/img/bosses/golden_four.png');
+
+
+                .boss {
+                    @include transition(opacity 0.3s ease-in-out);
+                    opacity: 0;
+                    cursor: pointer;
+
+                    &.active {
                         opacity: 1;
                     }
                 }
+
+                .kraid {
+                    width: 62px;
+                    height: 88px;
+                    position: absolute;
+                    left: 0px;
+                    bottom: 4px;
+                    z-index: 1;
+                    background-image: url('/img/bosses/kraid.png');
+                }
+
+                .phantoon {
+                    width: 40px;
+                    height: 58px;
+                    position: absolute;
+                    left: 46px;
+                    bottom: 22px;
+                    z-index: 2;
+                    background-image: url('/img/bosses/phantoon.png');
+                }
+
+                .draygon {
+                    width: 57px;
+                    height: 81px;
+                    position: absolute;
+                    right: 0px;
+                    bottom: 8px;
+                    z-index: 1;
+                    background-image: url('/img/bosses/draygon.png');
+                }
+
+                .ridley {
+                    width: 77px;
+                    height: 76px;
+                    position: absolute;
+                    left: 36px;
+                    top: 0px;
+                    z-index: 3;
+                    background-image: url('/img/bosses/ridley.png');
+                }
             }
-        }
 
-        .bosses {
-            margin: 0 auto;
-            width: 126px;
-            height: 145px;
-            margin-top: 8px;
-            position: relative;
-            background-image: url('/img/bosses/golden_four.png');
+            .timer {
+                font-family: "Roboto Mono", monospace;
+                font-size: 30px;
+                font-weight: 300;
+                // letter-spacing: -0.2rem;
 
+                padding: 10px 0 13px;
+                background: transparent;
+                color: #FFF;
+                width: 400px;
 
-            .boss {
-                @include transition(opacity 0.3s ease-in-out);
-                opacity: 0;
-                cursor: pointer;
+                @include transition(all 0.3s ease-in-out);
+
+                span, small {
+                    // margin: 0 -0.2rem;
+                }
+
+                small {
+                    font-size: 20px;
+                    margin: 0 0 0 -0.1rem;
+                    display: inline-block;
+                    width: 20px;
+                    text-align: left;
+                    // letter-spacing: -0.1rem;
+                }
+            }
+
+            .gamepad {
+                width: 230px;
+                padding-top: 20px;
+                margin: auto auto 20px;
+                @include transition(all 0.3s ease-in-out);
 
                 &.active {
-                    opacity: 1;
+                    max-height: 110px;
                 }
-            }
 
-            .kraid {
-                width: 62px;
-                height: 88px;
-                position: absolute;
-                left: 0px;
-                bottom: 4px;
-                z-index: 1;
-                background-image: url('/img/bosses/kraid.png');
-            }
+                .btn {
+                    @include transition(border-color 0.3s ease-in-out);
 
-            .phantoon {
-                width: 40px;
-                height: 58px;
-                position: absolute;
-                left: 46px;
-                bottom: 22px;
-                z-index: 2;
-                background-image: url('/img/bosses/phantoon.png');
-            }
-
-            .draygon {
-                width: 57px;
-                height: 81px;
-                position: absolute;
-                right: 0px;
-                bottom: 8px;
-                z-index: 1;
-                background-image: url('/img/bosses/draygon.png');
-            }
-
-            .ridley {
-                width: 77px;
-                height: 76px;
-                position: absolute;
-                left: 36px;
-                top: 0px;
-                z-index: 3;
-                background-image: url('/img/bosses/ridley.png');
-            }
-        }
-
-        .timer {
-            font-family: "Roboto Mono", monospace;
-            font-size: 30px;
-            font-weight: 300;
-            // letter-spacing: -0.2rem;
-
-            padding: 10px 0 13px;
-            background: transparent;
-            color: #FFF;
-            width: 400px;
-
-            @include transition(all 0.3s ease-in-out);
-
-            span, small {
-                // margin: 0 -0.2rem;
-            }
-
-            small {
-                font-size: 20px;
-                margin: 0 0 0 -0.1rem;
-                display: inline-block;
-                width: 20px;
-                text-align: left;
-                // letter-spacing: -0.1rem;
-            }
-        }
-
-        .gamepad {
-            width: 230px;
-            padding-top: 20px;
-            margin: auto auto 20px;
-            @include transition(all 0.3s ease-in-out);
-
-            &.active {
-                max-height: 110px;
-            }
-
-            .btn {
-                @include transition(border-color 0.3s ease-in-out);
-
-                &.configure {
-                    animation: flashing 0.4s infinite;
-                    @keyframes flashing {
-                        0%   { opacity: 0; }
-                        50%  { opacity: 1; }
-                        100% { opacity: 0; }
-                    }
-                }
-            }
-
-            &.white {
-                .l1, .r1,
-                .up, .down, .left, .right,
-                .start, .select,
-                .x, .y, .a, .b {
-                    border-color: #FFF;
-
-                    &.active {
-                        background: #FFF;
-                    }
-                }
-            }
-
-            &.black {
-                .l1, .r1,
-                .up, .down, .left, .right,
-                .start, .select,
-                .x, .y, .a, .b {
-                    border-color: #000;
-
-                    &.active {
-                        background: #000;
-                    }
-                }
-            }
-
-            &.famicom {
-                .x { // top
-                    border-color: #860046;
-                    &.active {
-                        background: #860046;
-                    }
-                }
-                .y { // left
-                    border-color: #860046;
-                    &.active {
-                        background: #860046;
-                    }
-                }
-                .a { // right
-                    border-color: #860046;
-                    &.active {
-                        background: #860046;
-                    }
-                }
-                .b { // bottom
-                    border-color: #860046;
-                    &.active {
-                        background: #860046;
-                    }
-                }
-            }
-
-            &.superfamicom {
-                .x { // top
-                    // blue
-                    border-color: #1750ae;
-                    &.active {
-                        background: #1750ae;
-                    }
-                }
-                .y { // left
-                    // green
-                    border-color: #00985b;
-                    &.active {
-                        background: #00985b;
-                    }
-                }
-                .a { // right
-                    // red
-                    border-color: #c00a02;
-                    &.active {
-                        background: #c00a02;
-                    }
-                }
-                .b { // bottom
-                    // yellow
-                    border-color: #e9a109;
-                    &.active {
-                        background: #e9a109;
-                    }
-                }
-            }
-
-            &.american {
-                .x { // top
-                    // lavender
-                    border-color: #9893c5;
-                    &.active {
-                        background: #9893c5;
-                    }
-                }
-                .y { // left
-                    // lavender
-                    border-color: #9893c5;
-                    &.active {
-                        background: #9893c5;
-                    }
-                }
-                .a { // right
-                    // purple
-                    border-color: #47217a;
-                    &.active {
-                        background: #47217a;
-                    }
-                }
-                .b { // bottom
-                    // purple
-                    border-color: #47217a;
-                    &.active {
-                        background: #47217a;
-                    }
-                }
-            }
-
-            // .white,
-
-            .shoulder {
-                display: flex;
-                justify-content: space-between;
-                align-items: flex-end;
-                height: 10px;
-                margin-bottom: 0px;
-                padding: 0 15px;
-
-                .l1, .r1 {
-                    width: 45px;
-                    height: 4px;
-                    border-radius: 3px 3px 0 0;
-                    // border: solid 1px #999;
-                    border-style: solid;
-                    // border-color: #000;
-                    border-width: 1px 1px 0 1px;
-                    // background-color: #999;
-
-                    &.active {
-                        // background: #000;
-                        // height: 1px;
-                        // margin-top: 3px;
-                    }
-                }
-            }
-            .body {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 0 5px;
-                // background: #DDD;
-                // border: solid 5px #EEE;
-                // box-shadow: 0 0 4px rgba(100, 100, 100, 0.2);
-
-                padding: 0 13px;
-
-                .dpad {
-                    height: 45px;
-                    width: 45px;
-                    position: relative;
-
-                    .up,
-                    .down,
-                    .left,
-                    .right,
-                    .mode {
-                        height: 15px;
-                        width: 15px;
-                        position: absolute;
-                        // border-color: #000000;
-                        border-style: solid;
-
-                        &.active {
-                            // background: #000000;
+                    &.configure {
+                        animation: flashing 0.4s infinite;
+                        @keyframes flashing {
+                            0%   { opacity: 0; }
+                            50%  { opacity: 1; }
+                            100% { opacity: 0; }
                         }
                     }
-
-                    $r: 2px;
-                    $b: 1px;
-                    .up {
-                        left: 0;
-                        right: 0;
-                        margin: 0 auto;
-                        border-radius: $r $r 0 0;
-                        border-width: $b $b 0 $b;
-                    }
-                    .down {
-                        bottom: 0;
-                        left: 0;
-                        right: 0;
-                        margin: 0 auto;
-                        border-radius: 0 0 $r $r;
-                        border-width: 0 $b $b $b;
-                    }
-                    .left {
-                        top: 0;
-                        bottom: 0;
-                        margin: auto 0;
-                        border-radius: $r 0 0 $r;
-                        border-width: $b 0 $b $b;
-                    }
-                    .right {
-                        right: 0;
-                        top: 0;
-                        bottom: 0;
-                        margin: auto 0;
-                        border-radius: 0 $r $r 0;
-                        border-width: $b $b $b 0;
-                    }
-                    .mode {
-                        top: 14px;
-                        left: 14px;
-                        width: 17px;
-                        height: 17px;
-                    }
                 }
-                .meta {
-                    width: 60px;
-                    display: flex;
-                    justify-content: space-between;
-                    padding: 55px 10px 25px;
 
-                    .select, .start {
-                        height: 6px;
-                        width: 18px;
-                        border-radius: 3px;
-                        border-style: solid;
-                        border-width: 1px;
-                        transform: rotate(-35deg);
-
-                        &.active {
-                            // background: #000000;
-                        }
-                    }
-
-                    .select {}
-                    .start {}
-                }
-                .action {
-                    height: 50px;
-                    width: 60px;
-                    position: relative;
-
+                &.white {
+                    .l1, .r1,
+                    .up, .down, .left, .right,
+                    .start, .select,
                     .x, .y, .a, .b {
-                        border-width: 1px;
-                        position: absolute;
-                        border-style: solid;
-                        border-radius: 100%;
-                        cursor: pointer;
-                        display: inline-block;
-                        height: 18px;
-                        width: 18px;
+                        border-color: #FFF;
+
+                        &.active {
+                            background: #FFF;
+                        }
                     }
+                }
 
-                    // @mixin round-button() {
-                    //     border-width: 1px;
-                    //     position: absolute;
-                    //     border-style: solid;
-                    //     border-radius: 100%;
-                    //     cursor: pointer;
-                    //     display: inline-block;
-                    //     height: 18px;
-                    //     width: 18px;
-                    // }
+                &.black {
+                    .l1, .r1,
+                    .up, .down, .left, .right,
+                    .start, .select,
+                    .x, .y, .a, .b {
+                        border-color: #000;
 
+                        &.active {
+                            background: #000;
+                        }
+                    }
+                }
+
+                &.famicom {
                     .x { // top
-                        left: 0;
-                        right: 0;
-                        margin: 0 auto;
-                        // @include round-button();
+                        border-color: #860046;
+                        &.active {
+                            background: #860046;
+                        }
                     }
                     .y { // left
-                        top: 0;
-                        bottom: 0;
-                        margin: auto 0;
-                        left: 0;
-                        // @include round-button();
+                        border-color: #860046;
+                        &.active {
+                            background: #860046;
+                        }
                     }
                     .a { // right
-                        right: 0;
-                        top: 0;
-                        bottom: 0;
-                        margin: auto 0;
-                        // @include round-button();
+                        border-color: #860046;
+                        &.active {
+                            background: #860046;
+                        }
                     }
                     .b { // bottom
-                        bottom: 0;
-                        left: 0;
-                        right: 0;
-                        margin: 0 auto;
-                        // @include round-button();
+                        border-color: #860046;
+                        &.active {
+                            background: #860046;
+                        }
+                    }
+                }
+
+                &.superfamicom {
+                    .x { // top
+                        // blue
+                        border-color: #1750ae;
+                        &.active {
+                            background: #1750ae;
+                        }
+                    }
+                    .y { // left
+                        // green
+                        border-color: #00985b;
+                        &.active {
+                            background: #00985b;
+                        }
+                    }
+                    .a { // right
+                        // red
+                        border-color: #c00a02;
+                        &.active {
+                            background: #c00a02;
+                        }
+                    }
+                    .b { // bottom
+                        // yellow
+                        border-color: #e9a109;
+                        &.active {
+                            background: #e9a109;
+                        }
+                    }
+                }
+
+                &.american {
+                    .x { // top
+                        // lavender
+                        border-color: #9893c5;
+                        &.active {
+                            background: #9893c5;
+                        }
+                    }
+                    .y { // left
+                        // lavender
+                        border-color: #9893c5;
+                        &.active {
+                            background: #9893c5;
+                        }
+                    }
+                    .a { // right
+                        // purple
+                        border-color: #47217a;
+                        &.active {
+                            background: #47217a;
+                        }
+                    }
+                    .b { // bottom
+                        // purple
+                        border-color: #47217a;
+                        &.active {
+                            background: #47217a;
+                        }
+                    }
+                }
+
+                // .white,
+
+                .shoulder {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-end;
+                    height: 10px;
+                    margin-bottom: 0px;
+                    padding: 0 15px;
+
+                    .l1, .r1 {
+                        width: 45px;
+                        height: 4px;
+                        border-radius: 3px 3px 0 0;
+                        // border: solid 1px #999;
+                        border-style: solid;
+                        // border-color: #000;
+                        border-width: 1px 1px 0 1px;
+                        // background-color: #999;
+
+                        &.active {
+                            // background: #000;
+                            // height: 1px;
+                            // margin-top: 3px;
+                        }
+                    }
+                }
+                .body {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 0 5px;
+                    // background: #DDD;
+                    // border: solid 5px #EEE;
+                    // box-shadow: 0 0 4px rgba(100, 100, 100, 0.2);
+
+                    padding: 0 13px;
+
+                    .dpad {
+                        height: 45px;
+                        width: 45px;
+                        position: relative;
+
+                        .up,
+                        .down,
+                        .left,
+                        .right,
+                        .mode {
+                            height: 15px;
+                            width: 15px;
+                            position: absolute;
+                            // border-color: #000000;
+                            border-style: solid;
+
+                            &.active {
+                                // background: #000000;
+                            }
+                        }
+
+                        $r: 2px;
+                        $b: 1px;
+                        .up {
+                            left: 0;
+                            right: 0;
+                            margin: 0 auto;
+                            border-radius: $r $r 0 0;
+                            border-width: $b $b 0 $b;
+                        }
+                        .down {
+                            bottom: 0;
+                            left: 0;
+                            right: 0;
+                            margin: 0 auto;
+                            border-radius: 0 0 $r $r;
+                            border-width: 0 $b $b $b;
+                        }
+                        .left {
+                            top: 0;
+                            bottom: 0;
+                            margin: auto 0;
+                            border-radius: $r 0 0 $r;
+                            border-width: $b 0 $b $b;
+                        }
+                        .right {
+                            right: 0;
+                            top: 0;
+                            bottom: 0;
+                            margin: auto 0;
+                            border-radius: 0 $r $r 0;
+                            border-width: $b $b $b 0;
+                        }
+                        .mode {
+                            top: 14px;
+                            left: 14px;
+                            width: 17px;
+                            height: 17px;
+                        }
+                    }
+                    .meta {
+                        width: 60px;
+                        display: flex;
+                        justify-content: space-between;
+                        padding: 55px 10px 25px;
+
+                        .select, .start {
+                            height: 6px;
+                            width: 18px;
+                            border-radius: 3px;
+                            border-style: solid;
+                            border-width: 1px;
+                            transform: rotate(-35deg);
+
+                            &.active {
+                                // background: #000000;
+                            }
+                        }
+
+                        .select {}
+                        .start {}
+                    }
+                    .action {
+                        height: 50px;
+                        width: 60px;
+                        position: relative;
+
+                        .x, .y, .a, .b {
+                            border-width: 1px;
+                            position: absolute;
+                            border-style: solid;
+                            border-radius: 100%;
+                            cursor: pointer;
+                            display: inline-block;
+                            height: 18px;
+                            width: 18px;
+                        }
+
+                        // @mixin round-button() {
+                        //     border-width: 1px;
+                        //     position: absolute;
+                        //     border-style: solid;
+                        //     border-radius: 100%;
+                        //     cursor: pointer;
+                        //     display: inline-block;
+                        //     height: 18px;
+                        //     width: 18px;
+                        // }
+
+                        .x { // top
+                            left: 0;
+                            right: 0;
+                            margin: 0 auto;
+                            // @include round-button();
+                        }
+                        .y { // left
+                            top: 0;
+                            bottom: 0;
+                            margin: auto 0;
+                            left: 0;
+                            // @include round-button();
+                        }
+                        .a { // right
+                            right: 0;
+                            top: 0;
+                            bottom: 0;
+                            margin: auto 0;
+                            // @include round-button();
+                        }
+                        .b { // bottom
+                            bottom: 0;
+                            left: 0;
+                            right: 0;
+                            margin: 0 auto;
+                            // @include round-button();
+                        }
                     }
                 }
             }
         }
-    }
     }
 
     .settings {
-        width: 240px;
+        width: 200px;
+        height: 100%;
         font-family: Helvetica;
-        margin: 0 0 0 15px;
+        margin: 0 0 0 410px;
         padding: 15px 0;
+
+        // position: absolute;
+        // top: 0;
+        // left: 400px;
+
+        // background: grey;
 
         display: flex;
         flex-direction: column;
