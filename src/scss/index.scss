@@ -637,6 +637,12 @@ $max-width: 610px;
         display: flex;
         flex-direction: column;
 
+        > .disabled {
+            .inputs, .commands {
+                display: none;
+            }
+        }
+
         fieldset {
             margin-bottom: 20px;
             padding: 0;
@@ -645,18 +651,18 @@ $max-width: 610px;
             border-color: #DDD;
             color: #444;
             width: 100%;
-            // max-width: 200px;
+            box-shadow: 2px 3px 8px rgba(0, 0, 0, 0.07);
 
             @include mq($from: $max-width) {
                 border-width: 1px;
                 border-radius: 3px;
             }
 
-            legend {
-                padding: 0 5px;
-                margin: 0 5px;
-                font-size: 10px;
-                color: #666;
+            .header {
+                padding: 6px 8px 6px;
+                font-size: 9px;
+                border-bottom: solid 1px #DDD;
+                background: #EEE;
             }
 
             .inputs {

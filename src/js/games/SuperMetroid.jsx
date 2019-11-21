@@ -79,7 +79,9 @@ export class SuperMetroidSettings extends React.Component {
 
     render() {
         return <fieldset className="icons">
-            <legend>progress</legend>
+            <div className="header">
+                progress
+            </div>
             <div className="inputs">
             </div>
             <div className="commands">

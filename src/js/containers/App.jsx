@@ -95,7 +95,9 @@ class GeneralSettings extends React.Component {
         }
 
         return <fieldset className="general">
-            <legend>general</legend>
+            <div className="header">
+                general
+            </div>
             <div className="inputs">
                 <div className="input">
                     <label>background color 1</label>

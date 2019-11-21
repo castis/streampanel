@@ -27,23 +27,22 @@ class State {
 const state = new State()
 hydrate('starfield', state)
 
-
+@observer
 export class Starfield extends React.Component {
 
     stars = []
-    shiftLock = false
+    // shiftLock = false
     defaultZ = 11
 
     constructor(props) {
         super(props)
 
-        this.bind = ::this.bind
+        // this.bind = ::this.bind
         this.addStars = ::this.addStars
         this.update = ::this.update
         this.reset = ::this.reset
-        this.moveStars = ::this.moveStars
-        this.handleWheel = ::this.handleWheel
-        this.handleShiftLock = ::this.handleShiftLock
+        // this.moveStars = ::this.moveStars
+        // this.handleShiftLock = ::this.handleShiftLock
     }
 
     componentDidMount() {
@@ -60,49 +59,39 @@ export class Starfield extends React.Component {
         this.canvas = this.element.getContext('2d')
         this.canvas.globalAlpha = 1
 
-        this.bind()
+        // this.bind()
         this.addStars(state.starfieldZ * 1000)
         this.update()
     }
 
-    bind() {
-        this.shiftLock = false
-        document.querySelector('.display').addEventListener('mousemove', this.moveStars)
-        document.addEventListener('keydown', this.handleShiftLock)
-        document.addEventListener('keyup', this.handleShiftLock)
-        document.addEventListener("wheel", this.handleWheel)
-    }
+    // bind() {
+    //     this.shiftLock = false
+    //     document.querySelector('.display').addEventListener('mousemove', this.moveStars)
+    //     document.addEventListener('keydown', this.handleShiftLock)
+    //     document.addEventListener('keyup', this.handleShiftLock)
+    // }
 
-    unbind() {
-        document.querySelector('.display').removeEventListener('mousemove', this.moveStars)
-        document.removeEventListener('keydown', this.handleShiftLock)
-        document.removeEventListener('keyup', this.handleShiftLock)
-        document.removeEventListener("wheel", this.handleWheel)
-    }
+    // unbind() {
+    //     document.querySelector('.display').removeEventListener('mousemove', this.moveStars)
+    //     document.removeEventListener('keydown', this.handleShiftLock)
+    //     document.removeEventListener('keyup', this.handleShiftLock)
+    // }
 
-    moveStars(event) {
-        if (this.shiftLock == false) {
-            return
-        }
-        state.starfieldX = event.clientX
-        state.starfieldY = event.clientY
-    }
+    // moveStars(event) {
+    //     if (this.shiftLock == false) {
+    //         return
+    //     }
+    //     state.starfieldX = event.clientX
+    //     state.starfieldY = event.clientY
+    // }
 
-    handleShiftLock(event) {
-        this.shiftLock = event.shiftKey
-    }
-
-    handleWheel(event) {
-        if (this.shiftLock == false) {
-            return
-        }
-        const change = state.starfieldZ - event.deltaY / 800
-        state.starfieldZ = Math.min(Math.max(0, change), 0.8)
-    }
+    // handleShiftLock(event) {
+    //     this.shiftLock = event.shiftKey
+    // }
 
     // if you add the stars all at once they start in noticeable waves
     addStars(count) {
-        for (let i=0, n; i<count; i++) {
+        for (let i=0, n; i < count; i++) {
             n = {}
             this.reset(n)
             this.stars.push(n)
@@ -113,7 +102,7 @@ export class Starfield extends React.Component {
     }
 
     removeStars(count) {
-        for (let i=0; i<count; i++) {
+        for (let i=0; i < count; i++) {
             this.stars.pop()
         }
     }
@@ -137,7 +126,20 @@ export class Starfield extends React.Component {
     update() {
         this.canvas.clearRect(0, 0, this.width, this.height)
 
-        for (let i=0; i<this.stars.length; i++) {
+        // adjust the number of stars
+        const diff = this.stars.length - state.maxStars
+        if (diff < 0) {
+            this.addStars(-diff)
+        } else if (diff > 0) {
+            this.removeStars(diff)
+        }
+
+        // throttle this piece if we have nothing to render
+        if (this.stars.length == 0) {
+            return setTimeout(this.update, 1000)
+        }
+
+        for (let i=0; i < this.stars.length; i++) {
             const star = this.stars[i],
                 x = star.x / star.z,
                 y = star.y / star.z
@@ -169,12 +171,6 @@ export class Starfield extends React.Component {
             }
         }
 
-        const diff = this.stars.length - state.maxStars
-        if (diff < 0) {
-            this.addStars(-diff)
-        } else if (diff > 0) {
-            this.removeStars(diff)
-        }
         // if (this.stars.length > state.maxStars) {
         //     delete this.stars[i]
         // } else if (this.stars.length < state.maxStars) {
@@ -220,11 +216,10 @@ export class StarfieldSettings extends React.Component {
 
     render() {
         return <fieldset className="starfield">
-            <legend>starfield</legend>
+            <div className="header">
+                starfield
+            </div>
             <div className="inputs">
-                <div className="input">
-                    <label>hold shift to change starfield origin</label>
-                </div>
                 <div className="input">
                     <label>color</label>
                     <ColorPicker
@@ -236,9 +231,9 @@ export class StarfieldSettings extends React.Component {
                     <label>stars</label>
                     <input
                         type="range"
-                        min="100"
+                        min="0"
                         max="3000"
-                        step="1"
+                        step="10"
                         value={ state.maxStars }
                         onChange={ this.changeMaxStars }
                     />

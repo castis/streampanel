@@ -56,6 +56,9 @@ class State {
     stop() {
         this.isRunning = false
         this.frequencies = this.frequencies.map(f => 0)
+        while (this.mask.hasChildNodes()) {
+            this.mask.removeChild(this.mask.lastChild);
+        }
         this.update()
     }
 
@@ -83,7 +86,9 @@ class State {
 
     frequencyMap(f, i) {
         let len = Math.floor(f) - (Math.floor(f) % 5);
-        this.paths[i].setAttribute('d', `M${i*this.itemWidth} 255l0 -${len}l${this.itemWidth} 0`);
+        if (this.paths[i]) {
+            this.paths[i].setAttribute('d', `M${i*this.itemWidth} 255l0 -${len}l${this.itemWidth} 0`);
+        }
     }
 
     update() {
@@ -91,7 +96,6 @@ class State {
         this.frequencies.map(this.frequencyMap)
 
         if (this.isRunning) {
-            // requestAnimationFrame(this.update);
             setTimeout(this.update, this.updateSpeed)
         }
     }
@@ -178,7 +182,9 @@ export class VisualizerSettings extends React.Component {
         })
 
         return <fieldset className="visualizer">
-            <legend>visualizer</legend>
+            <div className="header">
+                visualizer
+            </div>
             <div className="inputs">
                 <div className="input">
                     <label>update speed</label>

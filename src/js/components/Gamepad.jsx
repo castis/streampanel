@@ -245,7 +245,9 @@ export class GamepadSettings extends React.Component {
         options.unshift(<option key="-1" value="-1">none</option>)
 
         return <fieldset className="gamepad">
-            <legend>gamepad</legend>
+            <div className="header">
+                gamepad
+            </div>
             <div className="inputs">
                 <div className="input">
                     <label>input</label>

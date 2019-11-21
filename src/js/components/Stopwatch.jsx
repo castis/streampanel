@@ -216,7 +216,9 @@ export class StopwatchSettings extends React.Component {
             success: state.isRunning,
         })
         return <fieldset className="timer">
-            <legend>timer</legend>
+            <div className="header">
+                timer
+            </div>
             <div className="inputs">
                 <div className="input">
                     <label>background</label>
