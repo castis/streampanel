@@ -15,7 +15,7 @@ class State {
         r: 255,
         g: 255,
         b: 255,
-        a: .37,
+        a: .65,
     }
     @persist @observable maxStars = 250
     @persist @observable warp = 1
@@ -242,7 +242,7 @@ export class StarfieldSettings extends React.Component {
                     <label>warp</label>
                     <input
                         type="range"
-                        min="0"
+                        min="0.02"
                         max="0.8"
                         step="0.02"
                         value={ state.starfieldZ }

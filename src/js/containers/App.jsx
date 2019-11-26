@@ -9,13 +9,12 @@ import { BossList, BossListSettings } from '../components/BossList'
 import { Stopwatch, StopwatchSettings } from '../components/Stopwatch'
 import { Gamepad, GamepadSettings } from '../components/Gamepad'
 
-import { Starfield, StarfieldSettings } from '../backgrounds/Starfield'
-import { Visualizer, VisualizerSettings } from '../backgrounds/Visualizer'
+import { Starfield, StarfieldSettings } from '../components/Starfield'
+import { Visualizer, VisualizerSettings } from '../components/Visualizer'
 
 import ColorPicker from '../util/ColorPicker'
 
 import { localforage, hydrate } from '../util/storage'
-
 
 import { SuperMetroid, SuperMetroidSettings } from '../games/SuperMetroid'
 
@@ -25,21 +24,17 @@ class State {
     @observable abortLock = false
     @persist @observable standby = false
     @persist('object') @observable bg1 = {
-        r: 20,
-        g: 20,
-        b: 20,
+        r: 178,
+        g: 135,
+        b: 111,
         a: .2,
     }
     @persist('object') @observable bg2 = {
-        r: 190,
-        g: 120,
-        b: 20,
+        r: 20,
+        g: 178,
+        b: 190,
         a: .5,
     }
-    @persist @observable updateSpeed = 20
-    @persist @observable starfieldZ = 0.05
-    @persist @observable starfieldX = 200
-    @persist @observable starfieldY = 320
 }
 const state = new State()
 hydrate('general', state)
@@ -74,11 +69,6 @@ class GeneralSettings extends React.Component {
 
     abortReset() {
         state.abortLock = false
-    }
-
-    changeSpeed(event) {
-        const value = parseInt(event.target.value || 1)
-        state.updateSpeed = Math.max(1, Math.min(value, 100))
     }
 
     changeStandby(event) {
@@ -149,7 +139,6 @@ export default class App extends React.Component {
     componentDidMount() {
         window.addEventListener('resize', this.resize)
         this.resize()
-        // const v = new Visualizer()
     }
 
     componentWillUnmount() {
