@@ -17,6 +17,7 @@ import ColorPicker from '../util/ColorPicker'
 import { localforage, hydrate } from '../util/storage'
 
 import { SuperMetroid, SuperMetroidSettings } from '../games/SuperMetroid'
+import { FinalFantasy6, FinalFantasy6Settings } from '../games/FinalFantasy6'
 
 
 class State {
@@ -24,17 +25,18 @@ class State {
     @observable abortLock = false
     @persist @observable standby = false
     @persist('object') @observable bg1 = {
-        r: 178,
+        r: 180,
         g: 135,
-        b: 111,
+        b: 110,
         a: .2,
     }
     @persist('object') @observable bg2 = {
         r: 20,
-        g: 178,
+        g: 130,
         b: 190,
         a: .5,
     }
+    @persist @observable game = 'super-metroid'
 }
 const state = new State()
 hydrate('general', state)
@@ -46,7 +48,10 @@ class GeneralSettings extends React.Component {
     constructor(props) {
         super(props)
         this.reset = ::this.reset
-        this.abortReset = ::this.abortReset
+        this.availableGames = {
+            'super-metroid': 'Super Metroid',
+            'final-fantasy-6': 'Final Fantasy 6',
+        }
     }
 
     changeBg1(bg1) {
@@ -75,6 +80,10 @@ class GeneralSettings extends React.Component {
         state.standby = event.target.checked
     }
 
+    changeGame(event) {
+        state.game = event.target.value
+    }
+
     render() {
         let buttons = [
             <button key="1" onClick={ this.reset }>{ state.abortLock ? 'confirm' : 'hard reset' }</button>
@@ -83,6 +92,10 @@ class GeneralSettings extends React.Component {
         if (state.abortLock) {
             buttons.push(<button key="2" onClick={ this.abortReset }>cancel</button>)
         }
+
+        const games = Object.keys(this.availableGames).map(k => {
+            return <option key={ k } value={ k }>{ this.availableGames[k] }</option>
+        })
 
         return <fieldset className="general">
             <div className="header">
@@ -104,6 +117,12 @@ class GeneralSettings extends React.Component {
                     />
                 </div>
                 <div className="input">
+                    <label>game</label>
+                    <select value={ state.game } onChange={ this.changeGame }>
+                        { games }
+                    </select>
+                </div>
+                <div className="input">
                     <label>standby</label>
                     <input
                         type="checkbox"
@@ -121,15 +140,42 @@ class GeneralSettings extends React.Component {
 
 
 @observer
-export default class App extends React.Component {
-
+class Game extends React.Component {
     constructor(props) {
         super(props)
-        this.resize = ::this.resize
+        this.games = {
+            'super-metroid': <SuperMetroid />,
+            'final-fantasy-6': <FinalFantasy6 />,
+        }
     }
+    render() {
+        const { game } = state
+        return this.games[game]
+    }
+}
 
+
+@observer
+class GameSettings extends React.Component {
+    constructor(props) {
+        super(props)
+        this.games = {
+            'super-metroid': <SuperMetroidSettings />,
+            'final-fantasy-6': <FinalFantasy6Settings />,
+        }
+    }
+    render() {
+        const { game } = state
+        return this.games[game]
+    }
+}
+
+
+@observer
+export default class App extends React.Component {
     resize() {
-        const body = document.body
+        const { body } = document
+
         localforage.setItem('window', {
             'width': body.clientWidth,
             'height': body.clientHeight,
@@ -146,27 +192,24 @@ export default class App extends React.Component {
     }
 
     render() {
-        const bg1 = state.bg1
-        const rgba1 = `rgba(${bg1.r}, ${bg1.g}, ${bg1.b}, ${bg1.a})`
-
-        const bg2 = state.bg2
-        const rgba2 = `rgba(${bg2.r}, ${bg2.g}, ${bg2.b}, ${bg2.a})`
-
-        const displayStyle = classnames({
-            display: true,
-            standby: state.standby,
-        })
+        const { bg1, bg2 } = state
 
         return <div className="app">
             <div className="main">
                 <div className="background static" />
                 <Starfield />
                 <div className="background" style={{
-                    backgroundImage: `linear-gradient(${rgba1}, ${rgba2})`,
+                    backgroundImage: `linear-gradient(
+                        rgba(${bg1.r}, ${bg1.g}, ${bg1.b}, ${bg1.a}),
+                        rgba(${bg2.r}, ${bg2.g}, ${bg2.b}, ${bg2.a})
+                    )`,
                 }} />
                 <Visualizer />
-                <div className={ displayStyle }>
-                    <SuperMetroid />
+                <div className={ classnames({
+                    display: true,
+                    standby: state.standby,
+                }) }>
+                    <Game />
                     <Stopwatch />
                     <Gamepad />
                 </div>
@@ -175,7 +218,7 @@ export default class App extends React.Component {
                 <GeneralSettings />
                 <StarfieldSettings />
                 <VisualizerSettings />
-                <SuperMetroidSettings />
+                <GameSettings />
                 <StopwatchSettings />
                 <GamepadSettings />
             </div>

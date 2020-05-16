@@ -16,6 +16,8 @@ export default class Launcher extends React.Component {
     }
 
     click(event) {
+        // App.resize stores its window dimensions in local storage
+        // so we can remember the size of the window
         localforage.getItem('window').then(w => {
             open('app', '', flatten({
                 ...this.state,

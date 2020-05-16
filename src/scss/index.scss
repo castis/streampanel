@@ -167,55 +167,6 @@ $max-width: 610px;
                 opacity: 0;
             }
 
-            .items {
-                max-width: 260px;
-                padding: 35px 10px 50px;
-                margin: 0 auto;
-                display: flex;
-                flex-direction: row;
-                justify-content: center;
-                flex-wrap: wrap;
-
-                .item {
-                    width: 38px;
-                    height: 38px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    margin: 3px;
-                    cursor: pointer;
-
-                    &:last-child {
-                        margin-right: 0;
-                    }
-
-                    img {
-                        max-height: 32px;
-                        max-width: 32px;
-
-                        @include transition(all 0.15s ease-in-out);
-
-                        filter: contrast(0.4) grayscale(1);
-                        opacity: 0.3;
-
-                        image-rendering: optimizeSpeed;
-                        image-rendering: -moz-crisp-edges;
-                        image-rendering: -o-crisp-edges;
-                        image-rendering: -webkit-optimize-contrast;
-                        image-rendering: pixelated;
-                        image-rendering: optimize-contrast;
-                        -ms-interpolation-mode: nearest-neighbor;
-                    }
-
-                    &.active {
-                        img {
-                            filter: none;
-                            opacity: 1;
-                        }
-                    }
-                }
-            }
-
             .bosses {
                 margin: 0 auto;
                 width: 126px;
@@ -692,7 +643,6 @@ $max-width: 610px;
                         border-color: $border;
                         border-radius: 1px;
                         margin: 0;
-                        width: 100%;
                         max-width: 100px;
                         color: #666666;
                         font-size: 9px;
@@ -703,6 +653,7 @@ $max-width: 610px;
                     }
 
                     select {
+                        width: 100%;
                         height: 17px;
                         border-radius: 2px;
                         -webkit-appearance: none;
@@ -819,3 +770,104 @@ $max-width: 610px;
     }
 }
 
+.super-metroid {
+    .items {
+        max-width: 260px;
+        padding: 35px 10px 50px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
+
+        .item {
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 3px;
+            cursor: pointer;
+
+            &:last-child {
+                margin-right: 0;
+            }
+
+            img {
+                max-height: 32px;
+                max-width: 32px;
+
+                @include transition(all 0.15s ease-in-out);
+
+                filter: contrast(0.4) grayscale(1);
+                opacity: 0.3;
+
+                image-rendering: optimizeSpeed;
+                image-rendering: -moz-crisp-edges;
+                image-rendering: -o-crisp-edges;
+                image-rendering: -webkit-optimize-contrast;
+                image-rendering: pixelated;
+                image-rendering: optimize-contrast;
+                -ms-interpolation-mode: nearest-neighbor;
+            }
+
+            &.active {
+                img {
+                    filter: none;
+                    opacity: 1;
+                }
+            }
+        }
+    }
+}
+
+.final-fantasy-6 {
+    .items {
+        // max-width: 90%;
+        padding: 25px 10px 25px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
+
+        .item {
+            width: 46px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 3px;
+            cursor: pointer;
+
+            &:last-child {
+                margin-right: 0;
+            }
+
+            img {
+                // max-height: 32px;
+                // max-width: 32px;
+
+                @include transition(all 0.15s ease-in-out);
+
+                filter: contrast(0.4) grayscale(1);
+                opacity: 0.3;
+
+                image-rendering: optimizeSpeed;
+                image-rendering: -moz-crisp-edges;
+                image-rendering: -o-crisp-edges;
+                image-rendering: -webkit-optimize-contrast;
+                image-rendering: pixelated;
+                image-rendering: optimize-contrast;
+                -ms-interpolation-mode: nearest-neighbor;
+            }
+
+            &.active {
+                img {
+                    filter: none;
+                    opacity: 1;
+                }
+            }
+        }
+    }
+}

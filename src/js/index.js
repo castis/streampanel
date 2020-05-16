@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 
 import App from './containers/App'
 import Launcher from './containers/Launcher'
-import gtag from './vendor/gtag'
 
 
 const mountPoint = document.querySelector('#mount')

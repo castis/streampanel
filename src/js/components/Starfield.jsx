@@ -17,7 +17,7 @@ class State {
         b: 255,
         a: .65,
     }
-    @persist @observable maxStars = 250
+    @persist @observable maxStars = 120
     @persist @observable warp = 1
 
     @persist @observable starfieldZ = 0.09

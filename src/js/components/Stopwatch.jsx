@@ -20,7 +20,8 @@ class Timer {
     }
 
     @action reset() {
-        this.milliseconds = this.savedMilliseconds = 0
+        console.log(state.resetTo)
+        this.milliseconds = this.savedMilliseconds = state.resetTo
     }
 
     @computed get display() {
@@ -29,8 +30,10 @@ class Timer {
         const seconds = parseInt(milliseconds / 100, 10)
         const minutes = parseInt(seconds / 60, 10)
         const hours = parseInt(seconds / 3600, 10)
+        const isNegative = seconds < 0
 
         return <div className="segments">
+            <span>{ isNegative ? '-' : ' ' }</span>
             <span>{ hours }</span>:
             <span>{ format(minutes % 60, '00') }</span>:
             <span>{ format(seconds % 60, '00') }</span>
@@ -46,6 +49,7 @@ class TimerState {
     @persist @observable startTime = 0
     @persist @observable updateSpeed = 60
     @persist @observable useSpaceBar = true
+    @persist @observable resetTo = 0
     @persist('object') @observable background = {
         r: 0,
         g: 0,
@@ -56,7 +60,7 @@ class TimerState {
         r: 255,
         g: 255,
         b: 255,
-        a: .93,
+        a: .9,
     }
 
     constructor() {
