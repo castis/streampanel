@@ -5,6 +5,7 @@ import { observer } from 'mobx-react'
 import { persist } from 'mobx-persist'
 
 import ColorPicker from '../util/ColorPicker'
+import { SettingsWindow } from './SettingsWindow'
 
 import { localforage, hydrate } from '../util/storage'
 
@@ -215,10 +216,7 @@ export class StarfieldSettings extends React.Component {
     }
 
     render() {
-        return <fieldset className="starfield">
-            <div className="header">
-                starfield
-            </div>
+        return <SettingsWindow name="starfield">
             <div className="inputs">
                 <div className="input">
                     <label>color</label>
@@ -261,6 +259,6 @@ export class StarfieldSettings extends React.Component {
                     />
                 </div>
             </div>
-        </fieldset>
+        </SettingsWindow>
     }
 }

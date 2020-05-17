@@ -7,6 +7,8 @@ import { observer } from 'mobx-react'
 
 import ColorPicker from '../util/ColorPicker'
 import { hydrate } from '../util/storage'
+import { SettingsWindow } from './SettingsWindow'
+
 const { min, max } = Math
 
 
@@ -20,7 +22,6 @@ class Timer {
     }
 
     @action reset() {
-        console.log(state.resetTo)
         this.milliseconds = this.savedMilliseconds = state.resetTo
     }
 
@@ -152,6 +153,7 @@ class SpaceBar {
     }
 
     keyDown(event) {
+        event.preventDefault()
         if (event.keyCode === 32 && this.lock === false) {
             this.lock = true
             state.toggle()
@@ -219,10 +221,7 @@ export class StopwatchSettings extends React.Component {
         const classes = classnames({
             success: state.isRunning,
         })
-        return <fieldset className="timer">
-            <div className="header">
-                timer
-            </div>
+        return <SettingsWindow name="timer">
             <div className="inputs">
                 <div className="input">
                     <label>background</label>
@@ -262,6 +261,6 @@ export class StopwatchSettings extends React.Component {
                 <button className={ classes } onClick={ state.isRunning ? state.stop : state.start }>{ state.isRunning ? 'stop' : 'start' }</button>
                 <button onClick={ state.reset }>reset</button>
             </div>
-        </fieldset>
+        </SettingsWindow>
     }
 }

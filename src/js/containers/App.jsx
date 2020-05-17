@@ -4,10 +4,9 @@ import { observable } from 'mobx'
 import { observer } from 'mobx-react'
 import { persist } from 'mobx-persist'
 
-import { ItemList, ItemListSettings } from '../components/ItemList'
-import { BossList, BossListSettings } from '../components/BossList'
 import { Stopwatch, StopwatchSettings } from '../components/Stopwatch'
 import { Gamepad, GamepadSettings } from '../components/Gamepad'
+import { SettingsWindow } from '../components/SettingsWindow'
 
 import { Starfield, StarfieldSettings } from '../components/Starfield'
 import { Visualizer, VisualizerSettings } from '../components/Visualizer'
@@ -97,10 +96,8 @@ class GeneralSettings extends React.Component {
             return <option key={ k } value={ k }>{ this.availableGames[k] }</option>
         })
 
-        return <fieldset className="general">
-            <div className="header">
-                general
-            </div>
+
+        return <SettingsWindow name="general settings">
             <div className="inputs">
                 <div className="input">
                     <label>background color 1</label>
@@ -134,7 +131,8 @@ class GeneralSettings extends React.Component {
             <div className="commands">
                 { buttons }
             </div>
-        </fieldset>
+        </SettingsWindow>
+
     }
 }
 

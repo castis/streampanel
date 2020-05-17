@@ -5,6 +5,8 @@ import { persist } from 'mobx-persist'
 
 import { ItemList } from '../components/ItemList'
 import { BossList } from '../components/BossList'
+import { SettingsWindow } from '../components/SettingsWindow'
+
 
 import { localforage, hydrate } from '../util/storage'
 
@@ -78,15 +80,12 @@ export class SuperMetroidSettings extends React.Component {
     }
 
     render() {
-        return <fieldset className="icons">
-            <div className="header">
-                progress
-            </div>
+        return <SettingsWindow name="super metroid progress">
             <div className="inputs">
             </div>
             <div className="commands">
                 <button onClick={ this.reset }>reset</button>
             </div>
-        </fieldset>
+        </SettingsWindow>
     }
 }

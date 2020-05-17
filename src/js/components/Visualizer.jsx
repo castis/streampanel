@@ -4,6 +4,7 @@ import { observable, action, computed } from 'mobx'
 import { observer } from 'mobx-react'
 import { persist } from 'mobx-persist'
 
+import { SettingsWindow } from './SettingsWindow'
 import ColorPicker from '../util/ColorPicker'
 import { localforage, hydrate } from '../util/storage'
 
@@ -181,10 +182,7 @@ export class VisualizerSettings extends React.Component {
             success: state.isRunning,
         })
 
-        return <fieldset className="visualizer">
-            <div className="header">
-                visualizer
-            </div>
+        return <SettingsWindow name="visualizer">
             <div className="inputs">
                 <div className="input">
                     <label>update speed</label>
@@ -207,6 +205,6 @@ export class VisualizerSettings extends React.Component {
                     { state.isRunning ? 'stop listening' : 'listen' }
                 </button>
             </div>
-        </fieldset>
+        </SettingsWindow>
     }
 }

@@ -5,6 +5,7 @@ import { persist } from 'mobx-persist'
 import classnames from 'classnames'
 
 import { localforage, hydrate } from '../util/storage'
+import { SettingsWindow } from '../components/SettingsWindow'
 
 
 class State {
@@ -76,15 +77,12 @@ export class FinalFantasy6Settings extends React.Component {
     }
 
     render() {
-        return <fieldset className="icons">
-            <div className="header">
-                final fantasy 6 progress
-            </div>
+        return <SettingsWindow name="final fantasy 6 progress">
             <div className="inputs">
             </div>
             <div className="commands">
                 <button onClick={ this.reset }>reset</button>
             </div>
-        </fieldset>
+        </SettingsWindow>
     }
 }

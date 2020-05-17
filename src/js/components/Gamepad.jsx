@@ -4,6 +4,7 @@ import { observer } from 'mobx-react'
 import { persist } from 'mobx-persist'
 
 import { hydrate } from '../util/storage'
+import { SettingsWindow } from './SettingsWindow'
 
 
 class ControllerState {
@@ -244,10 +245,7 @@ export class GamepadSettings extends React.Component {
         })
         options.unshift(<option key="-1" value="-1">none</option>)
 
-        return <fieldset className="gamepad">
-            <div className="header">
-                gamepad
-            </div>
+        return <SettingsWindow name="controller">
             <div className="inputs">
                 <div className="input">
                     <label>input</label>
@@ -307,6 +305,6 @@ export class GamepadSettings extends React.Component {
             <div className="commands">
                 <button onClick={ this.configure }>{ (state.configurable > -1) ? 'cancel' : 'configure gamepad' }</button>
             </div>
-        </fieldset>
+        </SettingsWindow>
     }
 }
