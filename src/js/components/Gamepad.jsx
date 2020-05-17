@@ -303,7 +303,7 @@ export class GamepadSettings extends React.Component {
                 </div>
             </div>
             <div className="commands">
-                <button onClick={ this.configure }>{ (state.configurable > -1) ? 'cancel' : 'configure gamepad' }</button>
+                <button onClick={ this.configure }>{ (state.configurable > -1) ? 'cancel' : 'configure' }</button>
             </div>
         </SettingsWindow>
     }

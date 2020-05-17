@@ -77,11 +77,12 @@ export class FinalFantasy6Settings extends React.Component {
     }
 
     render() {
-        return <SettingsWindow name="final fantasy 6 progress">
+        return <SettingsWindow name="final fantasy 6">
             <div className="inputs">
-            </div>
-            <div className="commands">
-                <button onClick={ this.reset }>reset</button>
+                <div className="input">
+                    <label>reset progress</label>
+                    <button onClick={ this.reset }>reset</button>
+                </div>
             </div>
         </SettingsWindow>
     }

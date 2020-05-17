@@ -80,11 +80,12 @@ export class SuperMetroidSettings extends React.Component {
     }
 
     render() {
-        return <SettingsWindow name="super metroid progress">
+        return <SettingsWindow name="super metroid">
             <div className="inputs">
-            </div>
-            <div className="commands">
-                <button onClick={ this.reset }>reset</button>
+                <div className="input">
+                    <label>reset progress</label>
+                    <button onClick={ this.reset }>reset</button>
+                </div>
             </div>
         </SettingsWindow>
     }
