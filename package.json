@@ -18,6 +18,7 @@
     "classnames": "^2.2.6",
     "core-js": "^2.6.11",
     "css-loader": "^2.1.0",
+    "file-loader": "^6.0.0",
     "format-number-with-string": "^0.0.2",
     "localforage": "^1.7.3",
     "mini-css-extract-plugin": "^0.5.0",
@@ -37,6 +38,7 @@
     "serve": "^11.3.0",
     "style-loader": "^0.23.1",
     "terser-webpack-plugin": "^1.4.3",
+    "typeface-roboto-mono": "^0.0.75",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11"
   }

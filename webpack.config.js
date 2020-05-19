@@ -28,11 +28,17 @@ module.exports = {
                 MiniCssExtractPlugin.loader,
                 'css-loader',
                 'sass-loader',
-                // { loader: 'postcss-loader', options: {
-                //     plugins: [autoprefixer]
-                // }}
             ]
-        }]
+        }, {
+            test: /\.css$/,
+            loader: 'style-loader!css-loader'
+        }, {
+            test: /\.(woff|woff2|eot|ttf)$/i,
+            loader: 'file-loader',
+            options: {
+                outputPath: 'public/fonts',
+            },
+        },]
     },
 
     resolve: {

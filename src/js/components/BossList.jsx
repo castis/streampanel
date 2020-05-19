@@ -1,13 +1,7 @@
 import React from 'react'
 import classnames from 'classnames'
-import { observable } from 'mobx'
-import { observer } from 'mobx-react'
-import { persist } from 'mobx-persist'
-
-import { hydrate } from '../util/storage'
 
 
-@observer
 class BossView extends React.Component {
     render() {
         const item = this.props.item
@@ -23,7 +17,6 @@ class BossView extends React.Component {
 }
 
 
-@observer
 export class BossList extends React.Component {
     constructor(props) {
         super(props)

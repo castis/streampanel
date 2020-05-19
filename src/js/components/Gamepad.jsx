@@ -92,8 +92,6 @@ class ControllerState {
         // if a button was pressed
         // but not the previously configured index
         if (button.pressed && this.buttonLock != index) {
-            // console.log(`map ${index} to ${this.buttons[this.configurable]}`)
-
             // map the current configurable index
             this.map[index] = this.buttons[this.configurable]
 

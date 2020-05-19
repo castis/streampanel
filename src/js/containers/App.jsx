@@ -18,6 +18,7 @@ import { localforage, hydrate } from '../util/storage'
 import { SuperMetroid, SuperMetroidSettings } from '../games/SuperMetroid'
 import { FinalFantasy6, FinalFantasy6Settings } from '../games/FinalFantasy6'
 
+import "typeface-roboto-mono";
 
 class State {
     // double tap

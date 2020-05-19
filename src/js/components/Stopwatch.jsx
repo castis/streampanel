@@ -153,8 +153,8 @@ class SpaceBar {
     }
 
     keyDown(event) {
-        event.preventDefault()
         if (event.keyCode === 32 && this.lock === false) {
+            event.preventDefault()
             this.lock = true
             state.toggle()
         }

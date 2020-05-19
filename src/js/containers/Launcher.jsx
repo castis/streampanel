@@ -7,7 +7,7 @@ import { localforage } from '../util/storage'
 export default class Launcher extends React.Component {
     state = {
         width: 630,
-        height: 650,
+        height: 655,
         titlebar: 0,
         menubar: 0,
         toolbar: 0,
