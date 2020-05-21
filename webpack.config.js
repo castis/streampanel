@@ -37,6 +37,7 @@ module.exports = {
             loader: 'file-loader',
             options: {
                 outputPath: 'public/fonts',
+                esModule: false,
             },
         },]
     },

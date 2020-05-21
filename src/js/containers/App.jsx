@@ -37,7 +37,6 @@ class State {
         a: .5,
     }
     @persist @observable game = 'super-metroid'
-    @persist @observable width = 300
 }
 const state = new State()
 hydrate('general', state)
@@ -77,10 +76,6 @@ class GeneralSettings extends React.Component {
         state.abortLock = false
     }
 
-    changeWidth(event) {
-        state.width = event.target.value
-    }
-
     changeStandby(event) {
         state.standby = event.target.checked
     }
@@ -105,17 +100,6 @@ class GeneralSettings extends React.Component {
 
         return <SettingsWindow name="general settings">
             <div className="inputs">
-                {/*<div className="input">
-                    <label>width</label>
-                    <input
-                        type="range"
-                        min="200"
-                        max="450"
-                        step="10"
-                        value={ state.width }
-                        onChange={ this.changeWidth }
-                    />
-                </div>*/}
                 <div className="input">
                     <label>background color 1</label>
                     <ColorPicker
@@ -245,9 +229,7 @@ export default class App extends React.Component {
         const { bg1, bg2 } = state
 
         return <div className="app">
-            <div className="main" style={{
-                width: `${state.width}px`
-            }}>
+            <div className="main">
                 <div className="background static" />
                 <Starfield />
                 <div className="background" style={{
@@ -266,9 +248,7 @@ export default class App extends React.Component {
                     <Gamepad />
                 </div>
             </div>
-            <div className="settings" style={{
-                marginLeft: `${(parseInt(state.width) + parseInt(10))}px`
-            }}>
+            <div className="settings">
                 <GeneralSettings />
                 <StarfieldSettings />
                 <VisualizerSettings />

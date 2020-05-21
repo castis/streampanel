@@ -47,7 +47,7 @@ fieldset {
 
 svg {
     display: block;
-    width: 400px;
+    width: 100%;
     height: 200px;
     padding: 0;
     margin: 0;
@@ -94,26 +94,40 @@ path {
     }
 }
 
-$app-width: 300px;
 $max-width: 610px;
 .app {
     display: flex;
     flex-direction: row;
 
     .main {
-        width: $app-width;
+        max-width: 450px;
+        // width: 100%;
         height: 650px;
 
-        position: fixed;
-        left: 0;
-        top: 0;
+        // position: relative;
+        // left: 0;
+        // top: 0;
+
+        display: grid;
+        grid-template: 1fr / 1fr;
+        place-items: center;
 
         cursor: crosshair;
 
+        & > * {
+            grid-column: 1 / 1;
+            grid-row: 1 / 1;
+        }
+
         .background {
-            position: absolute;
-            top: 0;
-            left: 0;
+            // position: absolute;
+            // top: 0;
+            // left: 0;
+
+            z-index: 1;
+
+            width: 100%;
+            height: 650px;
 
             &.static {
                 background-image: url('/img/bg/3.jpg');
@@ -128,11 +142,6 @@ $max-width: 610px;
                     margin-top: auto;
                 }
             }
-
-            z-index: 1;
-
-            width: 100%;
-            height: 650px;
         }
 
         .display {
@@ -143,16 +152,16 @@ $max-width: 610px;
             height: 100%;
             z-index: 2;
 
-            position: absolute;
-            top: 0;
-            left: 0;
+            // position: absolute;
+            // top: 0;
+            // left: 0;
 
             display: flex;
             flex-direction: column;
             overflow: hidden;
 
             *::selection {
-                background: rgba(#FFF, 0);
+                background: rgba(255, 255, 255, 0);
             }
 
             @include transition(all 0.3s ease-in-out);
@@ -227,7 +236,7 @@ $max-width: 610px;
                 .big-time {
                     display: flex;
                     flex-direction: column;
-                    align-items: bottom;
+                    // align-items: bottom;
                     font-size: 30px;
                     font-weight: 300;
                     letter-spacing: -0.2rem;
@@ -613,8 +622,8 @@ $max-width: 610px;
         width: 200px;
         height: 100%;
         font-family: Helvetica;
-        margin: 0 0 0 ($app-width + 10);
-        padding: 15px 0;
+        margin: 0 0 0 10px;
+        padding: 15px 15px 15px 0;
 
         display: flex;
         flex-direction: column;
@@ -628,17 +637,12 @@ $max-width: 610px;
         .settings-window {
             margin-bottom: 10px;
             padding: 0;
-            border-width: 1px 0 1px 1px;
-            border-radius: 3px 0 0 3px;
+            border-width: 1px;
+            border-radius: 3px;
             border-color: #DDD;
             color: #444;
             width: 100%;
             box-shadow: 2px 3px 8px rgba(0, 0, 0, 0.07);
-
-            @include mq($from: $max-width) {
-                border-width: 1px;
-                border-radius: 3px;
-            }
 
             &.collapsed {
                 .header {
@@ -803,7 +807,7 @@ $max-width: 610px;
                         background: #FF7777;
                         color: #FFFFFF;
                         &:hover {
-                            background: #FF99999;
+                            background: #FF9999;
                             color: #FFFFFF;
                         }
                     }
