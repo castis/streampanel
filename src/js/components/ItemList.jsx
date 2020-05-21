@@ -1,6 +1,5 @@
 import React from 'react'
 import classnames from 'classnames'
-import { observable } from 'mobx'
 import { observer } from 'mobx-react'
 
 

@@ -94,18 +94,21 @@ path {
     }
 }
 
+$app-width: 300px;
 $max-width: 610px;
 .app {
     display: flex;
     flex-direction: row;
 
     .main {
-        width: 400px;
+        width: $app-width;
         height: 650px;
 
         position: fixed;
         left: 0;
         top: 0;
+
+        cursor: crosshair;
 
         .background {
             position: absolute;
@@ -115,6 +118,7 @@ $max-width: 610px;
             &.static {
                 background-image: url('/img/bg/3.jpg');
                 background-size: cover;
+                background-position: center;
             }
 
             &.audio {
@@ -219,28 +223,71 @@ $max-width: 610px;
 
             .timer {
                 font-family: "Roboto Mono", monospace;
-                font-size: 30px;
-                font-weight: 300;
-                // letter-spacing: -0.2rem;
 
-                padding: 10px 0 13px;
-                background: transparent;
-                color: #FFF;
-                width: 100%;
+                .big-time {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: bottom;
+                    font-size: 30px;
+                    font-weight: 300;
+                    letter-spacing: -0.2rem;
 
-                @include transition(all 0.3s ease-in-out);
+                    padding: 10px 0 13px;
+                    background: transparent;
+                    color: #FFF;
+                    width: 100%;
 
-                span, small {
-                    // margin: 0 -0.2rem;
+                    @include transition(all 0.3s ease-in-out);
+
+                    .segments {
+                        margin-bottom: -6px;
+                    }
+
+                    span, small {
+                        // margin: 0 -0.2rem;
+                    }
+
+                    small {
+                        font-size: 20px;
+                        margin: 0 0 0 -0.1rem;
+                        display: inline-block;
+                        width: 20px;
+                        text-align: left;
+                        // letter-spacing: -0.1rem;
+                    }
                 }
 
-                small {
-                    font-size: 20px;
-                    margin: 0 0 0 -0.1rem;
-                    display: inline-block;
-                    width: 20px;
-                    text-align: left;
-                    // letter-spacing: -0.1rem;
+                .splits {
+                    font-size: 13px;
+
+                    .split {
+                        display: grid;
+                        grid-template-columns: 2fr 2fr 1fr;
+                        padding: 3px 8px;
+                        border-style: solid;
+                        border-width: 1px 0;
+                        border-color: rgba(255, 255, 255, 0.2);
+                        // width: 80%;
+                        margin: 0 auto 3px;
+
+                        .name {
+                            text-align: left;
+                        }
+
+                        .delta {
+                            margin-left: 40%;
+                            text-align: right;
+                        }
+
+                        .time {
+                            // margin-left: 40%;
+                            text-align: right;
+                        }
+
+                        &:last-of-type {
+                            margin-bottom: 0;
+                        }
+                    }
                 }
             }
 
@@ -566,7 +613,7 @@ $max-width: 610px;
         width: 200px;
         height: 100%;
         font-family: Helvetica;
-        margin: 0 0 0 410px;
+        margin: 0 0 0 ($app-width + 10);
         padding: 15px 0;
 
         display: flex;

@@ -1,7 +1,9 @@
 import React from 'react'
 import classnames from 'classnames'
+import { observer } from 'mobx-react'
 
 
+@observer
 class BossView extends React.Component {
     render() {
         const item = this.props.item

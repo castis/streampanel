@@ -25,9 +25,12 @@ class Timer {
         this.milliseconds = this.savedMilliseconds = state.resetTo
     }
 
+    @computed get elapsed() {
+        return this.milliseconds + this.savedMilliseconds
+    }
+
     @computed get display() {
-        const total = this.milliseconds + this.savedMilliseconds
-        const milliseconds = parseInt(total / 10, 10)
+        const milliseconds = parseInt(this.elapsed / 10, 10)
         const seconds = parseInt(milliseconds / 100, 10)
         const minutes = parseInt(seconds / 60, 10)
         const hours = parseInt(seconds / 3600, 10)
@@ -70,6 +73,7 @@ class TimerState {
         this.stop = ::this.stop
         this.toggle = ::this.toggle
         this.reset = ::this.reset
+        this.newSplit = ::this.newSplit
     }
 
     @computed get display() {
@@ -110,6 +114,32 @@ class TimerState {
         this.timer.reset()
         this.isRunning = false
     }
+
+    @observable splits = [{
+        name: 'Morph Ball',
+        target: 7264,
+        actual: undefined,
+    }, {
+        name: 'Bombs',
+        target: 12345,
+        actual: undefined,
+    }, {
+        name: 'Varia Suit',
+        target: 12789,
+        actual: undefined,
+    }]
+
+    activeSplit = 1
+
+    @action newSplit() {
+        console.log(state.timer.elapsed)
+        this.splits.push({
+            name: 'new split',
+            target: undefined,
+            actual: state.timer.elapsed,
+        })
+        console.log(this.splits)
+    }
 }
 
 const state = new TimerState()
@@ -117,6 +147,51 @@ hydrate('timer', state).then(() => {
     state.update()
 })
 
+
+function pad(n, z) {
+    z = z || 2;
+    return ('00' + n).slice(-z);
+}
+
+function msToTime(s) {
+    var ms = s % 1000;
+    s = (s - ms) / 1000;
+    var secs = s % 60;
+    s = (s - secs) / 60;
+    var mins = s % 60;
+    var hrs = (s - mins) / 60;
+
+    return (hrs > 0 ? '${hrs}:' : '')
+            + (mins > 0 ? '${mins}:' : '')
+            + `${secs}.${pad(ms)}`;
+}
+
+
+@observer
+export class Splits extends React.Component {
+    render() {
+        const { splits } = state
+        return <div className="splits">
+            { splits.map((s, i) => {
+
+                let delta = ''
+                let sign = ''
+                if (s.actual && i <= state.activeSplit) {
+                    const diff = s.actual - s.target
+                    sign = diff > 0 ? '-' : '+'
+                    delta = msToTime(diff)
+                }
+                const time = s.target ? s.target : s.actual
+
+                return <div key={ i } className="split">
+                    <div className="name">{ s.name }</div>
+                    <div className="delta">{ sign }{ delta }</div>
+                    <div className="time">{ msToTime(time) }</div>
+                </div>
+            }) }
+        </div>
+    }
+}
 
 @observer
 export class Stopwatch extends React.Component {
@@ -129,9 +204,10 @@ export class Stopwatch extends React.Component {
             color: `#${fg.r.toString(16)}${fg.g.toString(16)}${fg.b.toString(16)}`,
         }
         return <div className="timer" style={style}>
-            <div style={{
+            <div className="big-time" style={{
                 opacity: fg.a
             }}>{ state.display }</div>
+            <Splits />
         </div>
     }
 }
@@ -156,7 +232,7 @@ class SpaceBar {
         if (event.keyCode === 32 && this.lock === false) {
             event.preventDefault()
             this.lock = true
-            state.toggle()
+            state.newSplit()
         }
     }
 
@@ -208,6 +284,10 @@ export class StopwatchSettings extends React.Component {
         state.updateSpeed = max(1, min(value, 256))
     }
 
+    newSplit(event) {
+        state.newSplit()
+    }
+
     changeSpaceBarToggle(event) {
         state.useSpaceBar = event.target.checked
         if (state.useSpaceBar) {
@@ -255,6 +335,10 @@ export class StopwatchSettings extends React.Component {
                         checked={ state.useSpaceBar }
                         onChange={ this.changeSpaceBarToggle }
                     />
+                </div>
+                <div className="input">
+                    <label>new split</label>
+                    <button onClick={ this.newSplit }>party</button>
                 </div>
             </div>
             <div className="commands">

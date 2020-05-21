@@ -33,7 +33,7 @@ export class Starfield extends React.Component {
 
     stars = []
     // shiftLock = false
-    defaultZ = 11
+    defaultZ = 80
 
     constructor(props) {
         super(props)
@@ -42,8 +42,8 @@ export class Starfield extends React.Component {
         this.addStars = ::this.addStars
         this.update = ::this.update
         this.reset = ::this.reset
-        // this.moveStars = ::this.moveStars
-        // this.handleShiftLock = ::this.handleShiftLock
+        this.moveStars = ::this.moveStars
+        this.handleShiftLock = ::this.handleShiftLock
     }
 
     componentDidMount() {
@@ -60,35 +60,35 @@ export class Starfield extends React.Component {
         this.canvas = this.element.getContext('2d')
         this.canvas.globalAlpha = 1
 
-        // this.bind()
+        this.bind()
         this.addStars(state.starfieldZ * 1000)
         this.update()
     }
 
-    // bind() {
-    //     this.shiftLock = false
-    //     document.querySelector('.display').addEventListener('mousemove', this.moveStars)
-    //     document.addEventListener('keydown', this.handleShiftLock)
-    //     document.addEventListener('keyup', this.handleShiftLock)
-    // }
+    bind() {
+        this.shiftLock = false
+        document.querySelector('.display').addEventListener('mousemove', this.moveStars)
+        document.addEventListener('keydown', this.handleShiftLock)
+        document.addEventListener('keyup', this.handleShiftLock)
+    }
 
-    // unbind() {
-    //     document.querySelector('.display').removeEventListener('mousemove', this.moveStars)
-    //     document.removeEventListener('keydown', this.handleShiftLock)
-    //     document.removeEventListener('keyup', this.handleShiftLock)
-    // }
+    unbind() {
+        document.querySelector('.display').removeEventListener('mousemove', this.moveStars)
+        document.removeEventListener('keydown', this.handleShiftLock)
+        document.removeEventListener('keyup', this.handleShiftLock)
+    }
 
-    // moveStars(event) {
-    //     if (this.shiftLock == false) {
-    //         return
-    //     }
-    //     state.starfieldX = event.clientX
-    //     state.starfieldY = event.clientY
-    // }
+    moveStars(event) {
+        if (this.shiftLock == false) {
+            return
+        }
+        state.starfieldX = event.clientX
+        state.starfieldY = event.clientY
+    }
 
-    // handleShiftLock(event) {
-    //     this.shiftLock = event.shiftKey
-    // }
+    handleShiftLock(event) {
+        this.shiftLock = event.shiftKey
+    }
 
     // if you add the stars all at once they start in noticeable waves
     addStars(count) {
@@ -109,9 +109,7 @@ export class Starfield extends React.Component {
     }
 
     reset(star) {
-        const bg1 = state.color
-        star.color = `rgba(${bg1.r}, ${bg1.g}, ${bg1.b}, ${bg1.a})`
-
+        star.color = `rgba(${ state.color.r }, ${ state.color.g }, ${ state.color.b }, ${ state.color.a })`
         star.x = (Math.random() * this.width - (this.width * 0.5)) * this.defaultZ
         star.y = (Math.random() * this.height - (this.height * 0.5)) * this.defaultZ
         star.z = this.defaultZ
@@ -119,9 +117,6 @@ export class Starfield extends React.Component {
         star.py = 0
         star.originX = state.starfieldX
         star.originY = state.starfieldY
-        // star.color = Math.random() * 360
-        // star.color = 360
-        // star.color = rgba1
     }
 
     update() {
@@ -135,22 +130,20 @@ export class Starfield extends React.Component {
             this.removeStars(diff)
         }
 
-        // throttle this piece if we have nothing to render
+        // if we have no stars, do nothing
         if (this.stars.length == 0) {
             return setTimeout(this.update, 1000)
         }
 
+        var sat = Math.floor(state.starfieldZ * 500);
         for (let i=0; i < this.stars.length; i++) {
             const star = this.stars[i],
                 x = star.x / star.z,
                 y = star.y / star.z
 
             if (star.px !== 0) {
-                // this.canvas.strokeStyle = `hsl(${star.color}, 100%, 100%)`
                 this.canvas.strokeStyle = star.color
-                // this.canvas.strokeStyle = `hsl(${Math.random() * 360}, 100%, 50%)`
-                // this.canvas.strokeStyle = "rgba(255,255,255,1)"
-                this.canvas.lineWidth = (1.0 / star.z + 1) * 2 // size
+                this.canvas.lineWidth = (1.0 / star.z + 1) * 2
                 this.canvas.beginPath()
                 this.canvas.moveTo(x + star.originX, y + star.originY)
                 this.canvas.lineTo(star.px + star.originX, star.py + star.originY)
@@ -163,22 +156,12 @@ export class Starfield extends React.Component {
 
             // star is out of bounds
             if (star.z < state.starfieldZ
-                // || star.px < 0
-                || Math.abs(star.px) > this.halfWidth
-                // || star.py < 0
-                || Math.abs(star.py) > this.halfHeight
+                || star.px > this.width
+                || star.py > this.height
             ) {
                 this.reset(star)
             }
         }
-
-        // if (this.stars.length > state.maxStars) {
-        //     delete this.stars[i]
-        // } else if (this.stars.length < state.maxStars) {
-
-        // } else {
-
-        // }
 
         setTimeout(this.update, state.updateSpeed)
     }
@@ -240,9 +223,9 @@ export class StarfieldSettings extends React.Component {
                     <label>warp</label>
                     <input
                         type="range"
-                        min="0.02"
-                        max="0.8"
-                        step="0.02"
+                        min="0.001"
+                        max="1"
+                        step="0.005"
                         value={ state.starfieldZ }
                         onChange={ this.changeWarp }
                     />

@@ -37,6 +37,7 @@ class State {
         a: .5,
     }
     @persist @observable game = 'super-metroid'
+    @persist @observable width = 300
 }
 const state = new State()
 hydrate('general', state)
@@ -76,6 +77,10 @@ class GeneralSettings extends React.Component {
         state.abortLock = false
     }
 
+    changeWidth(event) {
+        state.width = event.target.value
+    }
+
     changeStandby(event) {
         state.standby = event.target.checked
     }
@@ -100,6 +105,17 @@ class GeneralSettings extends React.Component {
 
         return <SettingsWindow name="general settings">
             <div className="inputs">
+                {/*<div className="input">
+                    <label>width</label>
+                    <input
+                        type="range"
+                        min="200"
+                        max="450"
+                        step="10"
+                        value={ state.width }
+                        onChange={ this.changeWidth }
+                    />
+                </div>*/}
                 <div className="input">
                     <label>background color 1</label>
                     <ColorPicker
@@ -170,6 +186,41 @@ class GameSettings extends React.Component {
 }
 
 
+
+@observer
+export class TestComponentn extends React.Component {
+    constructor(props) {
+        super(props)
+        const persistKey = `settings-window-${props.name}`
+        this.settings = new State()
+        hydrate(persistKey, this.settings)
+    }
+
+    toggle(event) {
+        this.settings['collapsed'] = !this.settings['collapsed']
+    }
+
+    render() {
+        const { children } = this.props
+        const collapsedClass = this.settings['collapsed']
+            ? 'collapsed'
+            : ''
+        return <fieldset className={`settings-window ${collapsedClass}`}>
+            <div className="header">
+                <div className="name">
+                    { this.props.name }
+                </div>
+                <div className="toggle" onClick={ ::this.toggle }></div>
+            </div>
+            <div className="contents">
+                { children }
+            </div>
+        </fieldset>
+    }
+}
+
+
+
 @observer
 export default class App extends React.Component {
     resize() {
@@ -194,7 +245,9 @@ export default class App extends React.Component {
         const { bg1, bg2 } = state
 
         return <div className="app">
-            <div className="main">
+            <div className="main" style={{
+                width: `${state.width}px`
+            }}>
                 <div className="background static" />
                 <Starfield />
                 <div className="background" style={{
@@ -213,7 +266,9 @@ export default class App extends React.Component {
                     <Gamepad />
                 </div>
             </div>
-            <div className="settings">
+            <div className="settings" style={{
+                marginLeft: `${(parseInt(state.width) + parseInt(10))}px`
+            }}>
                 <GeneralSettings />
                 <StarfieldSettings />
                 <VisualizerSettings />

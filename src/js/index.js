@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 import App from './containers/App'
 import Launcher from './containers/Launcher'
 
+import 'mobx-react-lite/batchingForReactDom'
 
 const mountPoint = document.querySelector('#mount')
 if (mountPoint) {
