@@ -135,7 +135,6 @@ export class Starfield extends React.Component {
             return setTimeout(this.update, 1000)
         }
 
-        var sat = Math.floor(state.starfieldZ * 500);
         for (let i=0; i < this.stars.length; i++) {
             const star = this.stars[i],
                 x = star.x / star.z,
@@ -214,7 +213,7 @@ export class StarfieldSettings extends React.Component {
                         type="range"
                         min="0"
                         max="3000"
-                        step="10"
+                        step="1"
                         value={ state.maxStars }
                         onChange={ this.changeMaxStars }
                     />

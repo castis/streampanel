@@ -18,28 +18,33 @@ module.exports = {
     },
 
     module: {
-        rules: [{
+        rules: [
+        {
             test: /\.jsx?$/,
             include: path.resolve(__dirname, 'src/js'),
             loader: 'babel-loader',
-        }, {
+        },
+        {
             test: /\.scss$/,
             use: [
                 MiniCssExtractPlugin.loader,
                 'css-loader',
                 'sass-loader',
             ]
-        }, {
+        },
+        {
             test: /\.css$/,
             loader: 'style-loader!css-loader'
-        }, {
-            test: /\.(woff|woff2|eot|ttf)$/i,
-            loader: 'file-loader',
-            options: {
-                outputPath: 'public/fonts',
-                esModule: false,
-            },
-        },]
+        },
+        // {
+        //     test: /\.(woff|woff2|eot|ttf)$/i,
+        //     loader: 'file-loader',
+        //     options: {
+        //         outputPath: 'public/fonts',
+        //         esModule: false,
+        //     },
+        // },
+        ]
     },
 
     resolve: {
