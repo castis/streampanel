@@ -4,7 +4,7 @@ import { observable, action, computed } from 'mobx'
 import { observer } from 'mobx-react'
 import { persist } from 'mobx-persist'
 
-import { SettingsWindow } from './SettingsWindow'
+import { SettingsWindow } from '../util/SettingsWindow'
 import ColorPicker from '../util/ColorPicker'
 import { localforage, hydrate } from '../util/storage'
 

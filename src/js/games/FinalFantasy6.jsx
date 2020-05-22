@@ -5,7 +5,7 @@ import { persist } from 'mobx-persist'
 import classnames from 'classnames'
 
 import { localforage, hydrate } from '../util/storage'
-import { SettingsWindow } from '../components/SettingsWindow'
+import { SettingsWindow } from '../util/SettingsWindow'
 
 class State {
     @persist('list') @observable items = [

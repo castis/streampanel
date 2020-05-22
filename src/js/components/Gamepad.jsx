@@ -4,7 +4,7 @@ import { observer } from 'mobx-react'
 import { persist } from 'mobx-persist'
 
 import { hydrate } from '../util/storage'
-import { SettingsWindow } from './SettingsWindow'
+import { SettingsWindow } from '../util/SettingsWindow'
 
 class ControllerState {
     @persist @observable color = 'white'

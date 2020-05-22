@@ -5,8 +5,7 @@ import { observer } from 'mobx-react'
 import { persist } from 'mobx-persist'
 
 import ColorPicker from '../util/ColorPicker'
-import { SettingsWindow } from './SettingsWindow'
-
+import { SettingsWindow } from '../util/SettingsWindow'
 import { localforage, hydrate } from '../util/storage'
 
 class State {

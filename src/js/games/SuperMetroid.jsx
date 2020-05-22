@@ -3,9 +3,9 @@ import { observable } from 'mobx'
 import { observer } from 'mobx-react'
 import { persist } from 'mobx-persist'
 
-import { ItemList } from '../components/ItemList'
-import { BossList } from '../components/BossList'
-import { SettingsWindow } from '../components/SettingsWindow'
+import { ItemList } from '../util/ItemList'
+import { BossList } from '../util/BossList'
+import { SettingsWindow } from '../util/SettingsWindow'
 
 import { localforage, hydrate } from '../util/storage'
 

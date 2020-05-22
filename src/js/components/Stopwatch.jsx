@@ -7,7 +7,7 @@ import { observer } from 'mobx-react'
 
 import ColorPicker from '../util/ColorPicker'
 import { hydrate } from '../util/storage'
-import { SettingsWindow } from './SettingsWindow'
+import { SettingsWindow } from '../util/SettingsWindow'
 
 const { min, max } = Math
 
