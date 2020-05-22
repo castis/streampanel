@@ -24,19 +24,15 @@ export class SettingsWindow extends React.Component {
 
     render() {
         const { children } = this.props
-        const collapsedClass = this.settings['collapsed']
-            ? 'collapsed'
-            : ''
-        return <fieldset className={`settings-window ${collapsedClass}`}>
-            <div className="header">
-                <div className="name">
-                    { this.props.name }
+        const collapsedClass = this.settings['collapsed'] ? 'collapsed' : ''
+        return (
+            <fieldset className={`settings-window ${collapsedClass}`}>
+                <div className="header">
+                    <div className="name">{this.props.name}</div>
+                    <div className="toggle" onClick={::this.toggle} />
                 </div>
-                <div className="toggle" onClick={ ::this.toggle }></div>
-            </div>
-            <div className="contents">
-                { children }
-            </div>
-        </fieldset>
+                <div className="contents">{children}</div>
+            </fieldset>
+        )
     }
 }

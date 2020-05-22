@@ -2,7 +2,6 @@ import React from 'react'
 import classnames from 'classnames'
 import { observer } from 'mobx-react'
 
-
 @observer
 class BossView extends React.Component {
     render() {
@@ -11,13 +10,14 @@ class BossView extends React.Component {
             boss: true,
             active: item.completed,
         })
-        return <div
-            className={ classes }
-            onClick={ () => this.props.onClick(item.name) }
-        ></div>
+        return (
+            <div
+                className={classes}
+                onClick={() => this.props.onClick(item.name)}
+            />
+        )
     }
 }
-
 
 export class BossList extends React.Component {
     constructor(props) {
@@ -35,14 +35,10 @@ export class BossList extends React.Component {
 
     render() {
         const bosses = this.props.bosses.map((boss, index) => {
-            return <BossView
-                item={ boss }
-                key={ index }
-                onClick={ this.handleClick }
-            />
+            return (
+                <BossView item={boss} key={index} onClick={this.handleClick} />
+            )
         })
-        return <div className="bosses">
-            { bosses }
-        </div>
+        return <div className="bosses">{bosses}</div>
     }
 }

@@ -8,14 +8,13 @@ import { SettingsWindow } from './SettingsWindow'
 import ColorPicker from '../util/ColorPicker'
 import { localforage, hydrate } from '../util/storage'
 
-
 class State {
     @persist @observable updateSpeed = 16
     @persist('object') @observable color = {
         r: 255,
         g: 255,
         b: 255,
-        a: .37,
+        a: 0.37,
     }
     @observable started = false
     @observable permission = false
@@ -47,7 +46,8 @@ class State {
         this.paths = document.getElementsByTagName('path')
         this.mask = visualizer.getElementById('mask')
 
-        navigator.mediaDevices.getUserMedia({ audio: true })
+        navigator.mediaDevices
+            .getUserMedia({ audio: true })
             .then(this.soundAllowed)
             .catch(err => console.log(err))
 
@@ -58,7 +58,7 @@ class State {
         this.isRunning = false
         this.frequencies = this.frequencies.map(f => 0)
         while (this.mask.hasChildNodes()) {
-            this.mask.removeChild(this.mask.lastChild);
+            this.mask.removeChild(this.mask.lastChild)
         }
         this.update()
     }
@@ -76,7 +76,10 @@ class State {
         this.frequencies = new Uint8Array(this.bufferLength)
 
         for (let i = 0, path; i < this.bufferLength; i++) {
-            path = document.createElementNS('http://www.w3.org/2000/svg', 'path')
+            path = document.createElementNS(
+                'http://www.w3.org/2000/svg',
+                'path'
+            )
             this.mask.appendChild(path)
         }
 
@@ -86,14 +89,17 @@ class State {
     }
 
     frequencyMap(f, i) {
-        let len = Math.floor(f) - (Math.floor(f) % 5);
+        let len = Math.floor(f) - (Math.floor(f) % 5)
         if (this.paths[i]) {
-            this.paths[i].setAttribute('d', `M${i*this.itemWidth} 255l0 -${len}l${this.itemWidth} 0`);
+            this.paths[i].setAttribute(
+                'd',
+                `M${i * this.itemWidth} 255l0 -${len}l${this.itemWidth} 0`
+            )
         }
     }
 
     update() {
-        this.analyser.getByteFrequencyData(this.frequencies);
+        this.analyser.getByteFrequencyData(this.frequencies)
         this.frequencies.map(this.frequencyMap)
 
         if (this.isRunning) {
@@ -128,32 +134,58 @@ class State {
 const state = new State()
 hydrate('visualizer', state)
 
-
 @observer
 export class Visualizer extends React.Component {
     render() {
-        return <div className="background audio">
-            <svg preserveAspectRatio="none" id="visualizer" version="1.1" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                    <mask id="mask">
-                        <g id="maskGroup"></g>
-                    </mask>
-                    <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" style={{ stopColor:'#fff', stopOpacity: 1 }} />
-                        <stop offset="30%" style={{ stopColor:'#fff', stopOpacity: 1 }} />
-                        <stop offset="100%" style={{ stopColor:'#fff', stopOpacity: 1 }} />
-                    </linearGradient>
-                </defs>
-                <rect x="0" y="0" width="100%" height="100%" fill="url(#gradient)" mask="url(#mask)"></rect>
-            </svg>
-        </div>
+        return (
+            <div className="background audio">
+                <svg
+                    preserveAspectRatio="none"
+                    id="visualizer"
+                    version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <defs>
+                        <mask id="mask">
+                            <g id="maskGroup" />
+                        </mask>
+                        <linearGradient
+                            id="gradient"
+                            x1="0%"
+                            y1="0%"
+                            x2="0%"
+                            y2="100%"
+                        >
+                            <stop
+                                offset="0%"
+                                style={{ stopColor: '#fff', stopOpacity: 1 }}
+                            />
+                            <stop
+                                offset="30%"
+                                style={{ stopColor: '#fff', stopOpacity: 1 }}
+                            />
+                            <stop
+                                offset="100%"
+                                style={{ stopColor: '#fff', stopOpacity: 1 }}
+                            />
+                        </linearGradient>
+                    </defs>
+                    <rect
+                        x="0"
+                        y="0"
+                        width="100%"
+                        height="100%"
+                        fill="url(#gradient)"
+                        mask="url(#mask)"
+                    />
+                </svg>
+            </div>
+        )
     }
 }
 
-
 @observer
 export class VisualizerSettings extends React.Component {
-
     constructor(props) {
         super(props)
         this.toggleRunning = ::this.toggleRunning
@@ -182,29 +214,28 @@ export class VisualizerSettings extends React.Component {
             success: state.isRunning,
         })
 
-        return <SettingsWindow name="visualizer">
-            <div className="inputs">
-                <div className="input">
-                    <label>update speed</label>
-                    <input
-                        type="range"
-                        className="reverse"
-                        min="1"
-                        max="100"
-                        step="4"
-                        value={ state.updateSpeed }
-                        onChange={ this.changeSpeed }
-                    />
+        return (
+            <SettingsWindow name="visualizer">
+                <div className="inputs">
+                    <div className="input">
+                        <label>update speed</label>
+                        <input
+                            type="range"
+                            className="reverse"
+                            min="1"
+                            max="100"
+                            step="4"
+                            value={state.updateSpeed}
+                            onChange={this.changeSpeed}
+                        />
+                    </div>
                 </div>
-            </div>
-            <div className="commands">
-                <button
-                    className={ classes }
-                    onClick={ this.toggleRunning }
-                >
-                    { state.isRunning ? 'stop listening' : 'listen' }
-                </button>
-            </div>
-        </SettingsWindow>
+                <div className="commands">
+                    <button className={classes} onClick={this.toggleRunning}>
+                        {state.isRunning ? 'stop listening' : 'listen'}
+                    </button>
+                </div>
+            </SettingsWindow>
+        )
     }
 }

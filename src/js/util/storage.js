@@ -3,7 +3,7 @@ import { create } from 'mobx-persist'
 
 localforage.config({
     driver: localforage.LOCALSTORAGE,
-    name: 'streamPanel'
+    name: 'streamPanel',
 })
 
 const hydrate = create({

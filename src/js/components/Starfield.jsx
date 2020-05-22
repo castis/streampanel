@@ -9,14 +9,13 @@ import { SettingsWindow } from './SettingsWindow'
 
 import { localforage, hydrate } from '../util/storage'
 
-
 class State {
     @persist @observable updateSpeed = 16
     @persist('object') @observable color = {
         r: 255,
         g: 255,
         b: 255,
-        a: .65,
+        a: 0.65,
     }
     @persist @observable maxStars = 120
     @persist @observable warp = 1
@@ -30,7 +29,6 @@ hydrate('starfield', state)
 
 @observer
 export class Starfield extends React.Component {
-
     stars = []
     // shiftLock = false
     defaultZ = 80
@@ -67,13 +65,17 @@ export class Starfield extends React.Component {
 
     bind() {
         this.shiftLock = false
-        document.querySelector('.display').addEventListener('mousemove', this.moveStars)
+        document
+            .querySelector('.display')
+            .addEventListener('mousemove', this.moveStars)
         document.addEventListener('keydown', this.handleShiftLock)
         document.addEventListener('keyup', this.handleShiftLock)
     }
 
     unbind() {
-        document.querySelector('.display').removeEventListener('mousemove', this.moveStars)
+        document
+            .querySelector('.display')
+            .removeEventListener('mousemove', this.moveStars)
         document.removeEventListener('keydown', this.handleShiftLock)
         document.removeEventListener('keyup', this.handleShiftLock)
     }
@@ -92,7 +94,7 @@ export class Starfield extends React.Component {
 
     // if you add the stars all at once they start in noticeable waves
     addStars(count) {
-        for (let i=0, n; i < count; i++) {
+        for (let i = 0, n; i < count; i++) {
             n = {}
             this.reset(n)
             this.stars.push(n)
@@ -103,15 +105,18 @@ export class Starfield extends React.Component {
     }
 
     removeStars(count) {
-        for (let i=0; i < count; i++) {
+        for (let i = 0; i < count; i++) {
             this.stars.pop()
         }
     }
 
     reset(star) {
-        star.color = `rgba(${ state.color.r }, ${ state.color.g }, ${ state.color.b }, ${ state.color.a })`
-        star.x = (Math.random() * this.width - (this.width * 0.5)) * this.defaultZ
-        star.y = (Math.random() * this.height - (this.height * 0.5)) * this.defaultZ
+        star.color = `rgba(${state.color.r}, ${state.color.g}, ${
+            state.color.b
+        }, ${state.color.a})`
+        star.x = (Math.random() * this.width - this.width * 0.5) * this.defaultZ
+        star.y =
+            (Math.random() * this.height - this.height * 0.5) * this.defaultZ
         star.z = this.defaultZ
         star.px = 0
         star.py = 0
@@ -135,7 +140,7 @@ export class Starfield extends React.Component {
             return setTimeout(this.update, 1000)
         }
 
-        for (let i=0; i < this.stars.length; i++) {
+        for (let i = 0; i < this.stars.length; i++) {
             const star = this.stars[i],
                 x = star.x / star.z,
                 y = star.y / star.z
@@ -145,7 +150,10 @@ export class Starfield extends React.Component {
                 this.canvas.lineWidth = (1.0 / star.z + 1) * 2
                 this.canvas.beginPath()
                 this.canvas.moveTo(x + star.originX, y + star.originY)
-                this.canvas.lineTo(star.px + star.originX, star.py + star.originY)
+                this.canvas.lineTo(
+                    star.px + star.originX,
+                    star.py + star.originY
+                )
                 this.canvas.stroke()
             }
 
@@ -154,9 +162,10 @@ export class Starfield extends React.Component {
             star.z -= state.starfieldZ
 
             // star is out of bounds
-            if (star.z < state.starfieldZ
-                || star.px > this.width
-                || star.py > this.height
+            if (
+                star.z < state.starfieldZ ||
+                star.px > this.width ||
+                star.py > this.height
             ) {
                 this.reset(star)
             }
@@ -170,10 +179,8 @@ export class Starfield extends React.Component {
     }
 }
 
-
 @observer
 export class StarfieldSettings extends React.Component {
-
     constructor(props) {
         super(props)
         this.changeSpeed = ::this.changeSpeed
@@ -198,49 +205,51 @@ export class StarfieldSettings extends React.Component {
     }
 
     render() {
-        return <SettingsWindow name="starfield">
-            <div className="inputs">
-                <div className="input">
-                    <label>color</label>
-                    <ColorPicker
-                        color={ state.color }
-                        onChange={ ::this.changeColor }
-                    />
+        return (
+            <SettingsWindow name="starfield">
+                <div className="inputs">
+                    <div className="input">
+                        <label>color</label>
+                        <ColorPicker
+                            color={state.color}
+                            onChange={::this.changeColor}
+                        />
+                    </div>
+                    <div className="input">
+                        <label>stars</label>
+                        <input
+                            type="range"
+                            min="0"
+                            max="3000"
+                            step="1"
+                            value={state.maxStars}
+                            onChange={this.changeMaxStars}
+                        />
+                    </div>
+                    <div className="input">
+                        <label>warp</label>
+                        <input
+                            type="range"
+                            min="0.001"
+                            max="1"
+                            step="0.005"
+                            value={state.starfieldZ}
+                            onChange={this.changeWarp}
+                        />
+                    </div>
+                    <div className="input">
+                        <label>update speed</label>
+                        <input
+                            type="range"
+                            className="reverse"
+                            min="1"
+                            max="40"
+                            value={state.updateSpeed}
+                            onChange={this.changeSpeed}
+                        />
+                    </div>
                 </div>
-                <div className="input">
-                    <label>stars</label>
-                    <input
-                        type="range"
-                        min="0"
-                        max="3000"
-                        step="1"
-                        value={ state.maxStars }
-                        onChange={ this.changeMaxStars }
-                    />
-                </div>
-                <div className="input">
-                    <label>warp</label>
-                    <input
-                        type="range"
-                        min="0.001"
-                        max="1"
-                        step="0.005"
-                        value={ state.starfieldZ }
-                        onChange={ this.changeWarp }
-                    />
-                </div>
-                <div className="input">
-                    <label>update speed</label>
-                    <input
-                        type="range"
-                        className="reverse"
-                        min="1"
-                        max="40"
-                        value={ state.updateSpeed }
-                        onChange={ this.changeSpeed }
-                    />
-                </div>
-            </div>
-        </SettingsWindow>
+            </SettingsWindow>
+        )
     }
 }

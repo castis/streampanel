@@ -7,9 +7,7 @@ import { ItemList } from '../components/ItemList'
 import { BossList } from '../components/BossList'
 import { SettingsWindow } from '../components/SettingsWindow'
 
-
 import { localforage, hydrate } from '../util/storage'
-
 
 class State {
     @persist('list') @observable items = [
@@ -60,33 +58,35 @@ class State {
 const state = new State()
 hydrate('supermetroid', state)
 
-
 @observer
 export class SuperMetroid extends React.Component {
     render() {
-        return <div className="super-metroid">
-            <ItemList items={ state.items } />
-            <BossList bosses={ state.bosses } />
-        </div>
+        return (
+            <div className="super-metroid">
+                <ItemList items={state.items} />
+                <BossList bosses={state.bosses} />
+            </div>
+        )
     }
 }
-
 
 @observer
 export class SuperMetroidSettings extends React.Component {
     reset() {
-        state.items.map(i => i.completed = false)
-        state.bosses.map(b => b.completed = false)
+        state.items.map(i => (i.completed = false))
+        state.bosses.map(b => (b.completed = false))
     }
 
     render() {
-        return <SettingsWindow name="super metroid">
-            <div className="inputs">
-                <div className="input">
-                    <label>reset progress</label>
-                    <button onClick={ this.reset }>reset</button>
+        return (
+            <SettingsWindow name="super metroid">
+                <div className="inputs">
+                    <div className="input">
+                        <label>reset progress</label>
+                        <button onClick={this.reset}>reset</button>
+                    </div>
                 </div>
-            </div>
-        </SettingsWindow>
+            </SettingsWindow>
+        )
     }
 }

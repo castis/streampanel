@@ -7,7 +7,6 @@ import classnames from 'classnames'
 import { localforage, hydrate } from '../util/storage'
 import { SettingsWindow } from '../components/SettingsWindow'
 
-
 class State {
     @persist('list') @observable items = [
         'terra',
@@ -36,54 +35,57 @@ class State {
 const state = new State()
 hydrate('final-fantasy-6', state)
 
-
-const ItemView = observer(({ item }) =>
-    <div className={ classnames({
-        item: true,
-        active: item.completed,
-    }) }>
+const ItemView = observer(({ item }) => (
+    <div
+        className={classnames({
+            item: true,
+            active: item.completed,
+        })}
+    >
         <img
-            src={ `/img/ff6-characters/${item.name}.gif` }
-            onClick={ () => item.completed = !item.completed }
+            src={`/img/ff6-characters/${item.name}.gif`}
+            onClick={() => (item.completed = !item.completed)}
         />
     </div>
-)
+))
 
 @observer
 class ItemList extends React.Component {
     render() {
         const items = this.props.items.map((item, index) => {
-            return <ItemView item={ item } key={ index } />
+            return <ItemView item={item} key={index} />
         })
-        return <div className="items">{ items }</div>
+        return <div className="items">{items}</div>
     }
 }
-
 
 @observer
 export class FinalFantasy6 extends React.Component {
     render() {
-        return <div className="final-fantasy-6">
-            <ItemList items={ state.items } />
-        </div>
+        return (
+            <div className="final-fantasy-6">
+                <ItemList items={state.items} />
+            </div>
+        )
     }
 }
-
 
 @observer
 export class FinalFantasy6Settings extends React.Component {
     reset() {
-        state.items.map(i => i.completed = false)
+        state.items.map(i => (i.completed = false))
     }
 
     render() {
-        return <SettingsWindow name="final fantasy 6">
-            <div className="inputs">
-                <div className="input">
-                    <label>reset progress</label>
-                    <button onClick={ this.reset }>reset</button>
+        return (
+            <SettingsWindow name="final fantasy 6">
+                <div className="inputs">
+                    <div className="input">
+                        <label>reset progress</label>
+                        <button onClick={this.reset}>reset</button>
+                    </div>
                 </div>
-            </div>
-        </SettingsWindow>
+            </SettingsWindow>
+        )
     }
 }

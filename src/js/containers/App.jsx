@@ -28,23 +28,21 @@ class State {
         r: 180,
         g: 135,
         b: 110,
-        a: .2,
+        a: 0.2,
     }
     @persist('object') @observable bg2 = {
         r: 20,
         g: 130,
         b: 190,
-        a: .5,
+        a: 0.5,
     }
     @persist @observable game = 'super-metroid'
 }
 const state = new State()
 hydrate('general', state)
 
-
 @observer
 class GeneralSettings extends React.Component {
-
     constructor(props) {
         super(props)
         this.reset = ::this.reset
@@ -86,57 +84,64 @@ class GeneralSettings extends React.Component {
 
     render() {
         let buttons = [
-            <button key="1" onClick={ this.reset }>{ state.abortLock ? 'confirm' : 'hard reset' }</button>
+            <button key="1" onClick={this.reset}>
+                {state.abortLock ? 'confirm' : 'hard reset'}
+            </button>,
         ]
 
         if (state.abortLock) {
-            buttons.push(<button key="2" onClick={ this.abortReset }>cancel</button>)
+            buttons.push(
+                <button key="2" onClick={this.abortReset}>
+                    cancel
+                </button>
+            )
         }
 
         const games = Object.keys(this.availableGames).map(k => {
-            return <option key={ k } value={ k }>{ this.availableGames[k] }</option>
+            return (
+                <option key={k} value={k}>
+                    {this.availableGames[k]}
+                </option>
+            )
         })
 
-
-        return <SettingsWindow name="general settings">
-            <div className="inputs">
-                <div className="input">
-                    <label>background color 1</label>
-                    <ColorPicker
-                        color={ state.bg1 }
-                        onChange={ ::this.changeBg1 }
-                    />
+        return (
+            <SettingsWindow name="general settings">
+                <div className="inputs">
+                    <div className="input">
+                        <label>background color 1</label>
+                        <ColorPicker
+                            color={state.bg1}
+                            onChange={::this.changeBg1}
+                        />
+                    </div>
+                    <div className="input">
+                        <label>background color 2</label>
+                        <ColorPicker
+                            color={state.bg2}
+                            onChange={::this.changeBg2}
+                        />
+                    </div>
+                    <div className="input">
+                        <label>game</label>
+                        <select value={state.game} onChange={this.changeGame}>
+                            {games}
+                        </select>
+                    </div>
+                    <div className="input">
+                        <label>standby</label>
+                        <input
+                            type="checkbox"
+                            checked={state.standby}
+                            onChange={this.changeStandby}
+                        />
+                    </div>
                 </div>
-                <div className="input">
-                    <label>background color 2</label>
-                    <ColorPicker
-                        color={ state.bg2 }
-                        onChange={ ::this.changeBg2 }
-                    />
-                </div>
-                <div className="input">
-                    <label>game</label>
-                    <select value={ state.game } onChange={ this.changeGame }>
-                        { games }
-                    </select>
-                </div>
-                <div className="input">
-                    <label>standby</label>
-                    <input
-                        type="checkbox"
-                        checked={ state.standby }
-                        onChange={ this.changeStandby }
-                    />
-                </div>
-            </div>
-            <div className="commands">
-                { buttons }
-            </div>
-        </SettingsWindow>
-
+                <div className="commands">{buttons}</div>
+            </SettingsWindow>
+        )
     }
 }
-
 
 @observer
 class Game extends React.Component {
@@ -153,7 +158,6 @@ class Game extends React.Component {
     }
 }
 
-
 @observer
 class GameSettings extends React.Component {
     constructor(props) {
@@ -169,50 +173,59 @@ class GameSettings extends React.Component {
     }
 }
 
-
-
 @observer
-export class TestComponentn extends React.Component {
-    constructor(props) {
-        super(props)
-        const persistKey = `settings-window-${props.name}`
-        this.settings = new State()
-        hydrate(persistKey, this.settings)
-    }
+export class Background extends React.Component {
+    // constructor(props) {
+    //     super(props)
+    //     const persistKey = `settings-window-${props.name}`
+    //     this.settings = new State()
+    //     hydrate(persistKey, this.settings)
+    // }
 
-    toggle(event) {
-        this.settings['collapsed'] = !this.settings['collapsed']
-    }
+    // toggle(event) {
+    //     this.settings['collapsed'] = !this.settings['collapsed']
+    // }
 
     render() {
-        const { children } = this.props
-        const collapsedClass = this.settings['collapsed']
-            ? 'collapsed'
-            : ''
-        return <fieldset className={`settings-window ${collapsedClass}`}>
-            <div className="header">
-                <div className="name">
-                    { this.props.name }
-                </div>
-                <div className="toggle" onClick={ ::this.toggle }></div>
-            </div>
-            <div className="contents">
-                { children }
-            </div>
-        </fieldset>
+        const { bg1, bg2 } = state
+        return (
+            <>
+                <div className="background static" />
+                <Starfield />
+                <div
+                    className="background"
+                    style={{
+                        backgroundImage: `linear-gradient(
+                    rgba(${bg1.r}, ${bg1.g}, ${bg1.b}, ${bg1.a}),
+                    rgba(${bg2.r}, ${bg2.g}, ${bg2.b}, ${bg2.a})
+                )`,
+                    }}
+                />
+                <Visualizer />
+            </>
+        )
     }
 }
 
-
+export class BackgroundSettings extends React.Component {
+    render() {
+        return (
+            <>
+                <GeneralSettings />
+                <StarfieldSettings />
+                <VisualizerSettings />
+            </>
+        )
+    }
+}
 
 @observer
 export default class App extends React.Component {
     resize() {
         const { body } = document
-
         localforage.setItem('window', {
-            'width': body.clientWidth,
-            'height': body.clientHeight,
+            width: body.clientWidth,
+            height: body.clientHeight,
         })
     }
 
@@ -226,36 +239,28 @@ export default class App extends React.Component {
     }
 
     render() {
-        const { bg1, bg2 } = state
-
-        return <div className="app">
-            <div className="main">
-                <div className="background static" />
-                <Starfield />
-                <div className="background" style={{
-                    backgroundImage: `linear-gradient(
-                        rgba(${bg1.r}, ${bg1.g}, ${bg1.b}, ${bg1.a}),
-                        rgba(${bg2.r}, ${bg2.g}, ${bg2.b}, ${bg2.a})
-                    )`,
-                }} />
-                <Visualizer />
-                <div className={ classnames({
-                    display: true,
-                    standby: state.standby,
-                }) }>
-                    <Game />
-                    <Stopwatch />
-                    <Gamepad />
+        return (
+            <div className="app">
+                <div className="main">
+                    <Background />
+                    <div
+                        className={classnames({
+                            display: true,
+                            standby: state.standby,
+                        })}
+                    >
+                        <Game />
+                        <Stopwatch />
+                        <Gamepad />
+                    </div>
+                </div>
+                <div className="settings">
+                    <BackgroundSettings />
+                    <GameSettings />
+                    <StopwatchSettings />
+                    <GamepadSettings />
                 </div>
             </div>
-            <div className="settings">
-                <GeneralSettings />
-                <StarfieldSettings />
-                <VisualizerSettings />
-                <GameSettings />
-                <StopwatchSettings />
-                <GamepadSettings />
-            </div>
-        </div>
+        )
     }
 }

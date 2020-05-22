@@ -6,7 +6,6 @@ import { persist } from 'mobx-persist'
 import { hydrate } from '../util/storage'
 import { SettingsWindow } from './SettingsWindow'
 
-
 class ControllerState {
     @persist @observable color = 'white'
     @persist @observable style = 'inherit'
@@ -99,13 +98,13 @@ class ControllerState {
             if (this.buttons.length > this.configurable + 1) {
                 this.buttonLock = index
                 this.configurable++
-            // otherwise shut it down
+                // otherwise shut it down
             } else {
                 this.stopConfiguration()
             }
-        // if the current button was previously configured
-        // but isnt being pressed
-        } else if (!button.pressed  && this.buttonLock == index) {
+            // if the current button was previously configured
+            // but isnt being pressed
+        } else if (!button.pressed && this.buttonLock == index) {
             this.buttonLock = undefined
         }
     }
@@ -127,41 +126,43 @@ class ControllerState {
 const state = new ControllerState()
 hydrate('controller', state)
 
-
 @observer
 export class Gamepad extends React.Component {
     render() {
-        return <div className={`gamepad ${state.color} ${state.style}`} style={{
-                opacity: `${state.opacity}`,
-            }}>
-            <div className="shoulder">
-                <div className={`btn l1 ${state.button.l1}`}></div>
-                <div className={`btn r1 ${state.button.r1}`}></div>
+        return (
+            <div
+                className={`gamepad ${state.color} ${state.style}`}
+                style={{
+                    opacity: `${state.opacity}`,
+                }}
+            >
+                <div className="shoulder">
+                    <div className={`btn l1 ${state.button.l1}`} />
+                    <div className={`btn r1 ${state.button.r1}`} />
+                </div>
+                <div className="body">
+                    <div className="dpad">
+                        <div className={`btn up ${state.button.up}`} />
+                        <div className={`btn down ${state.button.down}`} />
+                        <div className={`btn left ${state.button.left}`} />
+                        <div className={`btn right ${state.button.right}`} />
+                        <div className={`btn mode ${state.button.mode}`} />
+                    </div>
+                    <div className="meta">
+                        <div className={`btn select ${state.button.select}`} />
+                        <div className={`btn start ${state.button.start}`} />
+                    </div>
+                    <div className="action">
+                        <div className={`btn x ${state.button.x}`} />
+                        <div className={`btn y ${state.button.y}`} />
+                        <div className={`btn a ${state.button.a}`} />
+                        <div className={`btn b ${state.button.b}`} />
+                    </div>
+                </div>
             </div>
-            <div className="body">
-                <div className="dpad">
-                    <div className={`btn up ${state.button.up}`}></div>
-                    <div className={`btn down ${state.button.down}`}></div>
-                    <div className={`btn left ${state.button.left}`}></div>
-                    <div className={`btn right ${state.button.right}`}></div>
-                    <div className={`btn mode ${state.button.mode}`}></div>
-                </div>
-                <div className="meta">
-                    <div className={`btn select ${state.button.select}`}></div>
-                    <div className={`btn start ${state.button.start}`}></div>
-                </div>
-                <div className="action">
-                    <div className={`btn x ${state.button.x}`}></div>
-                    <div className={`btn y ${state.button.y}`}></div>
-                    <div className={`btn a ${state.button.a}`}></div>
-                    <div className={`btn b ${state.button.b}`}></div>
-                </div>
-            </div>
-        </div>
+        )
     }
 }
-
-
 
 @observer
 export class GamepadSettings extends React.Component {
@@ -176,15 +177,18 @@ export class GamepadSettings extends React.Component {
 
     componentDidMount() {
         if ('GamepadEvent' in window) {
-            window.addEventListener('gamepadconnected', this.addGamepad);
-            window.addEventListener('gamepaddisconnected', this.removeGamepad);
+            window.addEventListener('gamepadconnected', this.addGamepad)
+            window.addEventListener('gamepaddisconnected', this.removeGamepad)
         }
     }
 
     componentWillUnmount() {
         if ('GamepadEvent' in window) {
-            window.removeEventListener('gamepadconnected', this.addGamepad);
-            window.removeEventListener('gamepaddisconnected', this.removeGamepad);
+            window.removeEventListener('gamepadconnected', this.addGamepad)
+            window.removeEventListener(
+                'gamepaddisconnected',
+                this.removeGamepad
+            )
         }
     }
 
@@ -237,72 +241,82 @@ export class GamepadSettings extends React.Component {
 
     render() {
         const options = state.gamepads.map(c => {
-            return <option key={ c.index } value={ c.index }>
-                { c.id }
-            </option>
+            return (
+                <option key={c.index} value={c.index}>
+                    {c.id}
+                </option>
+            )
         })
-        options.unshift(<option key="-1" value="-1">none</option>)
+        options.unshift(
+            <option key="-1" value="-1">
+                none
+            </option>
+        )
 
-        return <SettingsWindow name="controller">
-            <div className="inputs">
-                <div className="input">
-                    <label>input</label>
-                    <select
-                        value={ state.activeIndex }
-                        onChange={ ::this.updateGamepad }
-                    >
-                        { options }
-                    </select>
+        return (
+            <SettingsWindow name="controller">
+                <div className="inputs">
+                    <div className="input">
+                        <label>input</label>
+                        <select
+                            value={state.activeIndex}
+                            onChange={::this.updateGamepad}
+                        >
+                            {options}
+                        </select>
+                    </div>
+                    <div className="input">
+                        <label>outline</label>
+                        <select
+                            value={state.color}
+                            onChange={::this.updateColor}
+                        >
+                            <option value="white">white</option>
+                            <option value="black">black</option>
+                        </select>
+                    </div>
+                    <div className="input">
+                        <label>style</label>
+                        <select
+                            value={state.style}
+                            onChange={::this.updateStyle}
+                        >
+                            <option value="inherit">inherit</option>
+                            <option value="american">american</option>
+                            <option value="famicom">famicom</option>
+                            <option value="superfamicom">super famicom</option>
+                        </select>
+                    </div>
+                    <div className="input">
+                        <label>opacity</label>
+                        <input
+                            type="range"
+                            min="0"
+                            max="1"
+                            step="0.01"
+                            value={state.opacity}
+                            onChange={this.updateOpacity}
+                        />
+                    </div>
+                    <div className="input">
+                        <label>update speed</label>
+                        <input
+                            type="range"
+                            className="reverse"
+                            min="4"
+                            max="256"
+                            step="1"
+                            value={state.updateSpeed}
+                            onChange={this.updateSpeed}
+                        />
+                    </div>
                 </div>
-                <div className="input">
-                    <label>outline</label>
-                    <select
-                        value={ state.color }
-                        onChange={ ::this.updateColor }
-                    >
-                        <option value="white">white</option>
-                        <option value="black">black</option>
-                    </select>
+                <div className="commands">
+                    <button onClick={this.configure}>
+                        {state.configurable > -1 ? 'cancel' : 'configure'}
+                    </button>
                 </div>
-                <div className="input">
-                    <label>style</label>
-                    <select
-                        value={ state.style }
-                        onChange={ ::this.updateStyle }
-                    >
-                        <option value="inherit">inherit</option>
-                        <option value="american">american</option>
-                        <option value="famicom">famicom</option>
-                        <option value="superfamicom">super famicom</option>
-                    </select>
-                </div>
-                <div className="input">
-                    <label>opacity</label>
-                    <input
-                        type="range"
-                        min="0"
-                        max="1"
-                        step="0.01"
-                        value={ state.opacity }
-                        onChange={ this.updateOpacity }
-                    />
-                </div>
-                <div className="input">
-                    <label>update speed</label>
-                    <input
-                        type="range"
-                        className="reverse"
-                        min="4"
-                        max="256"
-                        step="1"
-                        value={ state.updateSpeed }
-                        onChange={ this.updateSpeed }
-                    />
-                </div>
-            </div>
-            <div className="commands">
-                <button onClick={ this.configure }>{ (state.configurable > -1) ? 'cancel' : 'configure' }</button>
-            </div>
-        </SettingsWindow>
+            </SettingsWindow>
+        )
     }
 }

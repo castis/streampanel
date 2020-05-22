@@ -116,21 +116,21 @@ class TimerState {
     }
 
     @observable splits = [
-    // {
-    //     name: 'Morph Ball',
-    //     target: 7264,
-    //     actual: undefined,
-    // },
-    // {
-    //     name: 'Bombs',
-    //     target: 12345,
-    //     actual: undefined,
-    // },
-    // {
-    //     name: 'Varia Suit',
-    //     target: 12789,
-    //     actual: undefined,
-    // },
+// {
+//     name: 'Morph Ball',
+//     target: 7264,
+//     actual: undefined,
+// },
+// {
+//     name: 'Bombs',
+//     target: 12345,
+//     actual: undefined,
+// },
+// {
+//     name: 'Varia Suit',
+//     target: 12789,
+//     actual: undefined,
+// },
     ]
 
     activeSplit = 1

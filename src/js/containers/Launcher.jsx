@@ -3,7 +3,6 @@ import React from 'react'
 import { flatten } from '../util/functions'
 import { localforage } from '../util/storage'
 
-
 export default class Launcher extends React.Component {
     state = {
         width: 630,
@@ -19,16 +18,24 @@ export default class Launcher extends React.Component {
         // App.resize stores its window dimensions in local storage
         // so we can remember the size of the window
         localforage.getItem('window').then(w => {
-            open('app', '', flatten({
-                ...this.state,
-                ...w,
-            }))
+            open(
+                'app',
+                '',
+                flatten({
+                    ...this.state,
+                    ...w,
+                })
+            )
         })
     }
 
     render() {
-        return <div className="launcher">
-            <button type="button" onClick={ ::this.click }>Launch</button>
-        </div>
+        return (
+            <div className="launcher">
+                <button type="button" onClick={::this.click}>
+                    Launch
+                </button>
+            </div>
+        )
     }
 }
