@@ -9,52 +9,55 @@ import { SettingsWindow } from '../util/SettingsWindow'
 
 import { storage } from '../util/storage'
 
-const state = storage('super-metroid', new class {
-    @persist('list') @observable items = [
-        // 'missile',
-        // 'super',
-        // 'pbomb',
-        // 'grappling',
-        // 'xray',
+const state = storage(
+    'super-metroid',
+    new (class {
+        @persist('list') @observable items = [
+            // 'missile',
+            // 'super',
+            // 'pbomb',
+            // 'grappling',
+            // 'xray',
 
-        'charge',
-        'ice',
-        'wave',
-        'spazer',
-        'plasma',
+            'charge',
+            'ice',
+            'wave',
+            'spazer',
+            'plasma',
 
-        'varia',
-        'gravity',
+            'varia',
+            'gravity',
 
-        'morph',
-        'bomb',
-        'springball',
-        'screw',
+            'morph',
+            'bomb',
+            'springball',
+            'screw',
 
-        'hijump',
-        'space',
-        'speed',
-    ]
+            'hijump',
+            'space',
+            'speed',
+        ]
 
-    @persist('list') @observable bosses = [
-        'kraid',
-        'phantoon',
-        'draygon',
-        'ridley',
-    ]
+        @persist('list') @observable bosses = [
+            'kraid',
+            'phantoon',
+            'draygon',
+            'ridley',
+        ]
 
-    constructor() {
-        this.items = this.items.map(item => ({
-            name: item,
-            completed: false,
-        }))
+        constructor() {
+            this.items = this.items.map(item => ({
+                name: item,
+                completed: false,
+            }))
 
-        this.bosses = this.bosses.map(item => ({
-            name: item,
-            completed: false,
-        }))
-    }
-}())
+            this.bosses = this.bosses.map(item => ({
+                name: item,
+                completed: false,
+            }))
+        }
+    })()
+)
 
 @observer
 export class SuperMetroid extends React.Component {

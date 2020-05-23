@@ -4,16 +4,13 @@ import { observable } from 'mobx'
 import { observer } from 'mobx-react'
 import { persist } from 'mobx-persist'
 
-
-const urlify = obj => Object
-    .keys(obj)
-    .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(obj[k]))
-    .join('&')
-
+const urlify = obj =>
+    Object.keys(obj)
+        .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(obj[k]))
+        .join('&')
 
 @observer
 export class Spotify extends React.Component {
-
     componentDidMount() {
         // const url = `https://accounts.spotify.com/authorize?${urlify({
         //     response_type: 'code',
@@ -31,16 +28,18 @@ export class Spotify extends React.Component {
     }
 
     render() {
-        return <div
-            className="spotify"
-            onClick={ () => console.log("panic and shit your pants") }
-        >
-            <div className="now-playing">
-                <div className="head">now playing</div>
-                <div className="art"></div>
-                <div className="artist"></div>
-                <div className="song"></div>
+        return (
+            <div
+                className="spotify"
+                onClick={() => console.log('panic and shit your pants')}
+            >
+                <div className="now-playing">
+                    <div className="head">now playing</div>
+                    <div className="art" />
+                    <div className="artist" />
+                    <div className="song" />
+                </div>
             </div>
-        </div>
+        )
     }
 }

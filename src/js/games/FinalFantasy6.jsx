@@ -7,31 +7,34 @@ import classnames from 'classnames'
 import { storage } from '../util/storage'
 import { SettingsWindow } from '../util/SettingsWindow'
 
-const state = storage('final-fantasy-6', new class {
-    @persist('list') @observable items = [
-        'terra',
-        'locke',
-        'celes',
-        'edgar',
-        'sabin',
-        'cyan',
-        'shadow',
-        'gau',
-        'setzer',
-        'strago',
-        'relm',
-        'mog',
-        'gogo',
-        'umaro',
-    ]
+const state = storage(
+    'final-fantasy-6',
+    new (class {
+        @persist('list') @observable items = [
+            'terra',
+            'locke',
+            'celes',
+            'edgar',
+            'sabin',
+            'cyan',
+            'shadow',
+            'gau',
+            'setzer',
+            'strago',
+            'relm',
+            'mog',
+            'gogo',
+            'umaro',
+        ]
 
-    constructor() {
-        this.items = this.items.map(item => ({
-            name: item,
-            completed: false,
-        }))
-    }
-}())
+        constructor() {
+            this.items = this.items.map(item => ({
+                name: item,
+                completed: false,
+            }))
+        }
+    })()
+)
 
 const ItemView = observer(({ item }) => (
     <div

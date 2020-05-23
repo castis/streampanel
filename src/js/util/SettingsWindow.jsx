@@ -13,7 +13,6 @@ class State {
 export class SettingsWindow extends React.Component {
     constructor(props) {
         super(props)
-        const persistKey =
         this.settings = storage(`settings-window-${props.name}`, new State())
     }
 
@@ -22,7 +21,6 @@ export class SettingsWindow extends React.Component {
     }
 
     render() {
-        const { children } = this.props
         const collapsedClass = this.settings['collapsed'] ? 'collapsed' : ''
         return (
             <fieldset className={`settings-window ${collapsedClass}`}>
@@ -30,9 +28,8 @@ export class SettingsWindow extends React.Component {
                     <div className="name">{this.props.name}</div>
                     <div className="toggle" onClick={::this.toggle} />
                 </div>
-                <div className="contents">{children}</div>
+                <div className="contents">{this.props.children}</div>
             </fieldset>
         )
     }
 }
-

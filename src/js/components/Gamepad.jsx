@@ -6,123 +6,126 @@ import { persist } from 'mobx-persist'
 import { storage } from '../util/storage'
 import { SettingsWindow } from '../util/SettingsWindow'
 
-const state = storage('controller', new class {
-    @persist @observable color = 'white'
-    @persist @observable style = 'inherit'
-    @persist @observable opacity = 0.4
-    @persist @observable updateSpeed = 50
-    @observable gamepads = []
-    @observable activeIndex = -1
-    @observable buttons = []
+const state = storage(
+    'controller',
+    new (class {
+        @persist @observable color = 'white'
+        @persist @observable style = 'inherit'
+        @persist @observable opacity = 0.4
+        @persist @observable updateSpeed = 50
+        @observable gamepads = []
+        @observable activeIndex = -1
+        @observable buttons = []
 
-    buttonLock = undefined
-    buttons = [
-        'up',
-        'down',
-        'left',
-        'right',
-        'a',
-        'b',
-        'x',
-        'y',
-        'l1',
-        'r1',
-        'select',
-        'start',
-    ]
-    // which buttons index are we configuring?
-    @observable configurable = -1
+        buttonLock = undefined
+        buttons = [
+            'up',
+            'down',
+            'left',
+            'right',
+            'a',
+            'b',
+            'x',
+            'y',
+            'l1',
+            'r1',
+            'select',
+            'start',
+        ]
+        // which buttons index are we configuring?
+        @observable configurable = -1
 
-    // className to apply to each rendered button
-    @observable button = {
-        up: '',
-        down: '',
-        left: '',
-        right: '',
-        a: '',
-        b: '',
-        x: '',
-        y: '',
-        l1: '',
-        r1: '',
-        select: '',
-        start: '',
-        mode: '',
-    }
-
-    @persist('object') @observable map = {}
-
-    constructor() {
-        this.update = ::this.update
-        this.buttonUpdate = ::this.buttonUpdate
-        this.configure = ::this.configure
-    }
-
-    update() {
-        if (this.active) {
-            this.active.buttons.map(this.buttonUpdate)
-            setTimeout(this.update, this.updateSpeed)
+        // className to apply to each rendered button
+        @observable button = {
+            up: '',
+            down: '',
+            left: '',
+            right: '',
+            a: '',
+            b: '',
+            x: '',
+            y: '',
+            l1: '',
+            r1: '',
+            select: '',
+            start: '',
+            mode: '',
         }
-    }
 
-    buttonUpdate(button, index) {
-        if (this.configurable > -1) {
-            return this.configure(button, index)
+        @persist('object') @observable map = {}
+
+        constructor() {
+            this.update = ::this.update
+            this.buttonUpdate = ::this.buttonUpdate
+            this.configure = ::this.configure
         }
-        this.button[this.map[index]] = button.pressed ? 'active' : ''
-    }
 
-    stopConfiguration() {
-        this.configurable = -1
-        Object.keys(this.button).forEach(b => {
-            this.button[b] = ''
-        })
-    }
-
-    configure(button, index) {
-        if (this.buttons.length > index) {
-            if (this.configurable == index) {
-                this.button[this.buttons[index]] = 'configure active'
-            } else {
-                this.button[this.buttons[index]] = ''
+        update() {
+            if (this.active) {
+                this.active.buttons.map(this.buttonUpdate)
+                setTimeout(this.update, this.updateSpeed)
             }
         }
 
-        // if a button was pressed
-        // but not the previously configured index
-        if (button.pressed && this.buttonLock != index) {
-            // map the current configurable index
-            this.map[index] = this.buttons[this.configurable]
-
-            // if theres a next button
-            if (this.buttons.length > this.configurable + 1) {
-                this.buttonLock = index
-                this.configurable++
-                // otherwise shut it down
-            } else {
-                this.stopConfiguration()
+        buttonUpdate(button, index) {
+            if (this.configurable > -1) {
+                return this.configure(button, index)
             }
-            // if the current button was previously configured
-            // but isnt being pressed
-        } else if (!button.pressed && this.buttonLock == index) {
-            this.buttonLock = undefined
+            this.button[this.map[index]] = button.pressed ? 'active' : ''
         }
-    }
 
-    start(index) {
-        if (this.gamepads[index]) {
-            this.activeIndex = index
-            this.active = this.gamepads[index]
-            this.update()
+        stopConfiguration() {
+            this.configurable = -1
+            Object.keys(this.button).forEach(b => {
+                this.button[b] = ''
+            })
         }
-    }
 
-    stop() {
-        this.activeIndex = -1
-        this.active = undefined
-        this.buttons = []
-    }
-}())
+        configure(button, index) {
+            if (this.buttons.length > index) {
+                if (this.configurable == index) {
+                    this.button[this.buttons[index]] = 'configure active'
+                } else {
+                    this.button[this.buttons[index]] = ''
+                }
+            }
+
+            // if a button was pressed
+            // but not the previously configured index
+            if (button.pressed && this.buttonLock != index) {
+                // map the current configurable index
+                this.map[index] = this.buttons[this.configurable]
+
+                // if theres a next button
+                if (this.buttons.length > this.configurable + 1) {
+                    this.buttonLock = index
+                    this.configurable++
+                    // otherwise shut it down
+                } else {
+                    this.stopConfiguration()
+                }
+                // if the current button was previously configured
+                // but isnt being pressed
+            } else if (!button.pressed && this.buttonLock == index) {
+                this.buttonLock = undefined
+            }
+        }
+
+        start(index) {
+            if (this.gamepads[index]) {
+                this.activeIndex = index
+                this.active = this.gamepads[index]
+                this.update()
+            }
+        }
+
+        stop() {
+            this.activeIndex = -1
+            this.active = undefined
+            this.buttons = []
+        }
+    })()
+)
 
 @observer
 export class Gamepad extends React.Component {

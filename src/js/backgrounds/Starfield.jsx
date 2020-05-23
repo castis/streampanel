@@ -8,23 +8,25 @@ import ColorPicker from '../util/ColorPicker'
 import { SettingsWindow } from '../util/SettingsWindow'
 import { storage } from '../util/storage'
 
+const state = storage(
+    'starfield',
+    new (class {
+        @persist @observable enabled = true
+        @persist @observable updateSpeed = 5
+        @persist('object') @observable color = {
+            r: 255,
+            g: 255,
+            b: 255,
+            a: 0.65,
+        }
+        @persist @observable maxStars = 450
+        @persist @observable warp = 0.2
 
-const state = storage('starfield', new class {
-    @persist @observable enabled = true
-    @persist @observable updateSpeed = 5
-    @persist('object') @observable color = {
-        r: 255,
-        g: 255,
-        b: 255,
-        a: 0.65,
-    }
-    @persist @observable maxStars = 450
-    @persist @observable warp = 0.200
-
-    @persist @observable starfieldZ = 0.09
-    @persist @observable starfieldX = 200
-    @persist @observable starfieldY = 320
-}())
+        @persist @observable starfieldZ = 0.09
+        @persist @observable starfieldX = 200
+        @persist @observable starfieldY = 320
+    })()
+)
 
 @observer
 export class Starfield extends React.Component {

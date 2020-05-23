@@ -8,129 +8,132 @@ import { SettingsWindow } from '../util/SettingsWindow'
 import ColorPicker from '../util/ColorPicker'
 import { storage } from '../util/storage'
 
-const state = storage('visualizer', new class {
-    @persist @observable enabled = true
-    @persist @observable updateSpeed = 16
-    @persist('object') @observable color = {
-        r: 255,
-        g: 255,
-        b: 255,
-        a: 0.37,
-    }
-    @observable started = false
-    @observable permission = false
-    @observable running = false
+const state = storage(
+    'visualizer',
+    new (class {
+        @persist @observable enabled = true
+        @persist @observable updateSpeed = 16
+        @persist('object') @observable color = {
+            r: 255,
+            g: 255,
+            b: 255,
+            a: 0.37,
+        }
+        @observable started = false
+        @observable permission = false
+        @observable running = false
 
-    paths = []
-    visualizer = undefined
-    mask = undefined
-    audioContext = undefined
-    analyzer = undefined
-    bufferLength = 82
-    frequencies = new Uint8Array(82)
+        paths = []
+        visualizer = undefined
+        mask = undefined
+        audioContext = undefined
+        analyzer = undefined
+        bufferLength = 82
+        frequencies = new Uint8Array(82)
 
-    constructor() {
-        this.start = ::this.start
-        this.soundAllowed = ::this.soundAllowed
-        this.update = ::this.update
-        this.frequencyMap = ::this.frequencyMap
-    }
-
-    start(stream) {
-        if (this.running) {
-            return
+        constructor() {
+            this.start = ::this.start
+            this.soundAllowed = ::this.soundAllowed
+            this.update = ::this.update
+            this.frequencyMap = ::this.frequencyMap
         }
 
-        const visualizer = document.getElementById('visualizer')
-        visualizer.setAttribute('viewBox', '0 0 255 255')
+        start(stream) {
+            if (this.running) {
+                return
+            }
 
-        this.paths = document.getElementsByTagName('path')
-        this.mask = visualizer.getElementById('mask')
+            const visualizer = document.getElementById('visualizer')
+            visualizer.setAttribute('viewBox', '0 0 255 255')
 
-        navigator.mediaDevices
-            .getUserMedia({ audio: true })
-            .then(this.soundAllowed)
-            .catch(err => console.log(err))
+            this.paths = document.getElementsByTagName('path')
+            this.mask = visualizer.getElementById('mask')
 
-        this.audioContext = new AudioContext()
-    }
+            navigator.mediaDevices
+                .getUserMedia({ audio: true })
+                .then(this.soundAllowed)
+                .catch(err => console.log(err))
 
-    stop() {
-        this.running = false
-        this.frequencies = this.frequencies.map(f => 0)
-        if (this.mask) {
-            while (this.mask.hasChildNodes()) {
-                this.mask.removeChild(this.mask.lastChild)
+            this.audioContext = new AudioContext()
+        }
+
+        stop() {
+            this.running = false
+            this.frequencies = this.frequencies.map(f => 0)
+            if (this.mask) {
+                while (this.mask.hasChildNodes()) {
+                    this.mask.removeChild(this.mask.lastChild)
+                }
+            }
+            this.update()
+        }
+
+        soundAllowed(stream) {
+            const audioContext = new AudioContext()
+            const audioStream = audioContext.createMediaStreamSource(stream)
+
+            this.analyser = audioContext.createAnalyser()
+            this.analyser.fftSize = 1024
+
+            audioStream.connect(this.analyser)
+
+            for (let i = 0, path; i < this.bufferLength; i++) {
+                path = document.createElementNS(
+                    'http://www.w3.org/2000/svg',
+                    'path'
+                )
+                this.mask.appendChild(path)
+            }
+
+            this.itemWidth = 400 / this.bufferLength
+            this.running = true
+            this.update()
+        }
+
+        frequencyMap(f, i) {
+            let len = Math.floor(f) - (Math.floor(f) % 5)
+            if (this.paths[i]) {
+                this.paths[i].setAttribute(
+                    'd',
+                    `M${i * this.itemWidth} 255l0 -${len}l${this.itemWidth} 0`
+                )
             }
         }
-        this.update()
-    }
 
-    soundAllowed(stream) {
-        const audioContext = new AudioContext()
-        const audioStream = audioContext.createMediaStreamSource(stream)
+        update() {
+            this.analyser.getByteFrequencyData(this.frequencies)
+            this.frequencies.map(this.frequencyMap)
 
-        this.analyser = audioContext.createAnalyser()
-        this.analyser.fftSize = 1024
-
-        audioStream.connect(this.analyser)
-
-        for (let i = 0, path; i < this.bufferLength; i++) {
-            path = document.createElementNS(
-                'http://www.w3.org/2000/svg',
-                'path'
-            )
-            this.mask.appendChild(path)
+            if (this.running) {
+                setTimeout(this.update, this.updateSpeed)
+            }
         }
 
-        this.itemWidth = 400 / this.bufferLength
-        this.running = true
-        this.update()
-    }
+        // var showVolume = function () {
+        //     setTimeout(showVolume, 500);
 
-    frequencyMap(f, i) {
-        let len = Math.floor(f) - (Math.floor(f) % 5)
-        if (this.paths[i]) {
-            this.paths[i].setAttribute(
-                'd',
-                `M${i * this.itemWidth} 255l0 -${len}l${this.itemWidth} 0`
-            )
-        }
-    }
+        //     if (start) {
+        //         analyser.getByteFrequencyData(frequencyArray);
+        //         var total = 0
+        //         for(var i = 0; i < 255; i++) {
+        //            var x = frequencyArray[i];
+        //            total += x * x;
+        //         }
+        //         var rms = Math.sqrt(total / bufferLength);
+        //         var db = 20 * ( Math.log(rms) / Math.log(10) );
+        //         db = Math.max(db, 0); // sanity check
+        //         h.innerHTML = Math.floor(db) + " dB";
 
-    update() {
-        this.analyser.getByteFrequencyData(this.frequencies)
-        this.frequencies.map(this.frequencyMap)
-
-        if (this.running) {
-            setTimeout(this.update, this.updateSpeed)
-        }
-    }
-
-    // var showVolume = function () {
-    //     setTimeout(showVolume, 500);
-
-    //     if (start) {
-    //         analyser.getByteFrequencyData(frequencyArray);
-    //         var total = 0
-    //         for(var i = 0; i < 255; i++) {
-    //            var x = frequencyArray[i];
-    //            total += x * x;
-    //         }
-    //         var rms = Math.sqrt(total / bufferLength);
-    //         var db = 20 * ( Math.log(rms) / Math.log(10) );
-    //         db = Math.max(db, 0); // sanity check
-    //         h.innerHTML = Math.floor(db) + " dB";
-
-    //         if (db >= volumeThreshold) {
-    //             seconds += 0.5;
-    //             if (seconds >= 5) {
-    //                 hSub.innerHTML = "You’ve been in loud environment for<span> " + Math.floor(seconds) + " </span>seconds." ;
-    //             }
-    //         }
-    //     }
-    // }
-}())
+        //         if (db >= volumeThreshold) {
+        //             seconds += 0.5;
+        //             if (seconds >= 5) {
+        //                 hSub.innerHTML = "You’ve been in loud environment for<span> " + Math.floor(seconds) + " </span>seconds." ;
+        //             }
+        //         }
+        //     }
+        // }
+    })()
+)
 
 @observer
 export class Visualizer extends React.Component {
@@ -241,7 +244,11 @@ export class VisualizerSettings extends React.Component {
                 </div>
                 <div className="input">
                     <label>listening</label>
-                    <button className={classes} disabled={!state.enabled} onClick={this.toggleRunning}>
+                    <button
+                        className={classes}
+                        disabled={!state.enabled}
+                        onClick={this.toggleRunning}
+                    >
                         {state.running ? 'on' : 'off'}
                     </button>
                 </div>

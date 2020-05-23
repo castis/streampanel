@@ -8,40 +8,45 @@ import { SettingsWindow } from '../util/SettingsWindow'
 import ColorPicker from '../util/ColorPicker'
 import { storage } from '../util/storage'
 
-const state = storage('gradient', new class {
-    @persist @observable enabled = true
-    @persist('object') @observable bg1 = {
-        r: 110,
-        g: 174,
-        b: 180,
-        a: 0.2,
-    }
-    @persist('object') @observable bg2 = {
-        r: 43,
-        g: 33,
-        b: 4,
-        a: 0.41,
-    }
-}())
+const state = storage(
+    'gradient',
+    new (class {
+        @persist @observable enabled = true
+        @persist('object') @observable bg1 = {
+            r: 110,
+            g: 174,
+            b: 180,
+            a: 0.2,
+        }
+        @persist('object') @observable bg2 = {
+            r: 43,
+            g: 33,
+            b: 4,
+            a: 0.41,
+        }
+    })()
+)
 
 @observer
 export class Gradient extends React.Component {
     render() {
-        const { bg1, bg2, enabled } = state
-
-        if (!enabled) {
+        if (!state.enabled) {
             return ''
         }
 
-        return <div
-            className="background"
-            style={{
-                backgroundImage: `linear-gradient(
+        const { bg1, bg2 } = state
+
+        return (
+            <div
+                className="background"
+                style={{
+                    backgroundImage: `linear-gradient(
                     rgba(${bg1.r}, ${bg1.g}, ${bg1.b}, ${bg1.a}),
                     rgba(${bg2.r}, ${bg2.g}, ${bg2.b}, ${bg2.a})
                 )`,
-            }}
-        />
+                }}
+            />
+        )
     }
 }
 

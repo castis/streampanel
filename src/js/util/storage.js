@@ -11,11 +11,8 @@ const hydrate = create({
     jsonify: true,
 })
 
-const storage = (name, state, cb) => {
-    const hydrateResult = hydrate(name, state)
-    if (cb) {
-        hydrateResult.then(cb)
-    }
+const storage = (name, state, cb = () => {}) => {
+    hydrate(name, state).then(cb)
     return state
 }
 

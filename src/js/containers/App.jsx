@@ -16,12 +16,15 @@ import { localforage, storage } from '../util/storage'
 
 // import "typeface-roboto-mono";
 
-const state = storage('general', new class {
-    // double tap
-    @observable abortLock = false
-    @persist @observable standby = false
-    @persist @observable game = 'super-metroid'
-}())
+const state = storage(
+    'general',
+    new (class {
+        // double tap
+        @observable abortLock = false
+        @persist @observable standby = false
+        @persist @observable game = 'super-metroid'
+    })()
+)
 
 @observer
 class GeneralSettings extends React.Component {
@@ -71,13 +74,11 @@ class GeneralSettings extends React.Component {
             )
         }
 
-        const games = Object.keys(this.availableGames).map(k => {
-            return (
-                <option key={k} value={k}>
-                    {this.availableGames[k]}
-                </option>
-            )
-        })
+        const games = Object.keys(this.availableGames).map(k => (
+            <option key={k} value={k}>
+                {this.availableGames[k]}
+            </option>
+        ))
 
         return (
             <SettingsWindow name="general settings">

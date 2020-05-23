@@ -11,7 +11,6 @@ import { SettingsWindow } from '../util/SettingsWindow'
 
 const { min, max } = Math
 
-
 class Timer {
     @persist @observable milliseconds = 0
     @persist @observable savedMilliseconds = 0
@@ -36,151 +35,164 @@ class Timer {
         const hours = parseInt(seconds / 3600, 10)
         const isNegative = seconds < 0
 
-        return <div className="segments">
-            <span>{ isNegative ? '-' : ' ' }</span>
-            <span>{ hours }</span>:
-            <span>{ format(minutes % 60, '00') }</span>:
-            <span>{ format(seconds % 60, '00') }</span>
-            <small>.{ format(milliseconds % 100, '00') }</small>
-        </div>
+        return (
+            <div className="segments">
+                <span>{isNegative ? '-' : ' '}</span>
+                <span>{hours}</span>:<span>{format(minutes % 60, '00')}</span>:
+                <span>{format(seconds % 60, '00')}</span>
+                <small>.{format(milliseconds % 100, '00')}</small>
+            </div>
+        )
     }
 }
 
-const state = storage('timer', new class {
-    @persist('object', Timer) @observable timer = new Timer()
-    @persist @observable isRunning = false
-    @persist @observable startTime = 0
-    @persist @observable updateSpeed = 60
-    @persist @observable useSpaceBar = true
-    @persist @observable resetTo = 0
-    @persist('object') @observable background = {
-        r: 0,
-        g: 0,
-        b: 0,
-        a: .5,
-    }
-    @persist('object') @observable font = {
-        r: 255,
-        g: 255,
-        b: 255,
-        a: .9,
-    }
-
-    constructor() {
-        this.update = ::this.update
-        this.start = ::this.start
-        this.stop = ::this.stop
-        this.toggle = ::this.toggle
-        this.reset = ::this.reset
-        this.newSplit = ::this.newSplit
-    }
-
-    @computed get display() {
-        return this.timer.display
-    }
-
-    @action update() {
-        if (!this.isRunning) {
-            return
+const state = storage(
+    'timer',
+    new (class {
+        @persist('object', Timer) @observable timer = new Timer()
+        @persist @observable isRunning = false
+        @persist @observable startTime = 0
+        @persist @observable updateSpeed = 60
+        @persist @observable useSpaceBar = true
+        @persist @observable resetTo = 0
+        @persist('object') @observable background = {
+            r: 0,
+            g: 0,
+            b: 0,
+            a: 0.5,
         }
-        this.timer.milliseconds = (new Date()).getTime() - this.startTime
-        setTimeout(this.update, this.updateSpeed)
-    }
-
-    @action start(event) {
-        if (this.isRunning) {
-            return
+        @persist('object') @observable font = {
+            r: 255,
+            g: 255,
+            b: 255,
+            a: 0.9,
         }
-        this.isRunning = true
-        this.startTime = (new Date()).getTime()
-        this.update()
-    }
 
-    @action stop(event) {
-        this.timer.saveTime()
-        this.isRunning = false
-    }
-
-    @action toggle() {
-        if (this.isRunning) {
-            this.stop()
-        } else {
-            this.start()
+        constructor() {
+            this.update = ::this.update
+            this.start = ::this.start
+            this.stop = ::this.stop
+            this.toggle = ::this.toggle
+            this.reset = ::this.reset
+            this.newSplit = ::this.newSplit
         }
-    }
 
-    @action reset() {
-        this.timer.reset()
-        this.isRunning = false
-    }
+        @computed get display() {
+            return this.timer.display
+        }
 
-    @observable splits = [
-// {
-//     name: 'Morph Ball',
-//     target: 7264,
-//     actual: undefined,
-// },
-// {
-//     name: 'Bombs',
-//     target: 12345,
-//     actual: undefined,
-// },
-// {
-//     name: 'Varia Suit',
-//     target: 12789,
-//     actual: undefined,
-// },
-    ]
+        @action update() {
+            if (!this.isRunning) {
+                return
+            }
+            this.timer.milliseconds = new Date().getTime() - this.startTime
+            setTimeout(this.update, this.updateSpeed)
+        }
 
-    activeSplit = 1
+        @action start(event) {
+            if (this.isRunning) {
+                return
+            }
+            this.isRunning = true
+            this.startTime = new Date().getTime()
+            this.update()
+        }
 
-    @action newSplit() {
-        console.log(state.timer.elapsed)
-        this.splits.push({
-            name: 'new split',
-            target: undefined,
-            actual: state.timer.elapsed,
-        })
-        console.log(this.splits)
-    }
-}(), () => state.update())
+        @action stop(event) {
+            this.timer.saveTime()
+            this.isRunning = false
+        }
+
+        @action toggle() {
+            if (this.isRunning) {
+                this.stop()
+            } else {
+                this.start()
+            }
+        }
+
+        @action reset() {
+            this.timer.reset()
+            this.isRunning = false
+        }
+
+        @observable splits = [
+            // {
+            //     name: 'Morph Ball',
+            //     target: 7264,
+            //     actual: undefined,
+            // },
+            // {
+            //     name: 'Bombs',
+            //     target: 12345,
+            //     actual: undefined,
+            // },
+            // {
+            //     name: 'Varia Suit',
+            //     target: 12789,
+            //     actual: undefined,
+            // },
+        ]
+
+        activeSplit = 1
+
+        @action newSplit() {
+            console.log(state.timer.elapsed)
+            this.splits.push({
+                name: 'new split',
+                target: undefined,
+                actual: state.timer.elapsed,
+            })
+            console.log(this.splits)
+        }
+    })(),
+    () => state.update()
+)
 
 function msToTime(s) {
-    var ms = s % 1000;
-    s = (s - ms) / 1000;
-    var secs = s % 60;
-    s = (s - secs) / 60;
-    var mins = s % 60;
-    var hrs = (s - mins) / 60;
+    var ms = s % 1000
+    s = (s - ms) / 1000
+    var secs = s % 60
+    s = (s - secs) / 60
+    var mins = s % 60
+    var hrs = (s - mins) / 60
 
-    return (hrs > 0 ? '${hrs}:' : '')
-            + (mins > 0 ? '${mins}:' : '')
-            + `${secs}.${pad(('00'+ms).slice(-2))}`;
+    return (
+        (hrs > 0 ? '${hrs}:' : '') +
+        (mins > 0 ? '${mins}:' : '') +
+        `${secs}.${pad(('00' + ms).slice(-2))}`
+    )
 }
 
 @observer
 export class Splits extends React.Component {
     render() {
         const { splits } = state
-        return <div className="splits">
-            { splits.map((s, i) => {
+        return (
+            <div className="splits">
+                {splits.map((s, i) => {
+                    let delta = ''
+                    let sign = ''
+                    if (s.actual && i <= state.activeSplit) {
+                        const diff = s.actual - s.target
+                        sign = diff > 0 ? '-' : '+'
+                        delta = msToTime(diff)
+                    }
+                    const time = s.target ? s.target : s.actual
 
-                let delta = ''
-                let sign = ''
-                if (s.actual && i <= state.activeSplit) {
-                    const diff = s.actual - s.target
-                    sign = diff > 0 ? '-' : '+'
-                    delta = msToTime(diff)
-                }
-                const time = s.target ? s.target : s.actual
-
-                return <div key={ i } className="split">
-                    <div className="name">{ s.name }</div>
-                    <div className="delta">{ sign }{ delta }</div>
-                    <div className="time">{ msToTime(time) }</div>
-                </div>
-            }) }
-        </div>
+                    return (
+                        <div key={i} className="split">
+                            <div className="name">{s.name}</div>
+                            <div className="delta">
+                                {sign}
+                                {delta}
+                            </div>
+                            <div className="time">{msToTime(time)}</div>
+                        </div>
+                    )
+                })}
+            </div>
+        )
     }
 }
 
@@ -192,17 +204,25 @@ export class Stopwatch extends React.Component {
 
         const style = {
             backgroundColor: `rgba(${bg.r}, ${bg.g}, ${bg.b}, ${bg.a})`,
-            color: `#${fg.r.toString(16)}${fg.g.toString(16)}${fg.b.toString(16)}`,
+            color: `#${fg.r.toString(16)}${fg.g.toString(16)}${fg.b.toString(
+                16
+            )}`,
         }
-        return <div className="timer" style={style}>
-            <div className="big-time" style={{
-                opacity: fg.a
-            }}>{ state.display }</div>
-            <Splits />
-        </div>
+        return (
+            <div className="timer" style={style}>
+                <div
+                    className="big-time"
+                    style={{
+                        opacity: fg.a,
+                    }}
+                >
+                    {state.display}
+                </div>
+                <Splits />
+            </div>
+        )
     }
 }
-
 
 class SpaceBar {
     // if im holding space down, dont register repeat keystrokes
@@ -292,50 +312,57 @@ export class StopwatchSettings extends React.Component {
         const classes = classnames({
             success: state.isRunning,
         })
-        return <SettingsWindow name="timer">
-            <div className="inputs">
-                <div className="input">
-                    <label>background</label>
-                    <ColorPicker
-                        color={ state.background }
-                        onChange={ this.changeBackground }
-                    />
-                </div>
-                <div className="input">
-                    <label>font color</label>
-                    <ColorPicker
-                        color={ state.font }
-                        onChange={ this.changeFontColor }
-                    />
-                </div>
-                <div className="input">
-                    <label>update speed</label>
-                    <input
-                        type="range"
-                        className="reverse"
-                        min="8"
-                        max="256"
-                        value={ state.updateSpeed }
-                        onChange={ this.changeSpeed }
-                    />
-                </div>
-                <div className="input">
-                    <label>space bar toggle</label>
-                    <input
-                        type="checkbox"
-                        checked={ state.useSpaceBar }
-                        onChange={ this.changeSpaceBarToggle }
-                    />
-                </div>
-                {/*<div className="input">
+        return (
+            <SettingsWindow name="timer">
+                <div className="inputs">
+                    <div className="input">
+                        <label>background</label>
+                        <ColorPicker
+                            color={state.background}
+                            onChange={this.changeBackground}
+                        />
+                    </div>
+                    <div className="input">
+                        <label>font color</label>
+                        <ColorPicker
+                            color={state.font}
+                            onChange={this.changeFontColor}
+                        />
+                    </div>
+                    <div className="input">
+                        <label>update speed</label>
+                        <input
+                            type="range"
+                            className="reverse"
+                            min="8"
+                            max="256"
+                            value={state.updateSpeed}
+                            onChange={this.changeSpeed}
+                        />
+                    </div>
+                    <div className="input">
+                        <label>space bar toggle</label>
+                        <input
+                            type="checkbox"
+                            checked={state.useSpaceBar}
+                            onChange={this.changeSpaceBarToggle}
+                        />
+                    </div>
+                    {/*<div className="input">
                     <label>new split</label>
                     <button onClick={ this.newSplit }>party</button>
                 </div>*/}
-            </div>
-            <div className="commands">
-                <button className={ classes } onClick={ state.isRunning ? state.stop : state.start }>{ state.isRunning ? 'stop' : 'start' }</button>
-                <button onClick={ state.reset }>reset</button>
-            </div>
-        </SettingsWindow>
+                </div>
+                <div className="commands">
+                    <button
+                        className={classes}
+                        onClick={state.isRunning ? state.stop : state.start}
+                    >
+                        {state.isRunning ? 'stop' : 'start'}
+                    </button>
+                    <button onClick={state.reset}>reset</button>
+                </div>
+            </SettingsWindow>
+        )
     }
 }
