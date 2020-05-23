@@ -340,10 +340,10 @@ export class StopwatchSettings extends React.Component {
                         onChange={ this.changeSpaceBarToggle }
                     />
                 </div>
-                <div className="input">
+                {/*<div className="input">
                     <label>new split</label>
                     <button onClick={ this.newSplit }>party</button>
-                </div>
+                </div>*/}
             </div>
             <div className="commands">
                 <button className={ classes } onClick={ state.isRunning ? state.stop : state.start }>{ state.isRunning ? 'stop' : 'start' }</button>

@@ -10,8 +10,10 @@ import { localforage, hydrate } from '../util/storage'
 
 import { Starfield, StarfieldSettings } from '../components/Starfield'
 import { Visualizer, VisualizerSettings } from '../components/Visualizer'
+import { Gradient, GradientSettings } from '../components/Gradient'
 
 class State {
+    @persist @observable enabled = true
     @persist('object') @observable bg1 = {
         r: 180,
         g: 135,
@@ -30,32 +32,12 @@ hydrate('background', state)
 
 @observer
 export class Background extends React.Component {
-    // constructor(props) {
-    //     super(props)
-    //     const persistKey = `settings-window-${props.name}`
-    //     this.settings = new State()
-    //     hydrate(persistKey, this.settings)
-    // }
-
-    // toggle(event) {
-    //     this.settings['collapsed'] = !this.settings['collapsed']
-    // }
-
     render() {
-        const { bg1, bg2 } = state
         return (
             <>
                 <div className="background static" />
+                <Gradient />
                 <Starfield />
-                <div
-                    className="background"
-                    style={{
-                        backgroundImage: `linear-gradient(
-                    rgba(${bg1.r}, ${bg1.g}, ${bg1.b}, ${bg1.a}),
-                    rgba(${bg2.r}, ${bg2.g}, ${bg2.b}, ${bg2.a})
-                )`,
-                    }}
-                />
                 <Visualizer />
             </>
         )
@@ -72,30 +54,17 @@ export class BackgroundSettings extends React.Component {
         state.bg2 = bg2.rgb
     }
 
+    toggleEnabled() {
+        state.enabled = !state.enabled
+    }
+
     render() {
         return (
-            <>
-                <SettingsWindow name="background">
-                    <div className="inputs">
-                        <div className="input">
-                            <label>background color 1</label>
-                            <ColorPicker
-                                color={state.bg1}
-                                onChange={::this.changeBg1}
-                            />
-                        </div>
-                        <div className="input">
-                            <label>background color 2</label>
-                            <ColorPicker
-                                color={state.bg2}
-                                onChange={::this.changeBg2}
-                            />
-                        </div>
-                    </div>
-                </SettingsWindow>
+            <SettingsWindow name="background">
+                <GradientSettings />
                 <StarfieldSettings />
                 <VisualizerSettings />
-            </>
+            </SettingsWindow>
         )
     }
 }

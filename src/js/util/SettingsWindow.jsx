@@ -36,3 +36,4 @@ export class SettingsWindow extends React.Component {
         )
     }
 }
+

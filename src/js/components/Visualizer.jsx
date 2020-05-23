@@ -9,6 +9,7 @@ import ColorPicker from '../util/ColorPicker'
 import { localforage, hydrate } from '../util/storage'
 
 class State {
+    @persist @observable enabled = true
     @persist @observable updateSpeed = 16
     @persist('object') @observable color = {
         r: 255,
@@ -18,7 +19,7 @@ class State {
     }
     @observable started = false
     @observable permission = false
-    @observable isRunning = false
+    @observable running = false
 
     paths = []
     visualizer = undefined
@@ -26,7 +27,7 @@ class State {
     audioContext = undefined
     analyzer = undefined
     bufferLength = 82
-    frequencies = undefined
+    frequencies = new Uint8Array(82)
 
     constructor() {
         this.start = ::this.start
@@ -36,7 +37,7 @@ class State {
     }
 
     start(stream) {
-        if (this.isRunning) {
+        if (this.running) {
             return
         }
 
@@ -55,10 +56,12 @@ class State {
     }
 
     stop() {
-        this.isRunning = false
+        this.running = false
         this.frequencies = this.frequencies.map(f => 0)
-        while (this.mask.hasChildNodes()) {
-            this.mask.removeChild(this.mask.lastChild)
+        if (this.mask) {
+            while (this.mask.hasChildNodes()) {
+                this.mask.removeChild(this.mask.lastChild)
+            }
         }
         this.update()
     }
@@ -72,9 +75,6 @@ class State {
 
         audioStream.connect(this.analyser)
 
-        // var bufferLength = analyser.frequencyBinCount
-        this.frequencies = new Uint8Array(this.bufferLength)
-
         for (let i = 0, path; i < this.bufferLength; i++) {
             path = document.createElementNS(
                 'http://www.w3.org/2000/svg',
@@ -84,7 +84,7 @@ class State {
         }
 
         this.itemWidth = 400 / this.bufferLength
-        this.isRunning = true
+        this.running = true
         this.update()
     }
 
@@ -102,7 +102,7 @@ class State {
         this.analyser.getByteFrequencyData(this.frequencies)
         this.frequencies.map(this.frequencyMap)
 
-        if (this.isRunning) {
+        if (this.running) {
             setTimeout(this.update, this.updateSpeed)
         }
     }
@@ -202,40 +202,52 @@ export class VisualizerSettings extends React.Component {
     }
 
     toggleRunning() {
-        if (state.isRunning) {
+        if (state.running) {
             state.stop()
         } else {
             state.start()
         }
     }
 
+    toggle() {
+        state.enabled = !state.enabled
+        state.stop()
+    }
+
     render() {
         const classes = classnames({
-            success: state.isRunning,
+            success: state.running,
         })
 
         return (
-            <SettingsWindow name="visualizer">
-                <div className="inputs">
-                    <div className="input">
-                        <label>update speed</label>
-                        <input
-                            type="range"
-                            className="reverse"
-                            min="1"
-                            max="100"
-                            step="4"
-                            value={state.updateSpeed}
-                            onChange={this.changeSpeed}
-                        />
-                    </div>
+            <fieldset className="inputs">
+                <div className="header">
+                    <div className="name">visualizer</div>
+                    <input
+                        type="checkbox"
+                        checked={state.enabled}
+                        onChange={::this.toggle}
+                    />
                 </div>
-                <div className="commands">
-                    <button className={classes} onClick={this.toggleRunning}>
-                        {state.isRunning ? 'stop listening' : 'listen'}
+                <div className="input">
+                    <label>update speed</label>
+                    <input
+                        type="range"
+                        className="reverse"
+                        min="1"
+                        max="100"
+                        step="4"
+                        value={state.updateSpeed}
+                        onChange={this.changeSpeed}
+                    />
+                </div>
+                <div className="input">
+                    <label>listening</label>
+                    <button className={classes} disabled={!state.enabled} onClick={this.toggleRunning}>
+                        {state.running ? 'on' : 'off'}
                     </button>
                 </div>
-            </SettingsWindow>
+            </fieldset>
         )
     }
 }

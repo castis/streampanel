@@ -11,8 +11,6 @@ import { Background, BackgroundSettings } from '../components/Background'
 import { Stopwatch, StopwatchSettings } from '../components/Stopwatch'
 import { Gamepad, GamepadSettings } from '../components/Gamepad'
 
-
-import ColorPicker from '../util/ColorPicker'
 import { SettingsWindow } from '../util/SettingsWindow'
 import { localforage, hydrate } from '../util/storage'
 
@@ -136,8 +134,6 @@ class GameSettings extends React.Component {
         return this.games[game]
     }
 }
-
-
 
 @observer
 export default class App extends React.Component {

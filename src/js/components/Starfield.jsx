@@ -9,15 +9,16 @@ import { SettingsWindow } from '../util/SettingsWindow'
 import { localforage, hydrate } from '../util/storage'
 
 class State {
-    @persist @observable updateSpeed = 16
+    @persist @observable enabled = true
+    @persist @observable updateSpeed = 5
     @persist('object') @observable color = {
         r: 255,
         g: 255,
         b: 255,
         a: 0.65,
     }
-    @persist @observable maxStars = 120
-    @persist @observable warp = 1
+    @persist @observable maxStars = 450
+    @persist @observable warp = 0.200
 
     @persist @observable starfieldZ = 0.09
     @persist @observable starfieldX = 200
@@ -126,6 +127,10 @@ export class Starfield extends React.Component {
     update() {
         this.canvas.clearRect(0, 0, this.width, this.height)
 
+        if (!state.enabled) {
+            return setTimeout(this.update, 1000)
+        }
+
         // adjust the number of stars
         const diff = this.stars.length - state.maxStars
         if (diff < 0) {
@@ -203,52 +208,62 @@ export class StarfieldSettings extends React.Component {
         state.starfieldZ = event.target.value
     }
 
+    toggleEnabled() {
+        state.enabled = !state.enabled
+    }
+
     render() {
         return (
-            <SettingsWindow name="starfield">
-                <div className="inputs">
-                    <div className="input">
-                        <label>color</label>
-                        <ColorPicker
-                            color={state.color}
-                            onChange={::this.changeColor}
-                        />
-                    </div>
-                    <div className="input">
-                        <label>stars</label>
-                        <input
-                            type="range"
-                            min="0"
-                            max="3000"
-                            step="1"
-                            value={state.maxStars}
-                            onChange={this.changeMaxStars}
-                        />
-                    </div>
-                    <div className="input">
-                        <label>warp</label>
-                        <input
-                            type="range"
-                            min="0.001"
-                            max="1"
-                            step="0.005"
-                            value={state.starfieldZ}
-                            onChange={this.changeWarp}
-                        />
-                    </div>
-                    <div className="input">
-                        <label>update speed</label>
-                        <input
-                            type="range"
-                            className="reverse"
-                            min="1"
-                            max="40"
-                            value={state.updateSpeed}
-                            onChange={this.changeSpeed}
-                        />
-                    </div>
+            <fieldset className="inputs">
+                <div className="header">
+                    <div className="name">starfield</div>
+                    <input
+                        type="checkbox"
+                        checked={state.enabled}
+                        onChange={::this.toggleEnabled}
+                    />
                 </div>
-            </SettingsWindow>
+                <div className="input">
+                    <label>color</label>
+                    <ColorPicker
+                        color={state.color}
+                        onChange={::this.changeColor}
+                    />
+                </div>
+                <div className="input">
+                    <label>stars</label>
+                    <input
+                        type="range"
+                        min="0"
+                        max="3000"
+                        step="1"
+                        value={state.maxStars}
+                        onChange={this.changeMaxStars}
+                    />
+                </div>
+                <div className="input">
+                    <label>warp</label>
+                    <input
+                        type="range"
+                        min="0.001"
+                        max="1"
+                        step="0.005"
+                        value={state.starfieldZ}
+                        onChange={this.changeWarp}
+                    />
+                </div>
+                <div className="input">
+                    <label>update speed</label>
+                    <input
+                        type="range"
+                        className="reverse"
+                        min="1"
+                        max="40"
+                        value={state.updateSpeed}
+                        onChange={this.changeSpeed}
+                    />
+                </div>
+            </fieldset>
         )
     }
 }
