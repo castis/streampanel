@@ -4,10 +4,10 @@ import { observer } from 'mobx-react'
 import { persist } from 'mobx-persist'
 import classnames from 'classnames'
 
-import { localforage, hydrate } from '../util/storage'
+import { storage } from '../util/storage'
 import { SettingsWindow } from '../util/SettingsWindow'
 
-class State {
+const state = storage('final-fantasy-6', new class {
     @persist('list') @observable items = [
         'terra',
         'locke',
@@ -31,9 +31,7 @@ class State {
             completed: false,
         }))
     }
-}
-const state = new State()
-hydrate('final-fantasy-6', state)
+}())
 
 const ItemView = observer(({ item }) => (
     <div

@@ -6,9 +6,9 @@ import { persist } from 'mobx-persist'
 
 import { SettingsWindow } from '../util/SettingsWindow'
 import ColorPicker from '../util/ColorPicker'
-import { localforage, hydrate } from '../util/storage'
+import { storage } from '../util/storage'
 
-class State {
+const state = storage('visualizer', new class {
     @persist @observable enabled = true
     @persist @observable updateSpeed = 16
     @persist('object') @observable color = {
@@ -130,9 +130,7 @@ class State {
     //         }
     //     }
     // }
-}
-const state = new State()
-hydrate('visualizer', state)
+}())
 
 @observer
 export class Visualizer extends React.Component {

@@ -7,9 +7,9 @@ import { ItemList } from '../util/ItemList'
 import { BossList } from '../util/BossList'
 import { SettingsWindow } from '../util/SettingsWindow'
 
-import { localforage, hydrate } from '../util/storage'
+import { storage } from '../util/storage'
 
-class State {
+const state = storage('super-metroid', new class {
     @persist('list') @observable items = [
         // 'missile',
         // 'super',
@@ -54,9 +54,7 @@ class State {
             completed: false,
         }))
     }
-}
-const state = new State()
-hydrate('supermetroid', state)
+}())
 
 @observer
 export class SuperMetroid extends React.Component {

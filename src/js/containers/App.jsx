@@ -7,23 +7,21 @@ import { persist } from 'mobx-persist'
 import { SuperMetroid, SuperMetroidSettings } from '../games/SuperMetroid'
 import { FinalFantasy6, FinalFantasy6Settings } from '../games/FinalFantasy6'
 
-import { Background, BackgroundSettings } from '../components/Background'
+import { Background, BackgroundSettings } from '../backgrounds/Background'
 import { Stopwatch, StopwatchSettings } from '../components/Stopwatch'
 import { Gamepad, GamepadSettings } from '../components/Gamepad'
 
 import { SettingsWindow } from '../util/SettingsWindow'
-import { localforage, hydrate } from '../util/storage'
+import { localforage, storage } from '../util/storage'
 
 // import "typeface-roboto-mono";
 
-class State {
+const state = storage('general', new class {
     // double tap
     @observable abortLock = false
     @persist @observable standby = false
     @persist @observable game = 'super-metroid'
-}
-const state = new State()
-hydrate('general', state)
+}())
 
 @observer
 class GeneralSettings extends React.Component {

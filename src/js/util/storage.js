@@ -11,4 +11,12 @@ const hydrate = create({
     jsonify: true,
 })
 
-export { localforage, hydrate }
+const storage = (name, state, cb) => {
+    const hydrateResult = hydrate(name, state)
+    if (cb) {
+        hydrateResult.then(cb)
+    }
+    return state
+}
+
+export { localforage, storage }

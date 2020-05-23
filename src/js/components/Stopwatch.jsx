@@ -6,7 +6,7 @@ import { persist } from 'mobx-persist'
 import { observer } from 'mobx-react'
 
 import ColorPicker from '../util/ColorPicker'
-import { hydrate } from '../util/storage'
+import { storage } from '../util/storage'
 import { SettingsWindow } from '../util/SettingsWindow'
 
 const { min, max } = Math
@@ -46,8 +46,7 @@ class Timer {
     }
 }
 
-
-class TimerState {
+const state = storage('timer', new class {
     @persist('object', Timer) @observable timer = new Timer()
     @persist @observable isRunning = false
     @persist @observable startTime = 0
@@ -144,18 +143,7 @@ class TimerState {
         })
         console.log(this.splits)
     }
-}
-
-const state = new TimerState()
-hydrate('timer', state).then(() => {
-    state.update()
-})
-
-
-function pad(n, z) {
-    z = z || 2;
-    return ('00' + n).slice(-z);
-}
+}(), () => state.update())
 
 function msToTime(s) {
     var ms = s % 1000;
@@ -167,9 +155,8 @@ function msToTime(s) {
 
     return (hrs > 0 ? '${hrs}:' : '')
             + (mins > 0 ? '${mins}:' : '')
-            + `${secs}.${pad(ms)}`;
+            + `${secs}.${pad(('00'+ms).slice(-2))}`;
 }
-
 
 @observer
 export class Splits extends React.Component {

@@ -1,14 +1,14 @@
 import React from 'react'
 import classnames from 'classnames'
-import { observable, action, computed } from 'mobx'
+import { observable } from 'mobx'
 import { observer } from 'mobx-react'
 import { persist } from 'mobx-persist'
 
 import { SettingsWindow } from '../util/SettingsWindow'
 import ColorPicker from '../util/ColorPicker'
-import { localforage, hydrate } from '../util/storage'
+import { storage } from '../util/storage'
 
-class State {
+const state = storage('gradient', new class {
     @persist @observable enabled = true
     @persist('object') @observable bg1 = {
         r: 110,
@@ -22,9 +22,7 @@ class State {
         b: 4,
         a: 0.41,
     }
-}
-const state = new State()
-hydrate('background', state)
+}())
 
 @observer
 export class Gradient extends React.Component {
@@ -39,9 +37,9 @@ export class Gradient extends React.Component {
             className="background"
             style={{
                 backgroundImage: `linear-gradient(
-            rgba(${bg1.r}, ${bg1.g}, ${bg1.b}, ${bg1.a}),
-            rgba(${bg2.r}, ${bg2.g}, ${bg2.b}, ${bg2.a})
-        )`,
+                    rgba(${bg1.r}, ${bg1.g}, ${bg1.b}, ${bg1.a}),
+                    rgba(${bg2.r}, ${bg2.g}, ${bg2.b}, ${bg2.a})
+                )`,
             }}
         />
     }

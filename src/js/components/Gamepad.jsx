@@ -3,10 +3,10 @@ import { observable } from 'mobx'
 import { observer } from 'mobx-react'
 import { persist } from 'mobx-persist'
 
-import { hydrate } from '../util/storage'
+import { storage } from '../util/storage'
 import { SettingsWindow } from '../util/SettingsWindow'
 
-class ControllerState {
+const state = storage('controller', new class {
     @persist @observable color = 'white'
     @persist @observable style = 'inherit'
     @persist @observable opacity = 0.4
@@ -122,9 +122,7 @@ class ControllerState {
         this.active = undefined
         this.buttons = []
     }
-}
-const state = new ControllerState()
-hydrate('controller', state)
+}())
 
 @observer
 export class Gamepad extends React.Component {

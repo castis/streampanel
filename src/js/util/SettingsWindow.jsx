@@ -3,7 +3,7 @@ import React from 'react'
 import { observable } from 'mobx'
 import { observer } from 'mobx-react'
 import { persist } from 'mobx-persist'
-import { localforage, hydrate } from '../util/storage'
+import { storage } from '../util/storage'
 
 class State {
     @persist @observable collapsed = false
@@ -13,9 +13,8 @@ class State {
 export class SettingsWindow extends React.Component {
     constructor(props) {
         super(props)
-        const persistKey = `settings-window-${props.name}`
-        this.settings = new State()
-        hydrate(persistKey, this.settings)
+        const persistKey =
+        this.settings = storage(`settings-window-${props.name}`, new State())
     }
 
     toggle(event) {

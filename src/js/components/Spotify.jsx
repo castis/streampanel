@@ -4,8 +4,6 @@ import { observable } from 'mobx'
 import { observer } from 'mobx-react'
 import { persist } from 'mobx-persist'
 
-import { hydrate } from '../util/storage'
-
 
 const urlify = obj => Object
     .keys(obj)

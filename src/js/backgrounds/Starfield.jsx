@@ -6,9 +6,10 @@ import { persist } from 'mobx-persist'
 
 import ColorPicker from '../util/ColorPicker'
 import { SettingsWindow } from '../util/SettingsWindow'
-import { localforage, hydrate } from '../util/storage'
+import { storage } from '../util/storage'
 
-class State {
+
+const state = storage('starfield', new class {
     @persist @observable enabled = true
     @persist @observable updateSpeed = 5
     @persist('object') @observable color = {
@@ -23,9 +24,7 @@ class State {
     @persist @observable starfieldZ = 0.09
     @persist @observable starfieldX = 200
     @persist @observable starfieldY = 320
-}
-const state = new State()
-hydrate('starfield', state)
+}())
 
 @observer
 export class Starfield extends React.Component {
