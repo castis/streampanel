@@ -26,7 +26,9 @@ export class InputGroup extends React.Component {
         return (
             <fieldset className={`inputs ${collapsedClass}`}>
                 <div className="header">
-                    <div className="name" onDoubleClick={::this.toggle}>{name}</div>
+                    <div className="name" onDoubleClick={::this.toggle}>
+                        {name}
+                    </div>
                     <input
                         type="checkbox"
                         checked={enabled}

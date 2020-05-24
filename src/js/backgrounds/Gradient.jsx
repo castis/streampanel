@@ -66,7 +66,11 @@ export class GradientSettings extends React.Component {
 
     render() {
         return (
-            <InputGroup name="gradient" enabled={state.enabled} onChange={this.toggleEnabled}>
+            <InputGroup
+                name="gradient"
+                enabled={state.enabled}
+                onChange={this.toggleEnabled}
+            >
                 <div className="input">
                     <label>top</label>
                     <ColorPicker

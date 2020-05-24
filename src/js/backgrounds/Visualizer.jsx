@@ -221,7 +221,11 @@ export class VisualizerSettings extends React.Component {
         })
 
         return (
-            <InputGroup name="visualizer" enabled={state.enabled} onChange={this.toggleEnabled}>
+            <InputGroup
+                name="visualizer"
+                enabled={state.enabled}
+                onChange={this.toggleEnabled}
+            >
                 <div className="input">
                     <label>update speed</label>
                     <input

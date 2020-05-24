@@ -215,7 +215,11 @@ export class StarfieldSettings extends React.Component {
 
     render() {
         return (
-            <InputGroup name="starfield" enabled={state.enabled} onChange={this.toggleEnabled}>
+            <InputGroup
+                name="starfield"
+                enabled={state.enabled}
+                onChange={this.toggleEnabled}
+            >
                 <div className="input">
                     <label>color</label>
                     <ColorPicker
