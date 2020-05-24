@@ -10,7 +10,7 @@ class State {
 }
 
 @observer
-export class SettingsWindow extends React.Component {
+export class InputGroup extends React.Component {
     constructor(props) {
         super(props)
         this.settings = storage(`settings-window-${props.name}`, new State())
@@ -22,12 +22,18 @@ export class SettingsWindow extends React.Component {
 
     render() {
         const collapsedClass = this.settings['collapsed'] ? 'collapsed' : ''
+        const { enabled, onChange, children, name } = this.props
         return (
-            <fieldset className={`settings-window ${collapsedClass}`}>
-                <div className="header" onDoubleClick={::this.toggle}>
-                    <div className="name">{this.props.name}</div>
+            <fieldset className={`inputs ${collapsedClass}`}>
+                <div className="header">
+                    <div className="name" onDoubleClick={::this.toggle}>{name}</div>
+                    <input
+                        type="checkbox"
+                        checked={enabled}
+                        onChange={onChange}
+                    />
                 </div>
-                <div className="contents">{this.props.children}</div>
+                {children}
             </fieldset>
         )
     }

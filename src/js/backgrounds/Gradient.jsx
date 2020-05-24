@@ -4,7 +4,7 @@ import { observable } from 'mobx'
 import { observer } from 'mobx-react'
 import { persist } from 'mobx-persist'
 
-import { SettingsWindow } from '../util/SettingsWindow'
+import { InputGroup } from '../util/InputGroup'
 import ColorPicker from '../util/ColorPicker'
 import { storage } from '../util/storage'
 
@@ -66,15 +66,7 @@ export class GradientSettings extends React.Component {
 
     render() {
         return (
-            <fieldset className="inputs">
-                <div className="header">
-                    <div className="name">color gradient</div>
-                    <input
-                        type="checkbox"
-                        checked={state.enabled}
-                        onChange={::this.toggleEnabled}
-                    />
-                </div>
+            <InputGroup name="gradient" enabled={state.enabled} onChange={this.toggleEnabled}>
                 <div className="input">
                     <label>top</label>
                     <ColorPicker
@@ -89,7 +81,7 @@ export class GradientSettings extends React.Component {
                         onChange={::this.changeBg2}
                     />
                 </div>
-            </fieldset>
+            </InputGroup>
         )
     }
 }

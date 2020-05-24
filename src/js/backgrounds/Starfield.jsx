@@ -5,7 +5,7 @@ import { observer } from 'mobx-react'
 import { persist } from 'mobx-persist'
 
 import ColorPicker from '../util/ColorPicker'
-import { SettingsWindow } from '../util/SettingsWindow'
+import { InputGroup } from '../util/InputGroup'
 import { storage } from '../util/storage'
 
 const state = storage(
@@ -215,15 +215,7 @@ export class StarfieldSettings extends React.Component {
 
     render() {
         return (
-            <fieldset className="inputs">
-                <div className="header">
-                    <div className="name">starfield</div>
-                    <input
-                        type="checkbox"
-                        checked={state.enabled}
-                        onChange={::this.toggleEnabled}
-                    />
-                </div>
+            <InputGroup name="starfield" enabled={state.enabled} onChange={this.toggleEnabled}>
                 <div className="input">
                     <label>color</label>
                     <ColorPicker
@@ -264,7 +256,7 @@ export class StarfieldSettings extends React.Component {
                         onChange={this.changeSpeed}
                     />
                 </div>
-            </fieldset>
+            </InputGroup>
         )
     }
 }

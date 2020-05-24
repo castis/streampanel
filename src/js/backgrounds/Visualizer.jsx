@@ -4,7 +4,7 @@ import { observable, action, computed } from 'mobx'
 import { observer } from 'mobx-react'
 import { persist } from 'mobx-persist'
 
-import { SettingsWindow } from '../util/SettingsWindow'
+import { InputGroup } from '../util/InputGroup'
 import ColorPicker from '../util/ColorPicker'
 import { storage } from '../util/storage'
 
@@ -189,7 +189,7 @@ export class Visualizer extends React.Component {
 export class VisualizerSettings extends React.Component {
     constructor(props) {
         super(props)
-        this.toggleRunning = ::this.toggleRunning
+
         this.changeSpeed = ::this.changeSpeed
         this.changeColor = ::this.changeColor
     }
@@ -210,7 +210,7 @@ export class VisualizerSettings extends React.Component {
         }
     }
 
-    toggle() {
+    toggleEnabled() {
         state.enabled = !state.enabled
         state.stop()
     }
@@ -221,15 +221,7 @@ export class VisualizerSettings extends React.Component {
         })
 
         return (
-            <fieldset className="inputs">
-                <div className="header">
-                    <div className="name">visualizer</div>
-                    <input
-                        type="checkbox"
-                        checked={state.enabled}
-                        onChange={::this.toggle}
-                    />
-                </div>
+            <InputGroup name="visualizer" enabled={state.enabled} onChange={this.toggleEnabled}>
                 <div className="input">
                     <label>update speed</label>
                     <input
@@ -252,7 +244,7 @@ export class VisualizerSettings extends React.Component {
                         {state.running ? 'on' : 'off'}
                     </button>
                 </div>
-            </fieldset>
+            </InputGroup>
         )
     }
 }
