@@ -261,7 +261,7 @@ export class GamepadSettings extends React.Component {
                         <label>input</label>
                         <select
                             value={state.activeIndex}
-                            onChange={::this.updateGamepad}
+                            onChange={this.updateGamepad}
                         >
                             {options}
                         </select>
@@ -270,7 +270,7 @@ export class GamepadSettings extends React.Component {
                         <label>outline</label>
                         <select
                             value={state.color}
-                            onChange={::this.updateColor}
+                            onChange={this.updateColor}
                         >
                             <option value="white">white</option>
                             <option value="black">black</option>
@@ -280,7 +280,7 @@ export class GamepadSettings extends React.Component {
                         <label>style</label>
                         <select
                             value={state.style}
-                            onChange={::this.updateStyle}
+                            onChange={this.updateStyle}
                         >
                             <option value="inherit">inherit</option>
                             <option value="american">american</option>

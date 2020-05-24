@@ -14,6 +14,7 @@ export class SettingsWindow extends React.Component {
     constructor(props) {
         super(props)
         this.settings = storage(`settings-window-${props.name}`, new State())
+        this.toggle = ::this.toggle
     }
 
     toggle(event) {
@@ -24,7 +25,7 @@ export class SettingsWindow extends React.Component {
         const collapsedClass = this.settings['collapsed'] ? 'collapsed' : ''
         return (
             <fieldset className={`settings-window ${collapsedClass}`}>
-                <div className="header" onDoubleClick={::this.toggle}>
+                <div className="header" onDoubleClick={this.toggle}>
                     <div className="name">{this.props.name}</div>
                 </div>
                 <div className="contents">{this.props.children}</div>

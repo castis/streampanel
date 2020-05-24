@@ -12,26 +12,14 @@ const urlify = obj =>
 @observer
 export class Spotify extends React.Component {
     componentDidMount() {
-        // const url = `https://accounts.spotify.com/authorize?${urlify({
-        //     response_type: 'code',
-        //     client_id: '6272a96550d4417abfcbe9d5ed774894',
-        //     scope: [
-        //         'user-read-private',
-        //         'user-read-email'
-        //     ].join(' '),
-        //     redirect_uri: 'http://localhost:5000/app'
-        // })}`
-        // console.log(url)
-        // fetch(url)
-        //   .then(response => response.json())
-        //   .then(data => console.log(data));
+
     }
 
     render() {
         return (
             <div
                 className="spotify"
-                onClick={() => console.log('panic and shit your pants')}
+                onClick={() => console.log('do a thing')}
             >
                 <div className="now-playing">
                     <div className="head">now playing</div>

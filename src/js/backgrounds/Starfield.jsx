@@ -188,9 +188,6 @@ export class Starfield extends React.Component {
 export class StarfieldSettings extends React.Component {
     constructor(props) {
         super(props)
-        this.changeSpeed = ::this.changeSpeed
-        this.changeMaxStars = ::this.changeMaxStars
-        this.changeColor = ::this.changeColor
     }
 
     changeColor(color) {
@@ -224,7 +221,7 @@ export class StarfieldSettings extends React.Component {
                     <label>color</label>
                     <ColorPicker
                         color={state.color}
-                        onChange={::this.changeColor}
+                        onChange={this.changeColor}
                     />
                 </div>
                 <div className="input">

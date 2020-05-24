@@ -14,6 +14,7 @@ export class InputGroup extends React.Component {
     constructor(props) {
         super(props)
         this.settings = storage(`settings-window-${props.name}`, new State())
+        this.toggle = ::this.toggle
     }
 
     toggle(event) {
@@ -26,7 +27,7 @@ export class InputGroup extends React.Component {
         return (
             <fieldset className={`inputs ${collapsedClass}`}>
                 <div className="header">
-                    <div className="name" onDoubleClick={::this.toggle}>
+                    <div className="name" onDoubleClick={this.toggle}>
                         {name}
                     </div>
                     <input

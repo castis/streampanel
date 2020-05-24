@@ -75,14 +75,14 @@ export class GradientSettings extends React.Component {
                     <label>top</label>
                     <ColorPicker
                         color={state.bg1}
-                        onChange={::this.changeBg1}
+                        onChange={this.changeBg1}
                     />
                 </div>
                 <div className="input">
                     <label>bottom</label>
                     <ColorPicker
                         color={state.bg2}
-                        onChange={::this.changeBg2}
+                        onChange={this.changeBg2}
                     />
                 </div>
             </InputGroup>

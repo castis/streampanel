@@ -262,14 +262,6 @@ const spaceBar = new SpaceBar()
 
 @observer
 export class StopwatchSettings extends React.Component {
-    constructor(props) {
-        super(props)
-        this.changeBackground = ::this.changeBackground
-        this.changeFontColor = ::this.changeFontColor
-        this.changeSpeed = ::this.changeSpeed
-        this.changeSpaceBarToggle = ::this.changeSpaceBarToggle
-    }
-
     componentDidMount() {
         if (state.useSpaceBar) {
             spaceBar.bind()
