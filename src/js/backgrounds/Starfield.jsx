@@ -233,7 +233,7 @@ export class StarfieldSettings extends React.Component {
           <input
             type="range"
             min="0.001"
-            max="1"
+            max="1.5"
             step="0.005"
             value={state.starfieldZ}
             onChange={this.changeWarp}

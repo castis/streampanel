@@ -336,15 +336,6 @@ export class StopwatchSettings extends React.Component {
     state.updateSpeed = max(1, min(value, 256))
   }
 
-  changeSpaceBarToggle(event) {
-    state.useSpaceBar = event.target.checked
-    if (state.useSpaceBar) {
-      keyHandler.bind()
-    } else {
-      keyHandler.unbind()
-    }
-  }
-
   render() {
     return (
       <SettingsWindow name="timer">
@@ -369,14 +360,6 @@ export class StopwatchSettings extends React.Component {
               max="256"
               value={state.updateSpeed}
               onChange={this.changeSpeed}
-            />
-          </div>
-          <div className="input">
-            <label>space bar toggle</label>
-            <input
-              type="checkbox"
-              checked={state.useSpaceBar}
-              onChange={this.changeSpaceBarToggle}
             />
           </div>
         </div>

@@ -13,8 +13,8 @@ function msToTime(s) {
   const hrs = (s - mins) / 60
 
   return (
-    (hrs > 0 ? '${hrs}:' : '') +
-    (mins > 0 ? '${mins}:' : '') +
+    (hrs > 0 ? `${hrs}:` : '') +
+    (mins > 0 ? `${mins}:` : '') +
     `${Math.abs(secs)}.${pad(Math.abs(ms), 2)}`
   )
 }
