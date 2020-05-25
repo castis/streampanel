@@ -17,166 +17,166 @@ import { localforage, storage } from '../util/storage'
 // import "typeface-roboto-mono";
 
 const state = storage(
-    'general',
-    new (class {
-        // double tap
-        @observable abortLock = false
-        @persist @observable standby = false
-        @persist @observable game = 'super-metroid'
-    })()
+  'general',
+  new (class {
+    // double tap
+    @observable abortLock = false
+    @persist @observable standby = false
+    @persist @observable game = 'super-metroid'
+  })()
 )
 
 @observer
 class GeneralSettings extends React.Component {
-    constructor(props) {
-        super(props)
-        this.reset = ::this.reset
-        this.availableGames = {
-            'super-metroid': 'Super Metroid',
-            'final-fantasy-6': 'Final Fantasy 6',
-        }
+  constructor(props) {
+    super(props)
+    this.reset = ::this.reset
+    this.availableGames = {
+      'super-metroid': 'Super Metroid',
+      'final-fantasy-6': 'Final Fantasy 6',
+    }
+  }
+
+  reset() {
+    if (state.abortLock) {
+      this.abortReset()
+      localforage.clear()
+      window.location.reload(false)
+    } else {
+      state.abortLock = true
+    }
+  }
+
+  abortReset() {
+    state.abortLock = false
+  }
+
+  changeStandby(event) {
+    state.standby = event.target.checked
+  }
+
+  changeGame(event) {
+    state.game = event.target.value
+  }
+
+  render() {
+    let buttons = [
+      <button key="1" onClick={this.reset}>
+        {state.abortLock ? 'confirm' : 'hard reset'}
+      </button>,
+    ]
+
+    if (state.abortLock) {
+      buttons.push(
+        <button key="2" onClick={this.abortReset}>
+          cancel
+        </button>
+      )
     }
 
-    reset() {
-        if (state.abortLock) {
-            this.abortReset()
-            localforage.clear()
-            window.location.reload(false)
-        } else {
-            state.abortLock = true
-        }
-    }
+    const games = Object.keys(this.availableGames).map(k => (
+      <option key={k} value={k}>
+        {this.availableGames[k]}
+      </option>
+    ))
 
-    abortReset() {
-        state.abortLock = false
-    }
-
-    changeStandby(event) {
-        state.standby = event.target.checked
-    }
-
-    changeGame(event) {
-        state.game = event.target.value
-    }
-
-    render() {
-        let buttons = [
-            <button key="1" onClick={this.reset}>
-                {state.abortLock ? 'confirm' : 'hard reset'}
-            </button>,
-        ]
-
-        if (state.abortLock) {
-            buttons.push(
-                <button key="2" onClick={this.abortReset}>
-                    cancel
-                </button>
-            )
-        }
-
-        const games = Object.keys(this.availableGames).map(k => (
-            <option key={k} value={k}>
-                {this.availableGames[k]}
-            </option>
-        ))
-
-        return (
-            <SettingsWindow name="general settings">
-                <div className="inputs">
-                    <div className="input">
-                        <label>game</label>
-                        <select value={state.game} onChange={this.changeGame}>
-                            {games}
-                        </select>
-                    </div>
-                    <div className="input">
-                        <label>standby</label>
-                        <input
-                            type="checkbox"
-                            checked={state.standby}
-                            onChange={this.changeStandby}
-                        />
-                    </div>
-                </div>
-                <div className="commands">{buttons}</div>
-            </SettingsWindow>
-        )
-    }
+    return (
+      <SettingsWindow name="general settings">
+        <div className="inputs">
+          <div className="input">
+            <label>game</label>
+            <select value={state.game} onChange={this.changeGame}>
+              {games}
+            </select>
+          </div>
+          <div className="input">
+            <label>standby</label>
+            <input
+              type="checkbox"
+              checked={state.standby}
+              onChange={this.changeStandby}
+            />
+          </div>
+        </div>
+        <div className="commands">{buttons}</div>
+      </SettingsWindow>
+    )
+  }
 }
 
 @observer
 class Game extends React.Component {
-    constructor(props) {
-        super(props)
-        this.games = {
-            'super-metroid': <SuperMetroid />,
-            'final-fantasy-6': <FinalFantasy6 />,
-        }
+  constructor(props) {
+    super(props)
+    this.games = {
+      'super-metroid': <SuperMetroid />,
+      'final-fantasy-6': <FinalFantasy6 />,
     }
-    render() {
-        const { game } = state
-        return this.games[game]
-    }
+  }
+  render() {
+    const { game } = state
+    return this.games[game]
+  }
 }
 
 @observer
 class GameSettings extends React.Component {
-    constructor(props) {
-        super(props)
-        this.games = {
-            'super-metroid': <SuperMetroidSettings />,
-            'final-fantasy-6': <FinalFantasy6Settings />,
-        }
+  constructor(props) {
+    super(props)
+    this.games = {
+      'super-metroid': <SuperMetroidSettings />,
+      'final-fantasy-6': <FinalFantasy6Settings />,
     }
-    render() {
-        const { game } = state
-        return this.games[game]
-    }
+  }
+  render() {
+    const { game } = state
+    return this.games[game]
+  }
 }
 
 @observer
 export default class App extends React.Component {
-    resize() {
-        const { body } = document
-        localforage.setItem('window', {
-            width: body.clientWidth,
-            height: body.clientHeight,
-        })
-    }
+  resize() {
+    const { body } = document
+    localforage.setItem('window', {
+      width: body.clientWidth,
+      height: body.clientHeight,
+    })
+  }
 
-    componentDidMount() {
-        window.addEventListener('resize', this.resize)
-        this.resize()
-    }
+  componentDidMount() {
+    window.addEventListener('resize', this.resize)
+    this.resize()
+  }
 
-    componentWillUnmount() {
-        window.removeEventListener('resize', this.resize)
-    }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.resize)
+  }
 
-    render() {
-        return (
-            <div className="app">
-                <div className="main">
-                    <Background />
-                    <div
-                        className={classnames({
-                            display: true,
-                            standby: state.standby,
-                        })}
-                    >
-                        <Game />
-                        <Stopwatch />
-                        <Gamepad />
-                    </div>
-                </div>
-                <div className="settings">
-                    <GeneralSettings />
-                    <BackgroundSettings />
-                    <GameSettings />
-                    <StopwatchSettings />
-                    <GamepadSettings />
-                </div>
-            </div>
-        )
-    }
+  render() {
+    return (
+      <div className="app">
+        <div className="main">
+          <Background />
+          <div
+            className={classnames({
+              display: true,
+              standby: state.standby,
+            })}
+          >
+            <Game />
+            <Stopwatch />
+            <Gamepad />
+          </div>
+        </div>
+        <div className="settings">
+          <GeneralSettings />
+          <BackgroundSettings />
+          <GameSettings />
+          <StopwatchSettings />
+          <GamepadSettings />
+        </div>
+      </div>
+    )
+  }
 }
