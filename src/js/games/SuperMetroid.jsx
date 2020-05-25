@@ -13,11 +13,11 @@ const state = storage(
   'super-metroid',
   new (class {
     @persist('list') @observable items = [
-      'missile',
-      'super',
-      'pbomb',
-      'grappling',
-      'xray',
+      // 'missile',
+      // 'super',
+      // 'pbomb',
+      // 'grappling',
+      // 'xray',
 
       'charge',
       'ice',
