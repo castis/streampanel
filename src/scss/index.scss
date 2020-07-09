@@ -2,7 +2,7 @@
 @import 'mq';
 @import 'color_picker';
 
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400&family=Oxygen&display=swap');
 
 html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed,  figure, figcaption, footer, header, hgroup,  menu, nav, output, section, summary, time, mark, audio, video {
     margin: 0;
@@ -71,6 +71,7 @@ path {
     justify-content: center;
     align-items: center;
     height: 100%;
+    background-image: url(/img/tiles/1.png);
 
     button {
         border: 0;
@@ -99,6 +100,7 @@ $max-width: 610px;
 .app {
     display: flex;
     flex-direction: row;
+    background-image: url(/img/tiles/1.png);
 
     .main {
         max-width: 450px;
@@ -121,10 +123,6 @@ $max-width: 610px;
         }
 
         .background {
-            // position: absolute;
-            // top: 0;
-            // left: 0;
-
             z-index: 1;
 
             width: 100%;
@@ -319,6 +317,62 @@ $max-width: 610px;
                         &:last-of-type {
                             margin-bottom: 0;
                         }
+                    }
+                }
+            }
+
+            $font-color: rgba(255, 255, 255, 0.6);
+            .spotify {
+                font-family: 'Oxygen', sans-serif;
+                font-size: 11px;
+                padding:  10px 30px 10px;
+                color: $font-color;
+                margin-top: 20px;
+                background: rgba(0, 0, 0, 0.4);
+
+                .head {
+                    text-align: left;
+                    // border-bottom: solid 1px $font-color;
+                    padding-bottom: 2px;
+                    // margin-bottom: 4px;
+                }
+
+                hr {
+                    border-width: 1px 0 0 0;
+                }
+
+                .now-playing {
+                    display: grid;
+                    grid-template-columns: 50px auto;
+                    grid-template-rows: 1fr 1fr;
+
+                    .art {
+                        grid-row: 1 / span 2;
+                        grid-column: 1;
+                        text-align: left;
+
+                        img {
+                            width: 40px;
+                            height: 40px;
+                            box-shadow: 0 0 10px rgba(100, 100, 100, 1);
+                        }
+                    }
+                    .artist {
+                        // background: rgba(250, 0, 0, 0.4);
+                        grid-row: 1;
+                        grid-column: 2;
+                        display: flex;
+                        align-items: end;
+                        text-align: left;
+                        vertical-align: bottom;
+                        margin-bottom: 1px;
+                    }
+                    .song {
+                        // background: rgba(0, 250, 0, 0.4);
+                        grid-row: 2;
+                        grid-column: 2;
+                        text-align: left;
+                        margin-top: 1px;
                     }
                 }
             }
@@ -639,6 +693,7 @@ $max-width: 610px;
             color: #444;
             width: 100%;
             box-shadow: 0 0 8px rgba(100, 100, 100, 0.2);
+            background: rgba(255, 255, 255, 0.8);
 
             &.collapsed {
                 .header {

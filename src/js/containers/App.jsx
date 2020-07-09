@@ -10,6 +10,7 @@ import { FinalFantasy6, FinalFantasy6Settings } from '../games/FinalFantasy6'
 import { Background, BackgroundSettings } from '../backgrounds/Background'
 import { Stopwatch, StopwatchSettings } from '../components/Stopwatch'
 import { Gamepad, GamepadSettings } from '../components/Gamepad'
+import { Spotify, SpotifySettings } from '../components/Spotify'
 
 import { SettingsWindow } from '../util/SettingsWindow'
 import { localforage, storage } from '../util/storage'
@@ -166,6 +167,7 @@ export default class App extends React.Component {
           >
             <Game />
             <Stopwatch />
+            <Spotify />
             <Gamepad />
           </div>
         </div>
@@ -174,6 +176,7 @@ export default class App extends React.Component {
           <BackgroundSettings />
           <GameSettings />
           <StopwatchSettings />
+          <SpotifySettings />
           <GamepadSettings />
         </div>
       </div>

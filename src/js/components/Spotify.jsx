@@ -1,28 +1,199 @@
 import React from 'react'
 import classnames from 'classnames'
-import { observable } from 'mobx'
+import { observable, action, computed } from 'mobx'
 import { observer } from 'mobx-react'
 import { persist } from 'mobx-persist'
+import { storage } from '../util/storage'
+import { SettingsWindow } from '../util/SettingsWindow'
+import ColorPicker from '../util/ColorPicker'
 
-const urlify = obj =>
-  Object.keys(obj)
-    .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(obj[k]))
-    .join('&')
+import * as SpotifyWebApi from 'spotify-web-api-js'
+
+const spotifyApi = new SpotifyWebApi()
+
+class SpotifyState {
+  @persist @observable enabled = false
+  @persist @observable albumArt = ''
+  @persist @observable artistName = ''
+  @persist @observable song = ''
+  @persist @observable offline = true
+  @persist('object') @observable background = {
+    r: 0,
+    g: 0,
+    b: 0,
+    a: 0.5,
+  }
+  @persist('object') @observable font = {
+    r: 255,
+    g: 255,
+    b: 255,
+    a: 0.9,
+  }
+  @persist @observable accessToken = ''
+  @persist @observable username = ''
+
+  @action fetchAccessToken() {
+    fetch('http://localhost:8080')
+      .then(response => {
+        console.log('response is')
+        console.log(response)
+      })
+      .catch(error => {
+        console.log('error is')
+        console.log(error)
+      })
+  }
+
+  @action update() {
+    if (!this.accessToken) {
+      console.log('no access token')
+      return
+    }
+    spotifyApi.setAccessToken(this.accessToken)
+    spotifyApi.getMyCurrentPlaybackState({}, (err, data) => {
+      if (err) {
+        this.offline = 'uh oh'
+        console.error(err.response)
+        return
+      }
+
+      if (!data) {
+        this.offline = 'player offline'
+        return
+      }
+
+      this.albumArt = data.item.album.images.find(i => i.height == 300).url
+      this.artistName = data.item.artists[0].name
+      this.song = data.item.name
+      this.offline = false
+    })
+  }
+}
+
+const state = storage('spotify', new SpotifyState(), () => state.update())
 
 @observer
 export class Spotify extends React.Component {
-  componentDidMount() {}
+  render() {
+    if (!state.enabled) {
+      return ''
+    }
+
+    let contents
+
+    const bg = state.background
+    const fg = state.font
+
+    const style = {
+      backgroundColor: `rgba(${bg.r}, ${bg.g}, ${bg.b}, ${bg.a})`,
+      color: `rgba(${fg.r}, ${fg.g}, ${fg.b}, ${fg.a})`,
+    }
+
+    if (state.offline) {
+      contents = <div className="offline">{state.offline}</div>
+    } else {
+      contents = (
+        <>
+          <div className="head">now playing</div>
+          <hr />
+          <div className="now-playing">
+            <div className="art">
+              <img src={state.albumArt} width="100" />
+            </div>
+            <div className="artist">{state.artistName}</div>
+            <div className="song">{state.song}</div>
+          </div>
+          <hr />
+        </>
+      )
+    }
+
+    return (
+      <div
+        className="spotify"
+        style={style}
+        onClick={() => console.log('do a thing')}
+      >
+        {contents}
+      </div>
+    )
+  }
+}
+
+@observer
+export class SpotifySettings extends React.Component {
+  update = undefined
+
+  componentDidMount() {
+    this.update = setInterval(() => state.update(), 10 * 1000)
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.update)
+  }
+
+  changeBackground(background) {
+    state.background = background.rgb
+  }
+
+  changeFontColor(font) {
+    state.font = font.rgb
+  }
+
+  changeEnabled(event) {
+    state.enabled = !state.enabled
+  }
+
+  changeUsername(event) {
+    state.username = event.target.value
+  }
+
+  changeAccessToken(event) {
+    state.accessToken = event.target.value
+    state.update()
+  }
 
   render() {
     return (
-      <div className="spotify" onClick={() => console.log('do a thing')}>
-        <div className="now-playing">
-          <div className="head">now playing</div>
-          <div className="art" />
-          <div className="artist" />
-          <div className="song" />
+      <SettingsWindow name="spotify">
+        <div className="inputs">
+          <div className="input">
+            <label>enabled</label>
+            <input
+              type="checkbox"
+              checked={state.enabled}
+              onChange={this.changeEnabled}
+            />
+          </div>
+          <div className="input">
+            <label>username</label>
+            <input
+              type="text"
+              value={state.username}
+              onChange={this.changeUsername}
+            />
+          </div>
+          <div className="input">
+            <label>access token</label>
+            <input
+              type="text"
+              value={state.accessToken}
+              onChange={this.changeAccessToken}
+            />
+          </div>
+          <div className="input">
+            <label>background</label>
+            <ColorPicker
+              color={state.background}
+              onChange={this.changeBackground}
+            />
+          </div>
+          <div className="input">
+            <label>font color</label>
+            <ColorPicker color={state.font} onChange={this.changeFontColor} />
+          </div>
         </div>
-      </div>
+      </SettingsWindow>
     )
   }
 }

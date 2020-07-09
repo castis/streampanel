@@ -11,8 +11,8 @@ const hydrate = create({
   jsonify: true,
 })
 
-const storage = (name, state, cb = () => {}) => {
-  hydrate(name, state).then(cb)
+const storage = (name, state, callback = () => {}) => {
+  hydrate(name, state).then(callback)
   return state
 }
 

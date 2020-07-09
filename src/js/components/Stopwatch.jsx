@@ -51,6 +51,7 @@ class Timer {
 
 class TimerState {
   @persist('object', Timer) @observable timer = new Timer()
+  @persist @observable enabled = true
   @persist @observable isRunning = false
   @persist @observable startTime = 0
   @persist @observable updateSpeed = 60
@@ -186,6 +187,14 @@ export class Splits extends React.Component {
     state.splits.remove(state.splits[event.target.dataset.index])
   }
 
+  enable() {
+    keyHandler.bind()
+  }
+
+  disable() {
+    keyHandler.unbind()
+  }
+
   render() {
     const { splits } = state
     return (
@@ -239,23 +248,19 @@ export class Splits extends React.Component {
 @observer
 export class Stopwatch extends React.Component {
   render() {
+    if (!state.enabled) {
+      return ''
+    }
     const bg = state.background
     const fg = state.font
 
     const style = {
       backgroundColor: `rgba(${bg.r}, ${bg.g}, ${bg.b}, ${bg.a})`,
-      color: `#${fg.r.toString(16)}${fg.g.toString(16)}${fg.b.toString(16)}`,
+      color: `rgba(${bg.r}, ${bg.g}, ${bg.b}, ${bg.a})`,
     }
     return (
       <div className="timer" style={style}>
-        <div
-          className="big-time"
-          style={{
-            opacity: fg.a,
-          }}
-        >
-          {state.display}
-        </div>
+        <div className="big-time">{state.display}</div>
         <Splits />
       </div>
     )
@@ -282,10 +287,10 @@ class KeyHandler {
       this.spaceLock = true
       event.preventDefault()
 
-      if(event.ctrlKey) {
+      if (event.ctrlKey) {
         return state.newSplit()
       }
-      if(event.shiftKey) {
+      if (event.shiftKey) {
         return state.advanceSplit()
       }
       if (state.isRunning) {
@@ -312,7 +317,7 @@ const keyHandler = new KeyHandler()
 @observer
 export class StopwatchSettings extends React.Component {
   componentDidMount() {
-    if (state.useSpaceBar) {
+    if (state.useSpaceBar && state.enabled) {
       keyHandler.bind()
     }
   }
@@ -336,10 +341,22 @@ export class StopwatchSettings extends React.Component {
     state.updateSpeed = max(1, min(value, 256))
   }
 
+  changeEnabled(event) {
+    state.enabled = !state.enabled
+  }
+
   render() {
     return (
       <SettingsWindow name="timer">
         <div className="inputs">
+          <div className="input">
+            <label>enabled</label>
+            <input
+              type="checkbox"
+              checked={state.enabled}
+              onChange={this.changeEnabled}
+            />
+          </div>
           <div className="input">
             <label>background</label>
             <ColorPicker

@@ -1,6 +1,9 @@
 node_modules
 .DS_Store
+.scratch
 yarn-error.log
+public/index.html
 public/css/*
 public/js/*
 public/fonts/*
+server/.*

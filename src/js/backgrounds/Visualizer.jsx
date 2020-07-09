@@ -98,11 +98,13 @@ const state = storage(
     }
 
     update() {
-      this.analyser.getByteFrequencyData(this.frequencies)
-      this.frequencies.map(this.frequencyMap)
+      if (this.analyser) {
+        this.analyser.getByteFrequencyData(this.frequencies)
+        this.frequencies.map(this.frequencyMap)
 
-      if (this.running) {
-        setTimeout(this.update, this.updateSpeed)
+        if (this.running) {
+          setTimeout(this.update, this.updateSpeed)
+        }
       }
     }
 
