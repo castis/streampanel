@@ -5,10 +5,11 @@ description = "backend stuff for the sidebar"
 authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.6"
+python = "^3.8"
 spotipy = "^2.12.0"
-python-dotenv = "^0.14.0"
 flask = "^1.1.2"
+flask_session = "^0.3.2"
+gunicorn = "^20.0.4"
 
 [tool.poetry.dev-dependencies]
 
