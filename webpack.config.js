@@ -1,10 +1,9 @@
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const path = require('path');
-const webpack = require('webpack');
-const autoprefixer = require('autoprefixer');
-
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const path = require('path')
+const webpack = require('webpack')
+const autoprefixer = require('autoprefixer')
 
 module.exports = {
     mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
@@ -13,59 +12,41 @@ module.exports = {
 
     output: {
         path: path.resolve(__dirname),
-        filename: 'public/js/index.js',
-        publicPath: '/'
+        filename: 'static/js/index.js',
+        publicPath: '/',
     },
 
     module: {
         rules: [
-        {
-            test: /\.jsx?$/,
-            include: path.resolve(__dirname, 'src/js'),
-            loader: 'babel-loader',
-        },
-        {
-            test: /\.scss$/,
-            use: [
-                MiniCssExtractPlugin.loader,
-                'css-loader',
-                'sass-loader',
-            ]
-        },
-        {
-            test: /\.css$/,
-            loader: 'style-loader!css-loader'
-        },
-        // {
-        //     test: /\.(woff|woff2|eot|ttf)$/i,
-        //     loader: 'file-loader',
-        //     options: {
-        //         outputPath: 'public/fonts',
-        //         esModule: false,
-        //     },
-        // },
-        ]
+            {
+                test: /\.jsx?$/,
+                include: path.resolve(__dirname, 'src/js'),
+                loader: 'babel-loader',
+            },
+            {
+                test: /\.scss$/,
+                use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+            },
+            {
+                test: /\.css$/,
+                loader: 'style-loader!css-loader',
+            },
+        ],
     },
 
     resolve: {
         modules: [
             path.resolve(__dirname, 'src'),
-            path.join(__dirname, 'node_modules')
+            path.join(__dirname, 'node_modules'),
         ],
         extensions: ['.js', '.jsx'],
     },
 
     plugins: [
         new MiniCssExtractPlugin({
-            filename: 'public/css/index.css',
-        })
+            filename: 'static/css/index.css',
+        }),
     ],
-
-    devServer: {
-        contentBase: path.join(__dirname, 'public'),
-        compress: true,
-        port: 9000
-    },
 
     devtool: 'source-map',
 
@@ -76,7 +57,7 @@ module.exports = {
                 parallel: true,
                 sourceMap: true,
             }),
-            new OptimizeCSSAssetsPlugin()
-        ]
+            new OptimizeCSSAssetsPlugin(),
+        ],
     },
 }

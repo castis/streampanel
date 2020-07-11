@@ -6,10 +6,9 @@ windows:
       - name: workspace
         commands:
           - git st
-      - name: serve
+      - name: flask
         commands:
-          - nvm use
-          - npx serve public -s
+          - poetry run flask run
       - name: webpack
         commands:
           - nvm use

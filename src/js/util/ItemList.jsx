@@ -10,7 +10,7 @@ const ItemView = observer(({ item }) => (
     })}
   >
     <img
-      src={`/img/items/${item.name}.png`}
+      src={`/static/img/items/${item.name}.png`}
       onClick={() => (item.completed = !item.completed)}
     />
   </div>

@@ -71,7 +71,7 @@ path {
     justify-content: center;
     align-items: center;
     height: 100%;
-    background-image: url(/img/tiles/1.png);
+    background-image: url(/static/img/tiles/1.png);
 
     button {
         border: 0;
@@ -100,7 +100,7 @@ $max-width: 610px;
 .app {
     display: flex;
     flex-direction: row;
-    background-image: url(/img/tiles/1.png);
+    background-image: url(/static/img/tiles/1.png);
 
     .main {
         max-width: 450px;
@@ -129,7 +129,7 @@ $max-width: 610px;
             height: 650px;
 
             &.static {
-                background-image: url('/img/bg/3.jpg');
+                background-image: url('/static/img/bg/3.jpg');
                 background-size: cover;
                 background-position: center;
             }
@@ -170,7 +170,7 @@ $max-width: 610px;
                 height: 145px;
                 margin-top: 8px;
                 position: relative;
-                background-image: url('/img/bosses/golden_four.png');
+                background-image: url('/static/img/bosses/golden_four.png');
 
 
                 .boss {
@@ -190,7 +190,7 @@ $max-width: 610px;
                     left: 0px;
                     bottom: 4px;
                     z-index: 1;
-                    background-image: url('/img/bosses/kraid.png');
+                    background-image: url('/static/img/bosses/kraid.png');
                 }
 
                 .phantoon {
@@ -200,7 +200,7 @@ $max-width: 610px;
                     left: 46px;
                     bottom: 22px;
                     z-index: 2;
-                    background-image: url('/img/bosses/phantoon.png');
+                    background-image: url('/static/img/bosses/phantoon.png');
                 }
 
                 .draygon {
@@ -210,7 +210,7 @@ $max-width: 610px;
                     right: 0px;
                     bottom: 8px;
                     z-index: 1;
-                    background-image: url('/img/bosses/draygon.png');
+                    background-image: url('/static/img/bosses/draygon.png');
                 }
 
                 .ridley {
@@ -220,7 +220,7 @@ $max-width: 610px;
                     left: 36px;
                     top: 0px;
                     z-index: 3;
-                    background-image: url('/img/bosses/ridley.png');
+                    background-image: url('/static/img/bosses/ridley.png');
                 }
             }
 

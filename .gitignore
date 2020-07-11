@@ -1,9 +1,9 @@
-node_modules
 .DS_Store
 .scratch
-yarn-error.log
-public/index.html
-public/css/*
-public/js/*
-public/fonts/*
-server/.*
+.env
+.cache-*
+static/css/*
+static/js/*
+node_modules
+__pycache__
+flask_session

@@ -32,21 +32,8 @@ class SpotifyState {
   @persist @observable accessToken = ''
   @persist @observable username = ''
 
-  @action fetchAccessToken() {
-    fetch('http://localhost:8080')
-      .then(response => {
-        console.log('response is')
-        console.log(response)
-      })
-      .catch(error => {
-        console.log('error is')
-        console.log(error)
-      })
-  }
-
   @action update() {
     if (!this.accessToken) {
-      console.log('no access token')
       return
     }
     spotifyApi.setAccessToken(this.accessToken)
@@ -142,15 +129,30 @@ export class SpotifySettings extends React.Component {
 
   changeEnabled(event) {
     state.enabled = !state.enabled
-  }
-
-  changeUsername(event) {
-    state.username = event.target.value
-  }
-
-  changeAccessToken(event) {
-    state.accessToken = event.target.value
     state.update()
+  }
+
+  // changeUsername(event) {
+  //   state.username = event.target.value
+  // }
+
+  // changeAccessToken(event) {
+  //   state.accessToken = event.target.value
+  //   state.update()
+  // }
+
+  fetchToken(event) {
+    fetch('/api/spotify')
+      .then(response => response.json())
+      .then(data => {
+        if (data['auth']) {
+          const window_handle = window.open(data['auth'])
+        }
+        else {
+          state.accessToken = data['access_token']
+          state.update()
+        }
+      })
   }
 
   render() {
@@ -165,21 +167,29 @@ export class SpotifySettings extends React.Component {
               onChange={this.changeEnabled}
             />
           </div>
-          <div className="input">
+          {/*<div className="input">
             <label>username</label>
             <input
               type="text"
               value={state.username}
               onChange={this.changeUsername}
             />
-          </div>
-          <div className="input">
+          </div>*/}
+          {/*<div className="input">
             <label>access token</label>
             <input
               type="text"
               value={state.accessToken}
               onChange={this.changeAccessToken}
             />
+          </div>*/}
+          <div className="input">
+            <label>token ({state.accessToken ? '✔' : '✖'})</label>
+            <button
+              onClick={this.fetchToken}
+            >
+              fetch token
+            </button>
           </div>
           <div className="input">
             <label>background</label>

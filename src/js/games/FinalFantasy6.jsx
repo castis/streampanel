@@ -44,7 +44,7 @@ const ItemView = observer(({ item }) => (
     })}
   >
     <img
-      src={`/img/ff6-characters/${item.name}.gif`}
+      src={`/static/img/ff6-characters/${item.name}.gif`}
       onClick={() => (item.completed = !item.completed)}
     />
   </div>
