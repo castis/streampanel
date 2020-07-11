@@ -1,5 +1,9 @@
 # Streaming side panel
 
+https://stream.tinybluerobot.com
+
+Run dev setup with `itermocil --here`
+
 #### the js
 
 	nvm use
@@ -7,22 +11,12 @@
 
 #### the python
 
-	cd server
 	poetry run flask run
-
 
 `.env` should contain
 ```
 SPOTIPY_CLIENT_ID=
 SPOTIPY_CLIENT_SECRET=
-SPOTIPY_REDIRECT_URI=http://localhost:8080/callback
+SPOTIPY_REDIRECT_URI=http://localhost:5000/api/spotify
 ```
 
-```
-poetry install
-poetry shell
-python spotify.py
-```
-
-
-https://stream.tinybluerobot.com
