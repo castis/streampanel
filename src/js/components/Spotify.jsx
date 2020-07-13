@@ -37,10 +37,16 @@ class SpotifyState {
       return
     }
     spotifyApi.setAccessToken(this.accessToken)
+
     spotifyApi.getMyCurrentPlaybackState({}, (err, data) => {
       if (err) {
-        this.offline = 'uh oh'
-        console.error(err.response)
+        const error = JSON.parse(err.responseText).error
+        this.offline = error.message
+        // switch(error.status) {
+        //   case 401:
+        //     this.getAccessToken(true)
+        //   default:
+        // }
         return
       }
 
@@ -55,7 +61,26 @@ class SpotifyState {
       this.offline = false
     })
   }
+
+  @action getAccessToken(clear=false) {
+    let url = `/api/spotify${clear?'/clear':''}`
+    console.log(url)
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        if (data['auth']) {
+          const window_handle = window.open(data['auth'])
+        }
+        else {
+          this.accessToken = data['access_token']
+          this.update()
+        }
+      })
+  }
 }
+
+window['getAccessToken'] = () => state.accessToken
+window['setAccessToken'] = (accessToken) => state.accessToken = accessToken
 
 const state = storage('spotify', new SpotifyState(), () => state.update())
 
@@ -112,7 +137,7 @@ export class SpotifySettings extends React.Component {
   update = undefined
 
   componentDidMount() {
-    this.update = setInterval(() => state.update(), 10 * 1000)
+    this.update = setInterval(() => state.update(), 20 * 1000)
   }
 
   componentWillUnmount() {
@@ -132,27 +157,8 @@ export class SpotifySettings extends React.Component {
     state.update()
   }
 
-  // changeUsername(event) {
-  //   state.username = event.target.value
-  // }
-
-  // changeAccessToken(event) {
-  //   state.accessToken = event.target.value
-  //   state.update()
-  // }
-
   fetchToken(event) {
-    fetch('/api/spotify')
-      .then(response => response.json())
-      .then(data => {
-        if (data['auth']) {
-          const window_handle = window.open(data['auth'])
-        }
-        else {
-          state.accessToken = data['access_token']
-          state.update()
-        }
-      })
+    state.getAccessToken()
   }
 
   render() {
