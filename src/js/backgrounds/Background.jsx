@@ -13,7 +13,7 @@ const state = storage(
   'bgimage',
   new (class {
     @persist @observable enabled = false
-    @persist @observable updateSpeed = 10
+    @persist @observable updateSpeed = 40
     @persist @observable scrollSpeed = 0.2
   })()
 )
@@ -102,7 +102,7 @@ export class BackgroundImageSettings extends React.Component {
             type="range"
             className="reverse"
             min="1"
-            max="40"
+            max="100"
             value={state.updateSpeed}
             onChange={this.changeUpdateSpeed}
           />
