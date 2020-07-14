@@ -12,7 +12,7 @@ const state = storage(
     @persist @observable enabled = true
     @persist @observable updateSpeed = 40
     @persist @observable scrollXSpeed = 0.2
-    @persist @observable scrollYSpeed = 0.3
+    @persist @observable scrollYSpeed = 0
     @persist @observable imageURL = "/static/img/bg/5.png"
     @observable image = new Image()
 
