@@ -39,9 +39,9 @@ export class Gradient extends React.Component {
         className="background"
         style={{
           backgroundImage: `linear-gradient(
-                    rgba(${bg1.r}, ${bg1.g}, ${bg1.b}, ${bg1.a}),
-                    rgba(${bg2.r}, ${bg2.g}, ${bg2.b}, ${bg2.a})
-                )`,
+            rgba(${bg1.r}, ${bg1.g}, ${bg1.b}, ${bg1.a}),
+            rgba(${bg2.r}, ${bg2.g}, ${bg2.b}, ${bg2.a})
+          )`,
         }}
       />
     )

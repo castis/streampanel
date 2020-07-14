@@ -11,7 +11,7 @@ import { storage } from '../util/storage'
 const state = storage(
   'starfield',
   new (class {
-    @persist @observable enabled = true
+    @persist @observable enabled = false
     @persist @observable updateSpeed = 5
     @persist('object') @observable color = {
       r: 255,
@@ -112,9 +112,8 @@ export class Starfield extends React.Component {
   }
 
   reset(star) {
-    star.color = `rgba(${state.color.r}, ${state.color.g}, ${state.color.b}, ${
-      state.color.a
-    })`
+    const { r, g, b, a } = state.color
+    star.color = `rgba(${r}, ${g}, ${b}, ${a})`
     star.x = (Math.random() * this.width - this.width * 0.5) * this.defaultZ
     star.y = (Math.random() * this.height - this.height * 0.5) * this.defaultZ
     star.z = this.defaultZ

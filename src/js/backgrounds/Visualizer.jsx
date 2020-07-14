@@ -11,7 +11,7 @@ import { storage } from '../util/storage'
 const state = storage(
   'visualizer',
   new (class {
-    @persist @observable enabled = true
+    @persist @observable enabled = false
     @persist @observable updateSpeed = 16
     @persist('object') @observable color = {
       r: 255,

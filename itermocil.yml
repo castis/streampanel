@@ -8,7 +8,7 @@ windows:
           - git st
       - name: flask
         commands:
-          - poetry run flask run
+          - poetry run python app.py
       - name: webpack
         commands:
           - nvm use

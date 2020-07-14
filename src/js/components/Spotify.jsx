@@ -37,16 +37,9 @@ class SpotifyState {
       return
     }
     spotifyApi.setAccessToken(this.accessToken)
-
     spotifyApi.getMyCurrentPlaybackState({}, (err, data) => {
       if (err) {
-        const error = JSON.parse(err.responseText).error
-        this.offline = error.message
-        // switch(error.status) {
-        //   case 401:
-        //     this.getAccessToken(true)
-        //   default:
-        // }
+        this.offline = JSON.parse(err.responseText).error.message
         return
       }
 
@@ -62,10 +55,8 @@ class SpotifyState {
     })
   }
 
-  @action getAccessToken(clear=false) {
-    let url = `/api/spotify${clear?'/clear':''}`
-    console.log(url)
-    fetch(url)
+  @action getAccessToken() {
+    fetch("/api/spotify")
       .then(response => response.json())
       .then(data => {
         if (data['auth']) {
@@ -115,7 +106,6 @@ export class Spotify extends React.Component {
             <div className="artist">{state.artistName}</div>
             <div className="song">{state.song}</div>
           </div>
-          <hr />
         </>
       )
     }

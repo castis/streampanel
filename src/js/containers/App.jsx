@@ -165,7 +165,7 @@ export default class App extends React.Component {
               standby: state.standby,
             })}
           >
-            <Game />
+            {/*<Game />*/}
             <Stopwatch />
             <Spotify />
             <Gamepad />
