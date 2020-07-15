@@ -9,17 +9,17 @@ import { InputGroup } from '../util/InputGroup'
 import { storage } from '../util/storage'
 
 const state = storage(
-  'starfield',
+  'particlefield',
   new (class {
     @persist @observable enabled = false
-    @persist @observable updateSpeed = 5
+    @persist @observable updateSpeed = 10
     @persist('object') @observable color = {
       r: 255,
       g: 255,
       b: 255,
-      a: 0.65,
+      a: 0.8,
     }
-    @persist @observable maxStars = 450
+    @persist @observable maxParticles = 450
     @persist @observable warp = 0.2
 
     @persist @observable starfieldZ = 0.09
@@ -29,16 +29,15 @@ const state = storage(
 )
 
 @observer
-export class Starfield extends React.Component {
-  stars = []
-  // shiftLock = false
+export class ParticleField extends React.Component {
+  particles = []
   defaultZ = 80
 
   constructor(props) {
     super(props)
 
     // this.bind = ::this.bind
-    this.addStars = ::this.addStars
+    this.addParticles = ::this.addParticles
     this.update = ::this.update
     this.reset = ::this.reset
     this.moveStars = ::this.moveStars
@@ -60,7 +59,7 @@ export class Starfield extends React.Component {
     this.canvas.globalAlpha = 1
 
     this.bind()
-    this.addStars(state.starfieldZ * 1000)
+    this.addParticles(state.starfieldZ * 1000)
     this.update()
   }
 
@@ -93,21 +92,21 @@ export class Starfield extends React.Component {
     this.shiftLock = event.shiftKey
   }
 
-  // if you add the stars all at once they start in noticeable waves
-  addStars(count) {
+  // if you add the particles all at once they start in noticeable waves
+  addParticles(count) {
     for (let i = 0, n; i < count; i++) {
       n = {}
       this.reset(n)
-      this.stars.push(n)
+      this.particles.push(n)
     }
-    if (this.stars.length < state.maxStars) {
-      setTimeout(this.addStars, 77, count)
+    if (this.particles.length < state.maxParticles) {
+      setTimeout(this.addParticles, 77, count)
     }
   }
 
   removeStars(count) {
     for (let i = 0; i < count; i++) {
-      this.stars.pop()
+      this.particles.pop()
     }
   }
 
@@ -130,21 +129,21 @@ export class Starfield extends React.Component {
       return setTimeout(this.update, 1000)
     }
 
-    // adjust the number of stars
-    const diff = this.stars.length - state.maxStars
+    // adjust the number of particles
+    const diff = this.particles.length - state.maxParticles
     if (diff < 0) {
-      this.addStars(-diff)
+      this.addParticles(-diff)
     } else if (diff > 0) {
       this.removeStars(diff)
     }
 
-    // if we have no stars, do nothing
-    if (this.stars.length == 0) {
+    // if we have no particles, do nothing
+    if (this.particles.length == 0) {
       return setTimeout(this.update, 1000)
     }
 
-    for (let i = 0; i < this.stars.length; i++) {
-      const star = this.stars[i],
+    for (let i = 0; i < this.particles.length; i++) {
+      const star = this.particles[i],
         x = star.x / star.z,
         y = star.y / star.z
 
@@ -180,7 +179,7 @@ export class Starfield extends React.Component {
 }
 
 @observer
-export class StarfieldSettings extends React.Component {
+export class ParticleFieldSettings extends React.Component {
   constructor(props) {
     super(props)
   }
@@ -193,8 +192,8 @@ export class StarfieldSettings extends React.Component {
     state.updateSpeed = parseInt(event.target.value)
   }
 
-  changeMaxStars(event) {
-    state.maxStars = parseInt(event.target.value)
+  changeMaxParticles(event) {
+    state.maxParticles = parseInt(event.target.value)
   }
 
   changeWarp(event) {
@@ -208,7 +207,7 @@ export class StarfieldSettings extends React.Component {
   render() {
     return (
       <InputGroup
-        name="starfield"
+        name="particle field"
         enabled={state.enabled}
         onChange={this.toggleEnabled}
       >
@@ -217,14 +216,14 @@ export class StarfieldSettings extends React.Component {
           <ColorPicker color={state.color} onChange={this.changeColor} />
         </div>
         <div className="input">
-          <label>stars</label>
+          <label>particles</label>
           <input
             type="range"
             min="0"
             max="3000"
             step="1"
-            value={state.maxStars}
-            onChange={this.changeMaxStars}
+            value={state.maxParticles}
+            onChange={this.changeMaxParticles}
           />
         </div>
         <div className="input">

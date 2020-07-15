@@ -153,30 +153,14 @@ export class SpotifySettings extends React.Component {
 
   render() {
     return (
-      <SettingsWindow name="spotify">
+      <SettingsWindow name="spotify" enabled={state.enabled} onChange={this.changeEnabled}>
         <div className="inputs">
-          <div className="input">
-            <label>enabled</label>
-            <input
-              type="checkbox"
-              checked={state.enabled}
-              onChange={this.changeEnabled}
-            />
-          </div>
           {/*<div className="input">
             <label>username</label>
             <input
               type="text"
               value={state.username}
               onChange={this.changeUsername}
-            />
-          </div>*/}
-          {/*<div className="input">
-            <label>access token</label>
-            <input
-              type="text"
-              value={state.accessToken}
-              onChange={this.changeAccessToken}
             />
           </div>*/}
           <div className="input">

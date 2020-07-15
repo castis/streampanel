@@ -23,12 +23,17 @@ export class SettingsWindow extends React.Component {
 
   render() {
     const collapsedClass = this.settings['collapsed'] ? 'collapsed' : ''
+    const { enabled, onChange, children, name } = this.props
+    const enabler = onChange
+      ? <input type="checkbox" checked={enabled} onChange={onChange} />
+      : ''
     return (
       <fieldset className={`settings-window ${collapsedClass}`}>
         <div className="header" onDoubleClick={this.toggle}>
-          <div className="name">{this.props.name}</div>
+          <div className="name">{name}</div>
+          {enabler}
         </div>
-        <div className="contents">{this.props.children}</div>
+        <div className="contents">{children}</div>
       </fieldset>
     )
   }

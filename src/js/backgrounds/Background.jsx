@@ -1,7 +1,7 @@
 import React from 'react'
 import { SettingsWindow } from '../util/SettingsWindow'
 import { BackgroundImage, BackgroundImageSettings } from './BackgroundImage'
-import { Starfield, StarfieldSettings } from './Starfield'
+import { ParticleField, ParticleFieldSettings } from './ParticleField'
 import { Visualizer, VisualizerSettings } from './Visualizer'
 import { Gradient, GradientSettings } from './Gradient'
 
@@ -11,7 +11,7 @@ export function Background(props) {
     <>
       <BackgroundImage />
       <Gradient />
-      <Starfield />
+      <ParticleField />
       <Visualizer />
     </>
   )
@@ -22,7 +22,7 @@ export function BackgroundSettings(props) {
     <SettingsWindow name="background">
       <BackgroundImageSettings />
       <GradientSettings />
-      <StarfieldSettings />
+      <ParticleFieldSettings />
       <VisualizerSettings />
     </SettingsWindow>
   )

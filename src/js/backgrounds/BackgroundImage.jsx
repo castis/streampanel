@@ -63,8 +63,8 @@ export class BackgroundImage extends React.Component {
       for(let j = -1; j < Math.ceil(this.height / state.image.height) + 1; j++) {
         this.canvas.drawImage(
           state.image,
-          (i * state.image.width) + this.x,
-          (j * state.image.height) + this.y
+          i * state.image.width + this.x,
+          j * state.image.height + this.y
         )
       }
     }

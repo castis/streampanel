@@ -9,6 +9,7 @@ import { SettingsWindow } from '../util/SettingsWindow'
 const state = storage(
   'controller',
   new (class {
+    @persist @observable enabled = true
     @persist @observable color = 'white'
     @persist @observable style = 'inherit'
     @persist @observable opacity = 0.4
@@ -130,6 +131,10 @@ const state = storage(
 @observer
 export class Gamepad extends React.Component {
   render() {
+    if (!state.enabled) {
+      return ''
+    }
+
     return (
       <div
         className={`gamepad ${state.color} ${state.style}`}
@@ -229,6 +234,10 @@ export class GamepadSettings extends React.Component {
     state.color = event.target.value
   }
 
+  changeEnabled(event) {
+    state.enabled = event.target.checked
+  }
+
   configure() {
     if (state.configurable > -1) {
       state.stopConfiguration()
@@ -252,7 +261,7 @@ export class GamepadSettings extends React.Component {
     )
 
     return (
-      <SettingsWindow name="controller">
+      <SettingsWindow name="controller" enabled={state.enabled} onChange={this.changeEnabled}>
         <div className="inputs">
           <div className="input">
             <label>input</label>

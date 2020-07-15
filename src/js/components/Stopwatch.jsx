@@ -342,21 +342,19 @@ export class StopwatchSettings extends React.Component {
   }
 
   changeEnabled(event) {
-    state.enabled = !state.enabled
+    state.enabled = event.target.checked
+    if (!state.enabled) {
+      keyHandler.unbind()
+    } else {
+      keyHandler.bind()
+
+    }
   }
 
   render() {
     return (
-      <SettingsWindow name="timer">
+      <SettingsWindow name="timer" enabled={state.enabled} onChange={this.changeEnabled}>
         <div className="inputs">
-          <div className="input">
-            <label>enabled</label>
-            <input
-              type="checkbox"
-              checked={state.enabled}
-              onChange={this.changeEnabled}
-            />
-          </div>
           <div className="input">
             <label>background</label>
             <ColorPicker
