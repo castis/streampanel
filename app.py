@@ -5,7 +5,8 @@ from pprint import pprint
 
 import spotipy
 from dotenv import load_dotenv
-from flask import Flask, Response, jsonify, render_template, request, session
+from flask import (Flask, Response, jsonify, redirect, render_template,
+                   request, session)
 from flask_session import Session
 from spotipy.oauth2 import SpotifyOAuth
 
@@ -27,7 +28,7 @@ def sidebar():
     )
 
 
-@app.route('/api/spotify')
+@app.route('/spotify')
 def api_spotify():
     auth_manager = SpotifyOAuth(
         scope='user-read-playback-state',
@@ -39,17 +40,18 @@ def api_spotify():
 
     if info := session.get('token_info'):
         if datetime.utcfromtimestamp(info['expires_at']) < datetime.now():
-            session['token_info'] = auth_manager.refresh_access_token(info['refresh_token'])
-            info = session['token_info']
-
-        return jsonify(info)
+            info = session['token_info'] = auth_manager.refresh_access_token(info['refresh_token'])
+        if request.headers.get('Content-Type') == 'application/json':
+            return jsonify(info)
+        # coming back from a spotify authorization flow
+        return redirect('/app')
 
     return jsonify({
         'auth': auth_manager.get_authorize_url()
     })
 
 
-@app.route('/api/spotify/clear')
+@app.route('/spotify/clear')
 def api_spotify_clear():
     session.clear()
     return api_spotify()

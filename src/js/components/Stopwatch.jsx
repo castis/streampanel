@@ -343,11 +343,10 @@ export class StopwatchSettings extends React.Component {
 
   changeEnabled(event) {
     state.enabled = event.target.checked
-    if (!state.enabled) {
-      keyHandler.unbind()
-    } else {
+    if (state.enabled) {
       keyHandler.bind()
-
+    } else {
+      keyHandler.unbind()
     }
   }
 

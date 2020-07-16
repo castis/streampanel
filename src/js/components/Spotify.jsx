@@ -56,11 +56,15 @@ class SpotifyState {
   }
 
   @action getAccessToken() {
-    fetch("/api/spotify")
+    fetch("/spotify", {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
       .then(response => response.json())
       .then(data => {
         if (data['auth']) {
-          const window_handle = window.open(data['auth'])
+          window.location.href = data['auth']
         }
         else {
           this.accessToken = data['access_token']
@@ -98,7 +102,7 @@ export class Spotify extends React.Component {
       contents = (
         <>
           <div className="head">now playing</div>
-          <hr />
+          <div className="hr"></div>
           <div className="now-playing">
             <div className="art">
               <img src={state.albumArt} width="100" />

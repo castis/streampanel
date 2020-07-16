@@ -336,13 +336,15 @@ $max-width: 610px;
 
                 .head {
                     text-align: left;
-                    // border-bottom: solid 1px $font-color;
                     padding-bottom: 2px;
-                    // margin-bottom: 4px;
                 }
 
-                hr {
-                    border-width: 1px 0 0 0;
+                .hr {
+                    width: 100%;
+                    height: 1px;
+                    margin: 0 0 3px 0;
+                    background: #000;
+                    opacity: 0.7;
                 }
 
                 .now-playing {
@@ -358,7 +360,6 @@ $max-width: 610px;
                         img {
                             width: 40px;
                             height: 40px;
-                            box-shadow: 0 0 10px rgba(100, 100, 100, 1);
                         }
                     }
                     .artist {
