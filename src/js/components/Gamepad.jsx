@@ -6,11 +6,39 @@ import { persist } from 'mobx-persist'
 import { storage } from '../util/storage'
 import { SettingsWindow } from '../util/SettingsWindow'
 
+const viable_buttons = {
+  snes: [
+    'up',
+    'down',
+    'left',
+    'right',
+    'a',
+    'b',
+    'x',
+    'y',
+    'l1',
+    'r1',
+    'select',
+    'start',
+  ],
+  nes: [
+    'up',
+    'down',
+    'left',
+    'right',
+    'a',
+    'b',
+    'select',
+    'start',
+  ]
+}
+
 const state = storage(
   'controller',
   new (class {
     @persist @observable enabled = true
     @persist @observable color = 'white'
+    @persist @observable type = 'snes'
     @persist @observable style = 'inherit'
     @persist @observable opacity = 0.4
     @persist @observable updateSpeed = 50
@@ -19,20 +47,7 @@ const state = storage(
     @observable buttons = []
 
     buttonLock = undefined
-    buttons = [
-      'up',
-      'down',
-      'left',
-      'right',
-      'a',
-      'b',
-      'x',
-      'y',
-      'l1',
-      'r1',
-      'select',
-      'start',
-    ]
+    buttons = []
     // which buttons index are we configuring?
     @observable configurable = -1
 
@@ -59,6 +74,7 @@ const state = storage(
       this.update = ::this.update
       this.buttonUpdate = ::this.buttonUpdate
       this.configure = ::this.configure
+      this.buttons = viable_buttons[this.type]
     }
 
     update() {
@@ -137,7 +153,7 @@ export class Gamepad extends React.Component {
 
     return (
       <div
-        className={`gamepad ${state.color} ${state.style}`}
+        className={`gamepad ${state.color} ${state.type} ${state.style}`}
         style={{
           opacity: `${state.opacity}`,
         }}
@@ -226,6 +242,11 @@ export class GamepadSettings extends React.Component {
     state.opacity = event.target.value
   }
 
+  updateType(event) {
+    state.type = event.target.value
+    state.buttons = viable_buttons[state.type]
+  }
+
   updateStyle(event) {
     state.style = event.target.value
   }
@@ -242,6 +263,7 @@ export class GamepadSettings extends React.Component {
     if (state.configurable > -1) {
       state.stopConfiguration()
     } else if (state.active) {
+      state.map = {}
       state.configurable = 0
     }
   }
@@ -274,6 +296,13 @@ export class GamepadSettings extends React.Component {
             <select value={state.color} onChange={this.updateColor}>
               <option value="white">white</option>
               <option value="black">black</option>
+            </select>
+          </div>
+          <div className="input">
+            <label>type</label>
+            <select value={state.type} onChange={this.updateType}>
+              <option value="nes">nes</option>
+              <option value="snes">snes</option>
             </select>
           </div>
           <div className="input">

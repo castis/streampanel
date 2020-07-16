@@ -520,152 +520,271 @@ $max-width: 610px;
                     }
                 }
 
-                // .white,
+                &.nes {
+                    .shoulder {
+                        display: none;
+                    }
+                    .body {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        padding: 0 5px;
 
-                .shoulder {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: flex-end;
-                    height: 10px;
-                    margin-bottom: 0px;
-                    padding: 0 15px;
+                        padding: 0 13px;
 
-                    .l1, .r1 {
-                        width: 45px;
-                        height: 4px;
-                        border-radius: 3px 3px 0 0;
-                        // border: solid 1px #999;
-                        border-style: solid;
-                        // border-color: #000;
-                        border-width: 1px 1px 0 1px;
-                        // background-color: #999;
+                        .dpad {
+                            height: 45px;
+                            width: 45px;
+                            position: relative;
 
-                        &.active {
-                            // background: #000;
-                            // height: 1px;
-                            // margin-top: 3px;
+                            .up,
+                            .down,
+                            .left,
+                            .right,
+                            .mode {
+                                height: 15px;
+                                width: 15px;
+                                position: absolute;
+                                border-style: solid;
+                            }
+
+                            $r: 2px;
+                            $b: 1px;
+                            .up {
+                                left: 0;
+                                right: 0;
+                                margin: 0 auto;
+                                border-radius: $r $r 0 0;
+                                border-width: $b $b 0 $b;
+                            }
+                            .down {
+                                bottom: 0;
+                                left: 0;
+                                right: 0;
+                                margin: 0 auto;
+                                border-radius: 0 0 $r $r;
+                                border-width: 0 $b $b $b;
+                            }
+                            .left {
+                                top: 0;
+                                bottom: 0;
+                                margin: auto 0;
+                                border-radius: $r 0 0 $r;
+                                border-width: $b 0 $b $b;
+                            }
+                            .right {
+                                right: 0;
+                                top: 0;
+                                bottom: 0;
+                                margin: auto 0;
+                                border-radius: 0 $r $r 0;
+                                border-width: $b $b $b 0;
+                            }
+                            .mode {
+                                top: 14px;
+                                left: 14px;
+                                width: 17px;
+                                height: 17px;
+                            }
+                        }
+                        .meta {
+                            width: 60px;
+                            display: flex;
+                            justify-content: space-between;
+                            padding: 0 5px;
+                            margin: auto 0 10px;
+
+                            .select, .start {
+                                height: 6px;
+                                width: 18px;
+                                border-radius: 3px;
+                                border-style: solid;
+                                border-width: 1px;
+                            }
+                        }
+                        .action {
+                            width: 50px;
+                            position: relative;
+                            margin: auto 0 5px;
+
+                            .x, .y, .a, .b {
+                                border-width: 1px;
+                                position: absolute;
+                                border-style: solid;
+                                border-radius: 100%;
+                                cursor: pointer;
+                                display: inline-block;
+                                height: 18px;
+                                width: 18px;
+                            }
+
+                            .x, .y {
+                                display: none;
+                            }
+                            .a { // right
+                                right: 0;
+                                bottom: 0;
+                                // top: 0;
+                                // bottom: 0;
+                                // margin: auto 0;
+                            }
+                            .b { // bottom
+                                // bottom: 0;
+                                left: 0;
+                                bottom: 0;
+                                // right: 0;
+                                // margin: 0 auto;
+                            }
                         }
                     }
                 }
-                .body {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    padding: 0 5px;
 
-                    padding: 0 13px;
-
-                    .dpad {
-                        height: 45px;
-                        width: 45px;
-                        position: relative;
-
-                        .up,
-                        .down,
-                        .left,
-                        .right,
-                        .mode {
-                            height: 15px;
-                            width: 15px;
-                            position: absolute;
-                            border-style: solid;
-                        }
-
-                        $r: 2px;
-                        $b: 1px;
-                        .up {
-                            left: 0;
-                            right: 0;
-                            margin: 0 auto;
-                            border-radius: $r $r 0 0;
-                            border-width: $b $b 0 $b;
-                        }
-                        .down {
-                            bottom: 0;
-                            left: 0;
-                            right: 0;
-                            margin: 0 auto;
-                            border-radius: 0 0 $r $r;
-                            border-width: 0 $b $b $b;
-                        }
-                        .left {
-                            top: 0;
-                            bottom: 0;
-                            margin: auto 0;
-                            border-radius: $r 0 0 $r;
-                            border-width: $b 0 $b $b;
-                        }
-                        .right {
-                            right: 0;
-                            top: 0;
-                            bottom: 0;
-                            margin: auto 0;
-                            border-radius: 0 $r $r 0;
-                            border-width: $b $b $b 0;
-                        }
-                        .mode {
-                            top: 14px;
-                            left: 14px;
-                            width: 17px;
-                            height: 17px;
-                        }
-                    }
-                    .meta {
-                        width: 60px;
+                &.snes {
+                    .shoulder {
                         display: flex;
                         justify-content: space-between;
-                        padding: 55px 10px 25px;
+                        align-items: flex-end;
+                        height: 10px;
+                        margin-bottom: 0px;
+                        padding: 0 15px;
 
-                        .select, .start {
-                            height: 6px;
-                            width: 18px;
-                            border-radius: 3px;
+                        .l1, .r1 {
+                            width: 45px;
+                            height: 4px;
+                            border-radius: 3px 3px 0 0;
+                            // border: solid 1px #999;
                             border-style: solid;
-                            border-width: 1px;
-                            transform: rotate(-35deg);
-                        }
+                            // border-color: #000;
+                            border-width: 1px 1px 0 1px;
+                            // background-color: #999;
 
-                        .select {}
-                        .start {}
+                            &.active {
+                                // background: #000;
+                                // height: 1px;
+                                // margin-top: 3px;
+                            }
+                        }
                     }
-                    .action {
-                        height: 50px;
-                        width: 60px;
-                        position: relative;
+                    .body {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        padding: 0 5px;
 
-                        .x, .y, .a, .b {
-                            border-width: 1px;
-                            position: absolute;
-                            border-style: solid;
-                            border-radius: 100%;
-                            cursor: pointer;
-                            display: inline-block;
-                            height: 18px;
-                            width: 18px;
-                        }
+                        padding: 0 13px;
 
-                        .x { // top
-                            left: 0;
-                            right: 0;
-                            margin: 0 auto;
+                        .dpad {
+                            height: 45px;
+                            width: 45px;
+                            position: relative;
+
+                            .up,
+                            .down,
+                            .left,
+                            .right,
+                            .mode {
+                                height: 15px;
+                                width: 15px;
+                                position: absolute;
+                                border-style: solid;
+                            }
+
+                            $r: 2px;
+                            $b: 1px;
+                            .up {
+                                left: 0;
+                                right: 0;
+                                margin: 0 auto;
+                                border-radius: $r $r 0 0;
+                                border-width: $b $b 0 $b;
+                            }
+                            .down {
+                                bottom: 0;
+                                left: 0;
+                                right: 0;
+                                margin: 0 auto;
+                                border-radius: 0 0 $r $r;
+                                border-width: 0 $b $b $b;
+                            }
+                            .left {
+                                top: 0;
+                                bottom: 0;
+                                margin: auto 0;
+                                border-radius: $r 0 0 $r;
+                                border-width: $b 0 $b $b;
+                            }
+                            .right {
+                                right: 0;
+                                top: 0;
+                                bottom: 0;
+                                margin: auto 0;
+                                border-radius: 0 $r $r 0;
+                                border-width: $b $b $b 0;
+                            }
+                            .mode {
+                                top: 14px;
+                                left: 14px;
+                                width: 17px;
+                                height: 17px;
+                            }
                         }
-                        .y { // left
-                            top: 0;
-                            bottom: 0;
-                            margin: auto 0;
-                            left: 0;
+                        .meta {
+                            width: 60px;
+                            display: flex;
+                            justify-content: space-between;
+                            padding: 55px 10px 25px;
+
+                            .select, .start {
+                                height: 6px;
+                                width: 18px;
+                                border-radius: 3px;
+                                border-style: solid;
+                                border-width: 1px;
+                                transform: rotate(-35deg);
+                            }
+
+                            .select {}
+                            .start {}
                         }
-                        .a { // right
-                            right: 0;
-                            top: 0;
-                            bottom: 0;
-                            margin: auto 0;
-                        }
-                        .b { // bottom
-                            bottom: 0;
-                            left: 0;
-                            right: 0;
-                            margin: 0 auto;
+                        .action {
+                            height: 50px;
+                            width: 60px;
+                            position: relative;
+
+                            .x, .y, .a, .b {
+                                border-width: 1px;
+                                position: absolute;
+                                border-style: solid;
+                                border-radius: 100%;
+                                cursor: pointer;
+                                display: inline-block;
+                                height: 18px;
+                                width: 18px;
+                            }
+
+                            .x { // top
+                                left: 0;
+                                right: 0;
+                                margin: 0 auto;
+                            }
+                            .y { // left
+                                top: 0;
+                                bottom: 0;
+                                margin: auto 0;
+                                left: 0;
+                            }
+                            .a { // right
+                                right: 0;
+                                top: 0;
+                                bottom: 0;
+                                margin: auto 0;
+                            }
+                            .b { // bottom
+                                bottom: 0;
+                                left: 0;
+                                right: 0;
+                                margin: 0 auto;
+                            }
                         }
                     }
                 }
