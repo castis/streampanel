@@ -22,13 +22,15 @@ const state = storage(
     }
 
     @observable setImageUrl(imageURL) {
-      this.image = new Image()
-      this.image.onload = () => {
+      const newImage = new Image()
+      newImage.onload = () => {
         // otherwise theres a blank pixel between background tiles
-        this.image.width = this.image.width - 0.01
-        this.image.height = this.image.height - 0.01
+        newImage.width = newImage.width - 0.01
+        newImage.height = newImage.height - 0.01
+
+        this.image = newImage
       }
-      this.image.src = this.imageURL = imageURL
+      newImage.src = this.imageURL = imageURL
     }
   })()
 )
